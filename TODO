@@ -3,3 +3,4 @@
 - Add unit tests
 - Implement interpreter!
 - Add functional tests
+- Make makefile multi-platform

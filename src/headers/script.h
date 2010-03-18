@@ -10,14 +10,14 @@ namespace peachy {
 
     public:
 
-      Script(ScriptSource *scriptSource, Environment *environment);
+      Script(ScriptSource * scriptSource, Environment * environment);
       ~Script();
-      Script(const Script& s);
-      Script& operator = (const Script& script);
-      void setScriptSource(ScriptSource *scriptSource);
-      void setEnvironment(Environment *environment);
-      Environment *getEnvironment();
-      ScriptSource *getScriptSource();
+      Script(const Script & script);
+      Script & operator = (const Script & script);
+      void setScriptSource(ScriptSource * scriptSource);
+      void setEnvironment(Environment * environment);
+      Environment * getEnvironment();
+      ScriptSource * getScriptSource();
       void run();
 
     protected:
@@ -25,8 +25,8 @@ namespace peachy {
     private:
 
       Script();
-      Environment *environment;
-      ScriptSource *scriptSource;
+      Environment * environment;
+      ScriptSource * scriptSource;
   };
 }
 

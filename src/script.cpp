@@ -8,7 +8,7 @@
 
 namespace peachy {
 
-  Script::Script(ScriptSource *scriptSource, Environment *environment) {
+  Script::Script(ScriptSource * scriptSource, Environment * environment) {
     Log::debug("Script constructor");
     setEnvironment(environment);
     setScriptSource(scriptSource);
@@ -18,11 +18,11 @@ namespace peachy {
     Log::debug("Script destructor");
   }
 
-  Script::Script(const Script& s) {
+  Script::Script(const Script & script) {
     Log::debug("Script copy constructor");
   }
 
-  Script& Script::operator = (const Script& script) {
+  Script & Script::operator = (const Script & script) {
     Log::debug("Script assignment operator");
     if(this != &script) {
       Log::debug("The pointers are different, performing assignment");
@@ -34,12 +34,12 @@ namespace peachy {
     return *this;
   }
 
-  void Script::setEnvironment(Environment *environment) {
+  void Script::setEnvironment(Environment * environment) {
     Log::debug("Script::setEnvironment");
     this->environment = environment;
   }
 
-  void Script::setScriptSource(ScriptSource *scriptSource) {
+  void Script::setScriptSource(ScriptSource * scriptSource) {
     Log::debug("Script::setScriptSource");
     this->scriptSource = scriptSource;
   }

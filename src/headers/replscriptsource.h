@@ -5,11 +5,13 @@
 
 namespace peachy {
 
+  class Log;
+
   class REPLScriptSource : public ScriptSource {
 
     public:
 
-      REPLScriptSource();
+      REPLScriptSource(Log * logger);
       ~REPLScriptSource();
       std::string getLine();
       bool hasMoreLines();
@@ -21,6 +23,8 @@ namespace peachy {
 
     private:
 
+      Log * logger;
+      REPLScriptSource();
       REPLScriptSource(const REPLScriptSource & replScriptSource);
       REPLScriptSource & operator = (const REPLScriptSource & replScriptSource);
   };

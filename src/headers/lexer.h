@@ -3,19 +3,21 @@
 
 namespace peachy {
 
+  class Log;
+
   class Lexer {
 
     public:
 
-      Lexer();
+      Lexer(Log * logger);
       ~Lexer();
 
     private:
 
-      // No copy allowed.
-      Lexer(const Lexer & lexer);
+      Log * logger;
 
-      // No assignment allowed.
+      Lexer();
+      Lexer(const Lexer & lexer);
       Lexer & operator = (const Lexer & lexer);
   };
 }

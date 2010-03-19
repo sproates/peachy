@@ -9,39 +9,38 @@
 
 namespace peachy {
 
-  void StringScriptSource::construct(std::string scriptString) {
-    Log::debug("StringScriptSource::construct()");
+  void StringScriptSource::construct(Log * logger, std::string scriptString) {
+    this->logger = logger;
+    logger->debug("StringScriptSource::construct()");
     stream = new std::istringstream(scriptString, std::ios_base::in);
     if(!stream->good()) {
       throw new std::runtime_error("Stream is no good for IO");
     } else {
-      Log::debug("Stream is good for IO");
+      logger->debug("Stream is good for IO");
     }
   }
 
-  StringScriptSource::StringScriptSource(std::string scriptString) {
-    Log::debug("StringScriptSource constructor");
-    construct(scriptString);
+  StringScriptSource::StringScriptSource(Log * logger, std::string scriptString) {
+    construct(logger, scriptString);
   }
 
-  StringScriptSource::StringScriptSource(char * scriptString) {
-    Log::debug("StringScriptSource constructor");
-    construct(std::string(scriptString));
+  StringScriptSource::StringScriptSource(Log * logger, char * scriptString) {
+    construct(logger, std::string(scriptString));
   }
 
   StringScriptSource::~StringScriptSource() {
-    Log::debug("StringScriptSource destructor");
+    logger->debug("StringScriptSource destructor");
     delete stream;
   }
 
   std::string StringScriptSource::getLine() {
-    Log::debug("StringScriptSource::getLine()");
+    logger->debug("StringScriptSource::getLine()");
     std::getline(*stream, currentLine);
     return currentLine;
   }
 
   bool StringScriptSource::hasMoreLines() {
-    Log::debug("StringScriptSource::hasMoreLines()");
+    logger->debug("StringScriptSource::hasMoreLines()");
     return !stream->eof();
   }
 }

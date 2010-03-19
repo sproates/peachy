@@ -2,11 +2,21 @@
 #define PEACHY_RUNTIME_H
 
 namespace peachy {
+
+  class Log;
+
   class Runtime {
+
     public:
-      Runtime();
+
+      Runtime(Log * logger);
       ~Runtime();
-      Runtime(const Runtime& runtime);
+
+    private:
+
+      Log * logger;
+      Runtime(const Runtime & runtime);
+      Runtime & operator = (const Runtime & runtime);
   };
 }
 

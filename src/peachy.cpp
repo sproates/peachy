@@ -29,8 +29,5 @@ namespace peachy {
   void print_invalid(const char * option, std::ostream & outputStream) {
     outputStream << "Invalid option: " << option << std::endl;
   }
-
-  void print_interrupted(std::ostream & outputStream) {
-    outputStream << "Interrupted by user" << std::endl;
-  }
 }
+

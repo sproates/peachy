@@ -7,42 +7,42 @@
 
 namespace peachy {
 
-  void FileScriptSource::construct(const char * filename) {
-    Log::debug("FileScriptSource::construct()");
+  void FileScriptSource::construct(Log * logger, const char * filename) {
+    this->logger = logger;
+    logger->debug("FileScriptSource::construct()");
     stream = new std::ifstream(filename, std::ios_base::in);
-    Log::debug("Ok, got stream");
+    logger->debug("Ok, got stream");
     if(stream == NULL || !stream->good()) {
-      Log::debug("Going to throw an exception now...");
+      logger->debug("Going to throw an exception now...");
       throw std::runtime_error(std::string("Can't open file for reading: ").append(filename));
     } else {
-      Log::debug("Stream is good for IO");
+      logger->debug("Stream is good for IO");
     }
   }
 
-  FileScriptSource::FileScriptSource(std::string filename) {
-    Log::debug("FileScriptSource constructor");
-    construct(filename.c_str());
+  FileScriptSource::FileScriptSource(Log * logger, std::string filename) {
+    construct(logger, filename.c_str());
   }
 
-  FileScriptSource::FileScriptSource(const char * filename) {
-    Log::debug("FileScriptSource constructor");
-    construct(filename);
+  FileScriptSource::FileScriptSource(Log * logger, const char * filename) {
+    construct(logger, filename);
   }
 
   FileScriptSource::~FileScriptSource() {
-    Log::debug("FileScriptSource destructor");
+    logger->debug("FileScriptSource destructor");
     stream->close();
     delete stream;
   }
 
   std::string FileScriptSource::getLine() {
-    Log::debug("FileScriptSource::getLine()");
+    logger->debug("FileScriptSource::getLine()");
     std::getline(*stream, currentLine);
     return currentLine;
   }
 
   bool FileScriptSource::hasMoreLines() {
-    Log::debug("FileScriptSource::hasMoreLines()");
+    logger->debug("FileScriptSource::hasMoreLines()");
     return !stream->eof();
   }
 }
+

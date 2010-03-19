@@ -3,14 +3,22 @@
 
 namespace peachy {
 
+  class Log;
+
   class Environment {
 
     public:
-      Environment();
+
+      Environment(Log * logger);
       ~Environment();
-      Environment(const Environment& environment);
-      Environment& operator = (const Environment& environment);
+
+    private:
+
+      Log * logger;
+      Environment(const Environment & environment);
+      Environment & operator = (const Environment & environment);
   };
 }
 
 #endif
+

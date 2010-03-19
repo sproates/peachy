@@ -4,13 +4,13 @@
 
 namespace peachy {
 
-  Lexer::Lexer() {
-    Log::debug("Lexer constructor");
+  Lexer::Lexer(Log * logger) {
+    this->logger = logger;
+    logger->debug("Lexer constructor");
   }
 
   Lexer::~Lexer() {
-    Log::debug("Lexer destructor");
+    logger->debug("Lexer destructor");
   }
-
 }
 

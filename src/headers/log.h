@@ -1,6 +1,7 @@
 #ifndef PEACHY_LOG_H
 #define PEACHY_LOG_H
 
+#include <ostream>
 #include <string>
 
 namespace peachy {
@@ -9,16 +10,21 @@ namespace peachy {
 
     public:
 
-      static void debug(const char *message);
-      static void debug(std::string message);
+      Log(std::ostream * outputStream);
 
-      static void info(const char *message);
-      static void info(std::string message);
+      void debug(const char *message);
+      void debug(std::string message);
+
+      void info(const char *message);
+      void info(std::string message);
+
+
+    protected:
+
+      std::ostream * outputStream;
 
     private:
 
-      // Constructor is private as this is just a bunch of
-      // static methods.
       Log();
   };
 }

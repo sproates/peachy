@@ -1,1 +1,13 @@
-Peachy is a scripting language I'm creating partly for fun and partly for brushing up on my skills.
+Peachy is an interpreted scripting language I'm creating.
+
+It's just for fun.
+
+My C++ is rusty so bear with me.
+
+Design decisions / goals:
+- Don't use any external dependencies other than std and stl
+- Be multi-platform
+- Be very testable
+- Be robust
+- Have complete documentation
+

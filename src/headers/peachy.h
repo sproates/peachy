@@ -21,9 +21,6 @@ namespace peachy {
   // Print a message letting the user know the option they specified was invalid.
   void print_invalid(const char * option, std::ostream & outputStream);
 
-  // Print a message indicating that the process was interrupted.
-  void print_interrupted(std::ostream & outputStream);
-
   // The version identify of Peachy.
   const std::string version = "0.1";
 
@@ -32,3 +29,4 @@ namespace peachy {
 }
 
 #endif
+

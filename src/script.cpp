@@ -1,65 +1,51 @@
+#include "script.h"
+
 #include <iostream>
-#include <typeinfo>
 
 #include "environment.h"
 #include "log.h"
-#include "script.h"
 #include "scriptsource.h"
 
 namespace peachy {
 
-  Script::Script(ScriptSource * scriptSource, Environment * environment) {
-    Log::debug("Script constructor");
+  Script::Script(Log * logger, ScriptSource * scriptSource, Environment * environment) {
+    this->logger = logger;
+    this->logger->debug("Script constructor");
     setEnvironment(environment);
     setScriptSource(scriptSource);
   }
 
   Script::~Script() {
-    Log::debug("Script destructor");
-  }
-
-  Script::Script(const Script & script) {
-    Log::debug("Script copy constructor");
-  }
-
-  Script & Script::operator = (const Script & script) {
-    Log::debug("Script assignment operator");
-    if(this != &script) {
-      Log::debug("The pointers are different, performing assignment");
-      setEnvironment(script.environment);
-      setScriptSource(script.scriptSource);
-    } else {
-      Log::debug("The pointers are the same, no further assignment necessary");
-    }
-    return *this;
+    logger->debug("Script destructor");
   }
 
   void Script::setEnvironment(Environment * environment) {
-    Log::debug("Script::setEnvironment");
+    logger->debug("Script::setEnvironment");
     this->environment = environment;
   }
 
   void Script::setScriptSource(ScriptSource * scriptSource) {
-    Log::debug("Script::setScriptSource");
+    logger->debug("Script::setScriptSource");
     this->scriptSource = scriptSource;
   }
 
   Environment * Script::getEnvironment() {
-    Log::debug("Script::getEnvironment");
+    logger->debug("Script::getEnvironment");
     return environment;
   }
 
   ScriptSource * Script::getScriptSource() {
-    Log::debug("Script::getScriptSource");
+    logger->debug("Script::getScriptSource");
     return scriptSource;
   }
 
   void Script::run() {
-    Log::debug("Script::run");
+    logger->debug("Script::run");
     while(scriptSource->hasMoreLines()) {
-      Log::debug("Getting a line from the script source");
-      Log::debug(scriptSource->getLine());
+      logger->debug("Getting a line from the script source");
+      logger->debug(scriptSource->getLine());
     }
-    Log::debug("Reached end of script");
+    logger->debug("Reached end of script");
   }
 }
+

@@ -7,13 +7,14 @@
 
 namespace peachy {
 
-  REPLScriptSource::REPLScriptSource() {
-    Log::debug("REPLScriptSource constructor");
+  REPLScriptSource::REPLScriptSource(Log * logger) {
+    this->logger = logger;
+    logger->debug("REPLScriptSource constructor");
     stream = &std::cin;
   }
 
   REPLScriptSource::~REPLScriptSource() {
-    Log::debug("REPLScriptSource destructor");
+    logger->debug("REPLScriptSource destructor");
     delete stream;
   }
 
@@ -26,3 +27,4 @@ namespace peachy {
     return true;
   }  
 }
+

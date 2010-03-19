@@ -5,12 +5,14 @@
 
 namespace peachy {
 
+  class Log;
+
   class StringScriptSource : public ScriptSource {
 
     public:
 
-      StringScriptSource(std::string scriptString);
-      StringScriptSource(char * scriptString);
+      StringScriptSource(Log * logger, std::string scriptString);
+      StringScriptSource(Log * logger, char * scriptString);
       ~StringScriptSource();
       std::string getLine();
       bool hasMoreLines();
@@ -22,8 +24,9 @@ namespace peachy {
 
     private:
 
+      Log * logger;
       StringScriptSource();
-      void construct(std::string scriptString);
+      void construct(Log * logger, std::string scriptString);
       StringScriptSource(const StringScriptSource & stringScriptSource);
       StringScriptSource & operator = (const StringScriptSource & stringScriptSource);
   };

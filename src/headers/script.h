@@ -1,19 +1,18 @@
 #ifndef PEACHY_SCRIPT_H
 #define PEACHY_SCRIPT_H
 
-#include "environment.h"
-#include "scriptsource.h"
-
 namespace peachy {
+
+  class Environment;
+  class Log;
+  class ScriptSource;
 
   class Script {
 
     public:
 
-      Script(ScriptSource * scriptSource, Environment * environment);
+      Script(Log * logger, ScriptSource * scriptSource, Environment * environment);
       ~Script();
-      Script(const Script & script);
-      Script & operator = (const Script & script);
       void setScriptSource(ScriptSource * scriptSource);
       void setEnvironment(Environment * environment);
       Environment * getEnvironment();
@@ -24,9 +23,13 @@ namespace peachy {
 
     private:
 
-      Script();
       Environment * environment;
       ScriptSource * scriptSource;
+      Log * logger;
+
+      Script();
+      Script(const Script & script);
+      Script & operator = (const Script & script);
   };
 }
 

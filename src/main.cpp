@@ -16,19 +16,19 @@
 
 using namespace peachy;
 
-ScriptSource * handle_args(const int argc, const char ** argv);
-void handle_interrupt(int param);
+ScriptSource * handle_args(Log * logger, const int argc, const char ** argv);
 
 // Entry point.
 int main(const int argc, const char ** argv) {
 
+  Log * logger = new Log(&(std::cout));
+  int returnCode = 0;
+
   try {
 
-    signal(SIGINT, handle_interrupt);
-
-    ScriptSource * scriptSource = handle_args(argc, argv);
-    Environment * environment = new Environment();
-    Script * script = new Script(scriptSource, environment);
+    ScriptSource * scriptSource = handle_args(logger, argc, argv);
+    Environment * environment = new Environment(logger);
+    Script * script = new Script(logger, scriptSource, environment);
 
     script->run();
 
@@ -37,54 +37,48 @@ int main(const int argc, const char ** argv) {
     delete scriptSource;
 
   } catch (std::runtime_error & re) {
-    Log::debug("runtime error caught");
+    logger->debug("runtime error caught");
     print_exception(re, std::cerr);
-    return 1;
+    returnCode = 1;
   } catch (std::exception & e) {
-    Log::debug("exception caught");
+    logger->debug("exception caught");
     print_exception(e, std::cerr);
-    return 1;
+    returnCode = 1;
   } catch(...) {
-    Log::debug("something else caught");
+    logger->debug("something else caught");
     print_fatal(std::string("Unknown fatal error"), std::cerr);
-    return 1;
+    returnCode = 1;
   }
 
-  return 0;
+  return returnCode;
 }
 
-ScriptSource * handle_args(const int argc, const char ** argv) {
+ScriptSource * handle_args(Log * logger, const int argc, const char ** argv) {
 
   if(argc < 2 || strcmp(argv[1], "-r") == 0 || strcmp(argv[1], "--repl") == 0) {
     // REPL mode
-    Log::debug("REPL mode");
-    return new REPLScriptSource();
+    logger->debug("REPL mode");
+    return new REPLScriptSource(logger);
   } else {
-    Log::debug(argv[1]);
+    logger->debug(argv[1]);
     if(strcmp(argv[1], "-v") == 0 || strcmp(argv[1], "--version") == 0) {
-      Log::debug("Displaying version info");
+      logger->debug("Displaying version info");
       print_intro(std::cout);
       exit(0);
     } else if(strcmp(argv[1], "-h") == 0 || strcmp(argv[1], "--help") == 0) {
-      Log::debug("Displaying usage info");
+      logger->debug("Displaying usage info");
       print_usage(argv[0], std::cout);
       exit(0);
     } else if(argv[1][0] == '-') {
-      Log::debug("Invalid option");
+      logger->debug("Invalid option");
       print_invalid(argv[1], std::cout);
       print_usage(argv[0], std::cout);
       exit(1);
     } else {
       // File mode
-      Log::debug("File mode");
-      return new FileScriptSource(argv[argc - 1]);
+      logger->debug("File mode");
+      return new FileScriptSource(logger, argv[argc - 1]);
     }
   }
 }
 
-void handle_interrupt(int param) {
-
-  Log::debug("CTRL-C caught");
-  print_interrupted(std::cout);
-  exit(0);
-}

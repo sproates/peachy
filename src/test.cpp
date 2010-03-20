@@ -8,7 +8,7 @@
 
 using namespace peachy;
 
-int main(const int argc, const char ** argv) {
+int main() {
 
   Log * logger = new Log(&(std::cout));
   logger->info("Peachy test harness");

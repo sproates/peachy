@@ -2,20 +2,23 @@
 
 COMPILER = g++
 
-COMPILER_FLAGS = -c -Wall -I$(HEADERS) -DLOG_DEBUG_ENABLED -DLOG_INFO_ENABLED
+COMPILER_FLAGS = -c -Wall -Wextra -pedantic -I$(HEADERS) $(DEFINES)
 
-DELETE = rm
+DEFINES = -DLOG_DEBUG_ENABLED -DLOG_INFO_ENABLED
+
+DELETE = rm -f -v
 
 FINAL_EXE = peachy.exe
 
 HEADERS = headers
 
 OBJECTS = environment.o filescriptsource.o lexer.o log.o peachy.o \
-replscriptsource.o runtime.o script.o scriptsource.o stringscriptsource.o
+replscriptsource.o runtime.o script.o scriptsource.o stringscriptsource.o \
+token.o
 
 SOURCES = environment.cpp filescriptsource.cpp lexer.cpp log.cpp peachy.cpp \
 replscriptsource.cpp runtime.cpp script.cpp scriptsource.cpp \
-stringscriptsource.cpp
+stringscriptsource.cpp token.cpp
 
 TEST_EXE = testpeachy.exe
 
@@ -24,10 +27,10 @@ TEST_EXE = testpeachy.exe
 all: $(FINAL_EXE) $(TEST_EXE)
 
 $(FINAL_EXE): $(OBJECTS) main.o
-	$(COMPILER) -o $(FINAL_EXE) $(OBJECTS) main.o
+	$(COMPILER) -o $(FINAL_EXE) main.o $(OBJECTS)
 
 $(TEST_EXE): $(OBJECTS) test.o
-	$(COMPILER) -o $(TEST_EXE) $(OBJECTS) test.o
+	$(COMPILER) -o $(TEST_EXE) test.o $(OBJECTS)
 
 clean:
 	$(DELETE) *.exe *.o
@@ -44,7 +47,7 @@ $(HEADERS)/scriptsource.h $(HEADERS)/log.h $(HEADERS)/peachy.h \
 $(HEADERS)/replscriptsource.h
 
 test.o: test.cpp $(HEADERS)/environment.h $(HEADERS)/lexer.h $(HEADERS)/log.h \
-$(HEADERS)/runtime.h
+$(HEADERS)/runtime.h $(HEADERS)/token.h
 
 # intermediary objects
 
@@ -71,4 +74,6 @@ scriptsource.o: scriptsource.cpp $(HEADERS)/scriptsource.h
 
 stringscriptsource.o: stringscriptsource.cpp $(HEADERS)/stringscriptsource.h \
 $(HEADERS)/scriptsource.h $(HEADERS)/log.h
+
+token.o: token.cpp $(HEADERS)/token.h $(HEADERS)/log.h
 

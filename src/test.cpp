@@ -4,6 +4,7 @@
 #include "lexer.h"
 #include "log.h"
 #include "runtime.h"
+#include "token.h"
 
 using namespace peachy;
 
@@ -20,6 +21,9 @@ int main(const int argc, const char ** argv) {
 
   Environment * environment = new Environment(logger);
   delete environment;
+
+  Token * token = new Token(logger);
+  delete token;
 
   logger->info("Test harness complete");
   delete logger;

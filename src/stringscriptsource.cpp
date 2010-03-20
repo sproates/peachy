@@ -10,8 +10,8 @@
 namespace peachy {
 
   void StringScriptSource::construct(Log * logger, std::string scriptString) {
-    this->logger = logger;
     logger->debug("StringScriptSource::construct()");
+    this->logger = logger;
     stream = new std::istringstream(scriptString, std::ios_base::in);
     if(!stream->good()) {
       throw new std::runtime_error("Stream is no good for IO");
@@ -21,10 +21,12 @@ namespace peachy {
   }
 
   StringScriptSource::StringScriptSource(Log * logger, std::string scriptString) {
+    logger->debug("StringScriptSource constructor");
     construct(logger, scriptString);
   }
 
   StringScriptSource::StringScriptSource(Log * logger, char * scriptString) {
+    logger->debug("StringScriptSource constructor");
     construct(logger, std::string(scriptString));
   }
 

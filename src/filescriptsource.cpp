@@ -8,8 +8,8 @@
 namespace peachy {
 
   void FileScriptSource::construct(Log * logger, const char * filename) {
-    this->logger = logger;
     logger->debug("FileScriptSource::construct()");
+    this->logger = logger;
     stream = new std::ifstream(filename, std::ios_base::in);
     logger->debug("Ok, got stream");
     if(stream == NULL || !stream->good()) {
@@ -21,10 +21,12 @@ namespace peachy {
   }
 
   FileScriptSource::FileScriptSource(Log * logger, std::string filename) {
+    logger->debug("FileScriptSource constructor");
     construct(logger, filename.c_str());
   }
 
   FileScriptSource::FileScriptSource(Log * logger, const char * filename) {
+    logger->debug("FileScriptSource constructor");
     construct(logger, filename);
   }
 

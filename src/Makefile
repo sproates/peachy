@@ -12,12 +12,12 @@ FINAL_EXE = peachy.exe
 
 HEADERS = headers
 
-OBJECTS = environment.o filescriptsource.o lexer.o log.o peachy.o \
+OBJECTS = environment.o filescriptsource.o lexer.o log.o parser.o peachy.o \
 replscriptsource.o runtime.o script.o scriptsource.o stringscriptsource.o \
 token.o
 
-SOURCES = environment.cpp filescriptsource.cpp lexer.cpp log.cpp peachy.cpp \
-replscriptsource.cpp runtime.cpp script.cpp scriptsource.cpp \
+SOURCES = environment.cpp filescriptsource.cpp lexer.cpp log.cpp parser.o \
+peachy.cpp replscriptsource.cpp runtime.cpp script.cpp scriptsource.cpp \
 stringscriptsource.cpp token.cpp
 
 TEST_EXE = testpeachy.exe
@@ -47,7 +47,7 @@ $(HEADERS)/scriptsource.h $(HEADERS)/log.h $(HEADERS)/peachy.h \
 $(HEADERS)/replscriptsource.h
 
 test.o: test.cpp $(HEADERS)/environment.h $(HEADERS)/lexer.h $(HEADERS)/log.h \
-$(HEADERS)/runtime.h $(HEADERS)/token.h
+$(HEADERS)/parser.h $(HEADERS)/runtime.h $(HEADERS)/token.h
 
 # intermediary objects
 
@@ -59,6 +59,8 @@ $(HEADERS)/scriptsource.h $(HEADERS)/log.h
 lexer.o: lexer.cpp $(HEADERS)/lexer.h $(HEADERS)/log.h
 
 log.o: log.cpp $(HEADERS)/log.h
+
+parser.o: parser.cpp $(HEADERS)/parser.h $(HEADERS)/log.h
 
 peachy.o: peachy.cpp $(HEADERS)/peachy.h
 

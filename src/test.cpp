@@ -3,6 +3,7 @@
 #include "environment.h"
 #include "lexer.h"
 #include "log.h"
+#include "parser.h"
 #include "runtime.h"
 #include "token.h"
 
@@ -24,6 +25,9 @@ int main() {
 
   Token * token = new Token(logger);
   delete token;
+
+  Parser * parser = new Parser(logger);
+  delete parser;
 
   logger->info("Test harness complete");
   delete logger;

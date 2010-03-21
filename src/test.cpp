@@ -28,7 +28,7 @@ int main() {
   Token * token = new Token(logger);
   delete token;
 
-  Token * newLineToken = new Token(logger, TOKEN_NEWLINE, std::string(""));
+  Token * newLineToken = new Token(logger, TOKEN_NEWLINE);
   logger->info(newLineToken->toString());
   delete newLineToken;
 

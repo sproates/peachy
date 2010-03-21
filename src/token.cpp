@@ -19,6 +19,11 @@ namespace peachy {
     construct(logger, TOKEN_EMPTY, std::string(""));
   }
 
+  Token::Token(Log * logger, TokenType tokenType) {
+    logger->debug("Token constructor");
+    construct(logger, tokenType, std::string(""));
+  }
+
   Token::Token(Log * logger, TokenType tokenType, std::string data) {
     logger->debug("Token constructor");
     construct(logger, tokenType, data);

@@ -47,7 +47,8 @@ $(HEADERS)/scriptsource.h $(HEADERS)/log.h $(HEADERS)/peachy.h \
 $(HEADERS)/replscriptsource.h
 
 test.o: test.cpp $(HEADERS)/environment.h $(HEADERS)/lexer.h $(HEADERS)/log.h \
-$(HEADERS)/parser.h $(HEADERS)/runtime.h $(HEADERS)/token.h
+$(HEADERS)/parser.h $(HEADERS)/runtime.h $(HEADERS)/token.h \
+$(HEADERS)/tokentype.h
 
 # intermediary objects
 
@@ -77,5 +78,5 @@ scriptsource.o: scriptsource.cpp $(HEADERS)/scriptsource.h
 stringscriptsource.o: stringscriptsource.cpp $(HEADERS)/stringscriptsource.h \
 $(HEADERS)/scriptsource.h $(HEADERS)/log.h
 
-token.o: token.cpp $(HEADERS)/token.h $(HEADERS)/log.h
+token.o: token.cpp $(HEADERS)/token.h $(HEADERS)/tokentype.h $(HEADERS)/log.h
 

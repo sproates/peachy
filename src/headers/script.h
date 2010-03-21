@@ -6,6 +6,7 @@ namespace peachy {
   class Environment;
   class Lexer;
   class Log;
+  class Runtime;
   class ScriptSource;
 
   class Script {
@@ -13,15 +14,17 @@ namespace peachy {
     public:
 
       Script(Log * logger, ScriptSource * scriptSource,
-             Environment * environment, Lexer * lexer);
+             Environment * environment, Runtime * runtime, Lexer * lexer);
       ~Script();
 
       void setEnvironment(Environment * environment);
       void setLexer(Lexer * lexer);
+      void setRuntime(Runtime * runtime);
       void setScriptSource(ScriptSource * scriptSource);
 
       Environment * getEnvironment();
       Lexer * getLexer();
+      Runtime * getRuntime();
       ScriptSource * getScriptSource();
 
       void run();
@@ -33,6 +36,7 @@ namespace peachy {
       Environment * environment;
       Lexer * lexer;
       Log * logger;
+      Runtime * runtime;
       ScriptSource * scriptSource;
 
       Script();

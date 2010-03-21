@@ -19,9 +19,6 @@ int main() {
   Log * logger = new Log(&(std::cout));
   logger->info("Peachy test harness");
 
-  Runtime * runtime = new Runtime(logger);
-  delete runtime;
-
   Token * token = new Token(logger);
   delete token;
 
@@ -36,13 +33,16 @@ int main() {
   ScriptSource * scriptSource =
     new StringScriptSource(logger, std::string(""));
   Environment * environment = new Environment(logger);
+  Runtime * runtime = new Runtime(logger);
   Lexer * lexer = new Lexer(logger);
-  Script * script = new Script(logger, scriptSource, environment, lexer);
+  Script * script = new Script(logger, scriptSource, environment, runtime,
+                               lexer);
   Parser * parser = new Parser(logger, script);
 
   delete parser;
   delete script;
   delete lexer;
+  delete runtime;
   delete environment;
   delete scriptSource;
 

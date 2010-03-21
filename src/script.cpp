@@ -5,16 +5,18 @@
 #include "environment.h"
 #include "lexer.h"
 #include "log.h"
+#include "runtime.h"
 #include "scriptsource.h"
 
 namespace peachy {
 
   Script::Script(Log * logger, ScriptSource * scriptSource,
-                 Environment * environment, Lexer * lexer) {
+                 Environment * environment, Runtime * runtime, Lexer * lexer) {
     logger->debug("Script constructor");
     this->logger = logger;
     setEnvironment(environment);
     setLexer(lexer);
+    setRuntime(runtime);
     setScriptSource(scriptSource);
   }
 
@@ -32,6 +34,11 @@ namespace peachy {
     this->lexer = lexer;
   }
 
+  void Script::setRuntime(Runtime * runtime) {
+    logger->debug("Script::setRuntime()");
+    this->runtime = runtime;
+  }
+
   void Script::setScriptSource(ScriptSource * scriptSource) {
     logger->debug("Script::setScriptSource()");
     this->scriptSource = scriptSource;
@@ -45,6 +52,11 @@ namespace peachy {
   Lexer * Script::getLexer() {
     logger->debug("Script::getLexer()");
     return lexer;
+  }
+
+  Runtime * Script::getRuntime() {
+    logger->debug("Script::getRuntime()");
+    return runtime;
   }
 
   ScriptSource * Script::getScriptSource() {

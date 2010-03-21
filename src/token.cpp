@@ -6,11 +6,11 @@
 
 namespace peachy {
 
-  void Token::construct(Log * logger, TokenType tokenType, std::string text) {
+  void Token::construct(Log * logger, TokenType tokenType, std::string data) {
     logger->debug("Token::construct()");
     this->logger = logger;
     this->tokenType = tokenType;
-    this->text = text;
+    this->data = data;
   }
 
   Token::Token(Log * logger) {
@@ -18,18 +18,18 @@ namespace peachy {
     construct(logger, TOKEN_EMPTY, std::string(""));
   }
 
-  Token::Token(Log * logger, TokenType tokenType, std::string text) {
+  Token::Token(Log * logger, TokenType tokenType, std::string data) {
     logger->debug("Token constructor");
-    construct(logger, tokenType, text);
+    construct(logger, tokenType, data);
   }
 
   Token::~Token() {
     logger->debug("Token destructor");
   }
 
-  std::string Token::getText() const {
-    logger->debug("Token::getText()");
-    return text;
+  std::string Token::getData() const {
+    logger->debug("Token::getData()");
+    return data;
   }
 
   TokenType Token::getTokenType() const {
@@ -37,39 +37,36 @@ namespace peachy {
     return tokenType;
   }
 
-  std::ostream & operator << (std::ostream & outputStream,
-                              const Token & token) {
-    switch(token.getTokenType()) {
-
+  std::string Token::toString() {
+    switch(tokenType) {
       case TOKEN_EMPTY:
-        outputStream << "empty";
+        return std::string("empty");
 	break;
       case TOKEN_EOF:
-        outputStream << "EOF";
+        return std::string("EOF");
         break;
       case TOKEN_IDENTIFIER:
-        outputStream << "identifier: " << token.getText();
+        return std::string("identifier: ").append(data);
         break;
       case TOKEN_INTEGER:
-        outputStream << "integer";
+        return std::string("integer: ").append(data);
         break;
       case TOKEN_KEYWORD:
-        outputStream << "keyword: " << token.getText();
+        return std::string("keyword: ").append(data);
         break;
       case TOKEN_NEWLINE:
-        outputStream << "new line";
+        return std::string("new line");
         break;
       case TOKEN_OPERATOR:
-        outputStream << "operator: " << token.getText();
+        return std::string("operator: ").append(data);
         break;
       case TOKEN_STRING:
-        outputStream << "string: " << token.getText();
+        return std::string("string: ").append(data);
         break;
       default:
-        outputStream << "unknown token";
+        return std::string("unknown token");
 	break;
     }
-    return outputStream;
   }
 }
 

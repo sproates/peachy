@@ -1,4 +1,5 @@
 #include <iostream>
+#include <string>
 
 #include "environment.h"
 #include "lexer.h"
@@ -25,6 +26,14 @@ int main() {
 
   Token * token = new Token(logger);
   delete token;
+
+  Token * newLineToken = new Token(logger, TOKEN_NEWLINE, std::string(""));
+  logger->info(newLineToken->toString());
+  delete newLineToken;
+
+  Token * integerToken = new Token(logger, TOKEN_INTEGER, std::string("5"));
+  logger->info(integerToken->toString());
+  delete integerToken;
 
   Parser * parser = new Parser(logger);
   delete parser;

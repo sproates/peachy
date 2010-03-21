@@ -25,26 +25,25 @@ namespace peachy {
     public:
 
       Token(Log * logger);
-      Token(Log * logger, TokenType tokenType, std::string text);
+      Token(Log * logger, TokenType tokenType, std::string data);
       ~Token();
 
       TokenType getTokenType() const;
-      std::string getText() const;
+      std::string getData() const;
+      std::string toString();
 
     private:
 
       Log * logger;
       TokenType tokenType;
-      std::string text;
+      std::string data;
 
-      void construct(Log * logger, TokenType tokenType, std::string text);
+      void construct(Log * logger, TokenType tokenType, std::string data);
 
       Token();
       Token(const Token & token);
       Token & operator = (const Token & token);
   };
-
-  std::ostream & operator << (std::ostream & outputStream, const Token & token);
 }
 
 #endif

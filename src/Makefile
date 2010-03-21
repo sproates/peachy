@@ -47,8 +47,8 @@ $(HEADERS)/scriptsource.h $(HEADERS)/log.h $(HEADERS)/peachy.h \
 $(HEADERS)/replscriptsource.h
 
 test.o: test.cpp $(HEADERS)/environment.h $(HEADERS)/lexer.h $(HEADERS)/log.h \
-$(HEADERS)/parser.h $(HEADERS)/runtime.h $(HEADERS)/token.h \
-$(HEADERS)/tokentype.h
+$(HEADERS)/parser.h $(HEADERS)/runtime.h $(HEADERS)/scriptsource.h \
+$(HEADERS)/stringscriptsource.h $(HEADERS)/token.h $(HEADERS)/tokentype.h
 
 # intermediary objects
 
@@ -61,7 +61,7 @@ lexer.o: lexer.cpp $(HEADERS)/lexer.h $(HEADERS)/log.h
 
 log.o: log.cpp $(HEADERS)/log.h
 
-parser.o: parser.cpp $(HEADERS)/parser.h $(HEADERS)/log.h
+parser.o: parser.cpp $(HEADERS)/parser.h $(HEADERS)/script.h $(HEADERS)/log.h
 
 peachy.o: peachy.cpp $(HEADERS)/peachy.h
 

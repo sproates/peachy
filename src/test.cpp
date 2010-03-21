@@ -7,6 +7,7 @@
 #include "parser.h"
 #include "runtime.h"
 #include "token.h"
+#include "tokentype.h"
 
 using namespace peachy;
 

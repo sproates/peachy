@@ -4,21 +4,11 @@
 #include <ostream>
 #include <string>
 
+#include "tokentype.h"
+
 namespace peachy {
 
   class Log;
-
-  enum TokenType {
-
-    TOKEN_EMPTY,
-    TOKEN_EOF,
-    TOKEN_IDENTIFIER,
-    TOKEN_INTEGER,
-    TOKEN_KEYWORD,
-    TOKEN_NEWLINE,
-    TOKEN_OPERATOR,
-    TOKEN_STRING
-  };
 
   class Token {
 

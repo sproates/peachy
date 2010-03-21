@@ -3,6 +3,7 @@
 #include <string>
 
 #include "log.h"
+#include "tokentype.h"
 
 namespace peachy {
 

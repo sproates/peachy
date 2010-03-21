@@ -6,6 +6,9 @@
 #include "log.h"
 #include "parser.h"
 #include "runtime.h"
+#include "script.h"
+#include "scriptsource.h"
+#include "stringscriptsource.h"
 #include "token.h"
 #include "tokentype.h"
 
@@ -22,9 +25,6 @@ int main() {
   Runtime * runtime = new Runtime(logger);
   delete runtime;
 
-  Environment * environment = new Environment(logger);
-  delete environment;
-
   Token * token = new Token(logger);
   delete token;
 
@@ -36,8 +36,16 @@ int main() {
   logger->info(integerToken->toString());
   delete integerToken;
 
-  Parser * parser = new Parser(logger);
+  ScriptSource * scriptSource =
+    new StringScriptSource(logger, std::string(""));
+  Environment * environment = new Environment(logger);
+  Script * script = new Script(logger, scriptSource, environment);
+  Parser * parser = new Parser(logger, script);
+
   delete parser;
+  delete script;
+  delete environment;
+  delete scriptSource;
 
   logger->info("Test harness complete");
   delete logger;

@@ -43,40 +43,41 @@ clean:
 # objects with entry points
 
 main.o: main.cpp $(HEADERS)/environment.h $(HEADERS)/filescriptsource.h \
-$(HEADERS)/scriptsource.h $(HEADERS)/log.h $(HEADERS)/peachy.h \
-$(HEADERS)/replscriptsource.h
+$(HEADERS)/lexer.h $(HEADERS)/log.h $(HEADERS)/peachy.h \
+$(HEADERS)/replscriptsource.h $(HEADERS)/script.h $(HEADERS)/scriptsource.h
 
 test.o: test.cpp $(HEADERS)/environment.h $(HEADERS)/lexer.h $(HEADERS)/log.h \
-$(HEADERS)/parser.h $(HEADERS)/runtime.h $(HEADERS)/scriptsource.h \
-$(HEADERS)/stringscriptsource.h $(HEADERS)/token.h $(HEADERS)/tokentype.h
+$(HEADERS)/parser.h $(HEADERS)/runtime.h $(HEADERS)/script.h \
+$(HEADERS)/scriptsource.h $(HEADERS)/stringscriptsource.h \
+$(HEADERS)/token.h $(HEADERS)/tokentype.h
 
 # intermediary objects
 
 environment.o: environment.cpp $(HEADERS)/environment.h $(HEADERS)/log.h
 
 filescriptsource.o: filescriptsource.cpp $(HEADERS)/filescriptsource.h \
-$(HEADERS)/scriptsource.h $(HEADERS)/log.h
+$(HEADERS)/log.h $(HEADERS)/scriptsource.h
 
 lexer.o: lexer.cpp $(HEADERS)/lexer.h $(HEADERS)/log.h
 
 log.o: log.cpp $(HEADERS)/log.h
 
-parser.o: parser.cpp $(HEADERS)/parser.h $(HEADERS)/script.h $(HEADERS)/log.h
+parser.o: parser.cpp $(HEADERS)/log.h $(HEADERS)/parser.h $(HEADERS)/script.h
 
 peachy.o: peachy.cpp $(HEADERS)/peachy.h
 
-replscriptsource.o: replscriptsource.cpp $(HEADERS)/replscriptsource.h \
-$(HEADERS)/scriptsource.h $(HEADERS)/log.h
+replscriptsource.o: replscriptsource.cpp $(HEADERS)/log.h \
+$(HEADERS)/replscriptsource.h $(HEADERS)/scriptsource.h $(HEADERS)/log.h
 
-runtime.o: runtime.cpp $(HEADERS)/runtime.h $(HEADERS)/log.h
+runtime.o: runtime.cpp $(HEADERS)/log.h $(HEADERS)/runtime.h
 
-script.o: script.cpp $(HEADERS)/script.h $(HEADERS)/environment.h \
-$(HEADERS)/scriptsource.h $(HEADERS)/log.h
+script.o: script.cpp $(HEADERS)/environment.h $(HEADERS)/lexer.h \
+$(HEADERS)/log.h $(HEADERS)/scriptsource.h
 
 scriptsource.o: scriptsource.cpp $(HEADERS)/scriptsource.h
 
-stringscriptsource.o: stringscriptsource.cpp $(HEADERS)/stringscriptsource.h \
-$(HEADERS)/scriptsource.h $(HEADERS)/log.h
+stringscriptsource.o: stringscriptsource.cpp $(HEADERS)/log.h \
+$(HEADERS)/stringscriptsource.h $(HEADERS)/scriptsource.h $(HEADERS)/log.h
 
-token.o: token.cpp $(HEADERS)/token.h $(HEADERS)/tokentype.h $(HEADERS)/log.h
+token.o: token.cpp $(HEADERS)/log.h $(HEADERS)/token.h $(HEADERS)/tokentype.h
 

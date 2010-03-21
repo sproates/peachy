@@ -7,6 +7,7 @@
 
 #include "environment.h"
 #include "filescriptsource.h"
+#include "lexer.h"
 #include "log.h"
 #include "peachy.h"
 #include "replscriptsource.h"
@@ -28,11 +29,13 @@ int main(const int argc, const char ** argv) {
 
     ScriptSource * scriptSource = handle_args(logger, argc, argv);
     Environment * environment = new Environment(logger);
-    Script * script = new Script(logger, scriptSource, environment);
+    Lexer * lexer = new Lexer(logger);
+    Script * script = new Script(logger, scriptSource, environment, lexer);
 
     script->run();
 
     delete script;
+    delete lexer;
     delete environment;
     delete scriptSource;
 

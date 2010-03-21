@@ -11,6 +11,7 @@
 #include "log.h"
 #include "peachy.h"
 #include "replscriptsource.h"
+#include "runtime.h"
 #include "script.h"
 #include "scriptsource.h"
 #include "stringscriptsource.h"
@@ -29,13 +30,15 @@ int main(const int argc, const char ** argv) {
 
     ScriptSource * scriptSource = handle_args(logger, argc, argv);
     Environment * environment = new Environment(logger);
+    Runtime * runtime = new Runtime(logger);
     Lexer * lexer = new Lexer(logger);
-    Script * script = new Script(logger, scriptSource, environment, lexer);
-
+    Script * script = new Script(logger, scriptSource, environment, runtime,
+                                 lexer);
     script->run();
 
     delete script;
     delete lexer;
+    delete runtime;
     delete environment;
     delete scriptSource;
 

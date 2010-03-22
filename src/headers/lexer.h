@@ -15,6 +15,8 @@ namespace peachy {
       }
       ~Lexer();
 
+      Token * nextToken();
+
     private:
 
       Lexer();

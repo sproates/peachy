@@ -78,4 +78,4 @@ $(HEADERS)/stringscriptsource.h $(HEADERS)/scriptsource.h $(HEADERS)/log.h
 
 token.o: token.cpp $(HEADERS)/log.h $(HEADERS)/token.h $(HEADERS)/tokentype.h
 
-tokensource.o: tokensource.cpp $(HEADERS)/tokensource.h
+tokensource.o: tokensource.cpp $(HEADERS)/log.h $(HEADERS)/tokensource.h

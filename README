@@ -1,13 +1,17 @@
-Peachy is an interpreted scripting language I'm creating.
+Peachy is an interpreted scripting language.
 
-It's just for fun.
+Software design goals:
 
-My C++ is rusty so bear with me.
-
-Design decisions / goals:
 - Don't use any external dependencies other than std and stl
-- Be multi-platform
-- Be very testable
-- Be robust
-- Have complete documentation
+- Be multi-platform from a single build system
+- Support unit testing and mock objects to the hilt
+- Have complete and clear documentation
+- Have a complete test suit
+
+Language design goals:
+
+- Simple syntax
+- Support XML as a language construct (a la Scala)
+- Support JSON as a language construct
+- Simple syntax
 

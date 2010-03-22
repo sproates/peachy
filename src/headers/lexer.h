@@ -1,22 +1,21 @@
 #ifndef PEACHY_LEXER_H
 #define PEACHY_LEXER_H
 
+#include "log.h"
 #include "tokensource.h"
 
 namespace peachy {
 
-  class Log;
-
-  class Lexer : public TokenSource {
+  class Lexer : private TokenSource {
 
     public:
 
-      Lexer(Log * logger);
+      Lexer(Log * logger) : TokenSource(logger) {
+        logger->debug("Lexer constructor");
+      }
       ~Lexer();
 
     private:
-
-      Log * logger;
 
       Lexer();
       Lexer(const Lexer & lexer);

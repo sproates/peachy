@@ -10,7 +10,7 @@ namespace peachy {
     public:
 
       TokenSource(Log * logger);
-      virtual ~TokenSource();
+      ~TokenSource();
 
     protected:
 

@@ -4,13 +4,16 @@
 namespace peachy {
 
   class Log;
+  class Token;
 
   class TokenSource {
 
     public:
 
       TokenSource(Log * logger);
-      ~TokenSource();
+      virtual ~TokenSource();
+
+      virtual Token * nextToken() = 0;
 
     protected:
 

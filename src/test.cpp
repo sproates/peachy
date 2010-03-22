@@ -20,16 +20,18 @@ int main() {
   Log * logger = new Log(&(std::cout));
   logger->info("Peachy test harness");
 
-  Token * token = new Token(logger);
+  Token * token;
+
+  token = new Token(logger);
   delete token;
 
-  Token * newLineToken = new Token(logger, TOKEN_NEWLINE);
-  logger->info(newLineToken->toString());
-  delete newLineToken;
+  token = new Token(logger, TOKEN_NEWLINE);
+  logger->info(token->toString());
+  delete token;
 
-  Token * integerToken = new Token(logger, TOKEN_INTEGER, std::string("5"));
-  logger->info(integerToken->toString());
-  delete integerToken;
+  token = new Token(logger, TOKEN_INTEGER, std::string("5"));
+  logger->info(token->toString());
+  delete token;
 
   ScriptSource * scriptSource =
     new StringScriptSource(logger, std::string(""));
@@ -39,6 +41,9 @@ int main() {
   Script * script = new Script(logger, scriptSource, environment, runtime,
                                tokenSource);
   Parser * parser = new Parser(logger, script);
+
+  token = tokenSource->nextToken();
+  delete token;
 
   delete parser;
   delete script;

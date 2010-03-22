@@ -55,7 +55,8 @@ environment.o: environment.cpp $(HEADERS)/environment.h $(HEADERS)/log.h
 filescriptsource.o: filescriptsource.cpp $(HEADERS)/filescriptsource.h \
 $(HEADERS)/log.h $(HEADERS)/scriptsource.h
 
-lexer.o: lexer.cpp $(HEADERS)/lexer.h $(HEADERS)/log.h $(HEADERS)/tokensource.h
+lexer.o: lexer.cpp $(HEADERS)/lexer.h $(HEADERS)/log.h $(HEADERS)/token.h \
+$(HEADERS)/tokensource.h
 
 log.o: log.cpp $(HEADERS)/log.h
 
@@ -78,4 +79,4 @@ $(HEADERS)/stringscriptsource.h $(HEADERS)/scriptsource.h $(HEADERS)/log.h
 
 token.o: token.cpp $(HEADERS)/log.h $(HEADERS)/token.h $(HEADERS)/tokentype.h
 
-tokensource.o: tokensource.cpp $(HEADERS)/log.h $(HEADERS)/tokensource.h
+tokensource.o: tokensource.cpp $(HEADERS)/log.h $(HEADERS)/token.h $(HEADERS)/tokensource.h

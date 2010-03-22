@@ -14,11 +14,7 @@ HEADERS = headers
 
 OBJECTS = environment.o filescriptsource.o lexer.o log.o parser.o peachy.o \
 replscriptsource.o runtime.o script.o scriptsource.o stringscriptsource.o \
-token.o
-
-SOURCES = environment.cpp filescriptsource.cpp lexer.cpp log.cpp parser.o \
-peachy.cpp replscriptsource.cpp runtime.cpp script.cpp scriptsource.cpp \
-stringscriptsource.cpp token.cpp
+token.o tokensource.o
 
 TEST_EXE = testpeachy.exe
 
@@ -59,7 +55,7 @@ environment.o: environment.cpp $(HEADERS)/environment.h $(HEADERS)/log.h
 filescriptsource.o: filescriptsource.cpp $(HEADERS)/filescriptsource.h \
 $(HEADERS)/log.h $(HEADERS)/scriptsource.h
 
-lexer.o: lexer.cpp $(HEADERS)/lexer.h $(HEADERS)/log.h
+lexer.o: lexer.cpp $(HEADERS)/lexer.h $(HEADERS)/log.h $(HEADERS)/tokensource.h
 
 log.o: log.cpp $(HEADERS)/log.h
 
@@ -82,3 +78,4 @@ $(HEADERS)/stringscriptsource.h $(HEADERS)/scriptsource.h $(HEADERS)/log.h
 
 token.o: token.cpp $(HEADERS)/log.h $(HEADERS)/token.h $(HEADERS)/tokentype.h
 
+tokensource.o: tokensource.cpp $(HEADERS)/tokensource.h

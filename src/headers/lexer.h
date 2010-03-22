@@ -1,11 +1,13 @@
 #ifndef PEACHY_LEXER_H
 #define PEACHY_LEXER_H
 
+#include "tokensource.h"
+
 namespace peachy {
 
   class Log;
 
-  class Lexer {
+  class Lexer : public TokenSource {
 
     public:
 

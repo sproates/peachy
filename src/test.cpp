@@ -10,6 +10,7 @@
 #include "scriptsource.h"
 #include "stringscriptsource.h"
 #include "token.h"
+#include "tokensource.h"
 #include "tokentype.h"
 
 using namespace peachy;
@@ -34,14 +35,14 @@ int main() {
     new StringScriptSource(logger, std::string(""));
   Environment * environment = new Environment(logger);
   Runtime * runtime = new Runtime(logger);
-  Lexer * lexer = new Lexer(logger);
+  TokenSource * tokenSource = new Lexer(logger);
   Script * script = new Script(logger, scriptSource, environment, runtime,
-                               lexer);
+                               tokenSource);
   Parser * parser = new Parser(logger, script);
 
   delete parser;
   delete script;
-  delete lexer;
+  delete tokenSource;
   delete runtime;
   delete environment;
   delete scriptSource;

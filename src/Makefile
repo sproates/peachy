@@ -41,12 +41,12 @@ clean:
 main.o: main.cpp $(HEADERS)/environment.h $(HEADERS)/filescriptsource.h \
 $(HEADERS)/lexer.h $(HEADERS)/log.h $(HEADERS)/peachy.h \
 $(HEADERS)/replscriptsource.h $(HEADERS)/runtime.h $(HEADERS)/script.h \
-$(HEADERS)/scriptsource.h
+$(HEADERS)/scriptsource.h $(HEADERS)/tokensource.h
 
 test.o: test.cpp $(HEADERS)/environment.h $(HEADERS)/lexer.h $(HEADERS)/log.h \
 $(HEADERS)/parser.h $(HEADERS)/runtime.h $(HEADERS)/script.h \
 $(HEADERS)/scriptsource.h $(HEADERS)/stringscriptsource.h \
-$(HEADERS)/token.h $(HEADERS)/tokentype.h
+$(HEADERS)/token.h $(HEADERS)/tokensource.h $(HEADERS)/tokentype.h
 
 # intermediary objects
 
@@ -68,8 +68,8 @@ $(HEADERS)/replscriptsource.h $(HEADERS)/scriptsource.h $(HEADERS)/log.h
 
 runtime.o: runtime.cpp $(HEADERS)/log.h $(HEADERS)/runtime.h
 
-script.o: script.cpp $(HEADERS)/environment.h $(HEADERS)/lexer.h \
-$(HEADERS)/log.h $(HEADERS)/runtime.h $(HEADERS)/scriptsource.h
+script.o: script.cpp $(HEADERS)/environment.h $(HEADERS)/log.h \
+$(HEADERS)/runtime.h $(HEADERS)/scriptsource.h $(HEADERS)/tokensource.h
 
 scriptsource.o: scriptsource.cpp $(HEADERS)/scriptsource.h
 

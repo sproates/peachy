@@ -3,21 +3,22 @@
 #include <iostream>
 
 #include "environment.h"
-#include "lexer.h"
 #include "log.h"
 #include "runtime.h"
 #include "scriptsource.h"
+#include "tokensource.h"
 
 namespace peachy {
 
   Script::Script(Log * logger, ScriptSource * scriptSource,
-                 Environment * environment, Runtime * runtime, Lexer * lexer) {
+                 Environment * environment, Runtime * runtime,
+		 TokenSource * tokenSource) {
     logger->debug("Script constructor");
     this->logger = logger;
     setEnvironment(environment);
-    setLexer(lexer);
     setRuntime(runtime);
     setScriptSource(scriptSource);
+    setTokenSource(tokenSource);
   }
 
   Script::~Script() {
@@ -27,11 +28,6 @@ namespace peachy {
   void Script::setEnvironment(Environment * environment) {
     logger->debug("Script::setEnvironment()");
     this->environment = environment;
-  }
-
-  void Script::setLexer(Lexer * lexer) {
-    logger->debug("Script::setLexer()");
-    this->lexer = lexer;
   }
 
   void Script::setRuntime(Runtime * runtime) {
@@ -44,14 +40,14 @@ namespace peachy {
     this->scriptSource = scriptSource;
   }
 
+  void Script::setTokenSource(TokenSource * tokenSource) {
+    logger->debug("Script::setTokenSource()");
+    this->tokenSource = tokenSource;
+  }
+
   Environment * Script::getEnvironment() {
     logger->debug("Script::getEnvironment()");
     return environment;
-  }
-
-  Lexer * Script::getLexer() {
-    logger->debug("Script::getLexer()");
-    return lexer;
   }
 
   Runtime * Script::getRuntime() {
@@ -62,6 +58,11 @@ namespace peachy {
   ScriptSource * Script::getScriptSource() {
     logger->debug("Script::getScriptSource()");
     return scriptSource;
+  }
+
+  TokenSource * Script::getTokenSource() {
+    logger->debug("Script::getTokenSource()");
+    return tokenSource;
   }
 
   void Script::run() {

@@ -4,28 +4,29 @@
 namespace peachy {
 
   class Environment;
-  class Lexer;
   class Log;
   class Runtime;
   class ScriptSource;
+  class TokenSource;
 
   class Script {
 
     public:
 
       Script(Log * logger, ScriptSource * scriptSource,
-             Environment * environment, Runtime * runtime, Lexer * lexer);
+             Environment * environment, Runtime * runtime,
+	     TokenSource * tokenSource);
       ~Script();
 
       void setEnvironment(Environment * environment);
-      void setLexer(Lexer * lexer);
       void setRuntime(Runtime * runtime);
       void setScriptSource(ScriptSource * scriptSource);
+      void setTokenSource(TokenSource * tokenSource);
 
       Environment * getEnvironment();
-      Lexer * getLexer();
       Runtime * getRuntime();
       ScriptSource * getScriptSource();
+      TokenSource * getTokenSource();
 
       void run();
 
@@ -34,10 +35,10 @@ namespace peachy {
     private:
 
       Environment * environment;
-      Lexer * lexer;
       Log * logger;
       Runtime * runtime;
       ScriptSource * scriptSource;
+      TokenSource * tokenSource;
 
       Script();
       Script(const Script & script);

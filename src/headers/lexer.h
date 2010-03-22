@@ -6,7 +6,7 @@
 
 namespace peachy {
 
-  class Lexer : private TokenSource {
+  class Lexer : public TokenSource {
 
     public:
 

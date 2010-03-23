@@ -33,8 +33,7 @@ int main(const int argc, const char ** argv) {
     Environment * environment = new Environment(logger);
     Runtime * runtime = new Runtime(logger);
     TokenSource * tokenSource = new Lexer(logger, scriptSource);
-    Script * script = new Script(logger, scriptSource, environment, runtime,
-                                 tokenSource);
+    Script * script = new Script(logger, environment, runtime, tokenSource);
     script->run();
 
     delete script;

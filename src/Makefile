@@ -70,7 +70,7 @@ $(HEADERS)/replscriptsource.h $(HEADERS)/scriptsource.h $(HEADERS)/log.h
 runtime.o: runtime.cpp $(HEADERS)/log.h $(HEADERS)/runtime.h
 
 script.o: script.cpp $(HEADERS)/environment.h $(HEADERS)/log.h \
-$(HEADERS)/runtime.h $(HEADERS)/scriptsource.h $(HEADERS)/tokensource.h
+$(HEADERS)/runtime.h $(HEADERS)/tokensource.h
 
 scriptsource.o: scriptsource.cpp $(HEADERS)/scriptsource.h
 

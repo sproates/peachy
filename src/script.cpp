@@ -5,19 +5,16 @@
 #include "environment.h"
 #include "log.h"
 #include "runtime.h"
-#include "scriptsource.h"
 #include "tokensource.h"
 
 namespace peachy {
 
-  Script::Script(Log * logger, ScriptSource * scriptSource,
-                 Environment * environment, Runtime * runtime,
+  Script::Script(Log * logger, Environment * environment, Runtime * runtime,
 		 TokenSource * tokenSource) {
     logger->debug("Script constructor");
     this->logger = logger;
     setEnvironment(environment);
     setRuntime(runtime);
-    setScriptSource(scriptSource);
     setTokenSource(tokenSource);
   }
 
@@ -35,11 +32,6 @@ namespace peachy {
     this->runtime = runtime;
   }
 
-  void Script::setScriptSource(ScriptSource * scriptSource) {
-    logger->debug("Script::setScriptSource()");
-    this->scriptSource = scriptSource;
-  }
-
   void Script::setTokenSource(TokenSource * tokenSource) {
     logger->debug("Script::setTokenSource()");
     this->tokenSource = tokenSource;
@@ -55,11 +47,6 @@ namespace peachy {
     return runtime;
   }
 
-  ScriptSource * Script::getScriptSource() {
-    logger->debug("Script::getScriptSource()");
-    return scriptSource;
-  }
-
   TokenSource * Script::getTokenSource() {
     logger->debug("Script::getTokenSource()");
     return tokenSource;
@@ -67,10 +54,14 @@ namespace peachy {
 
   void Script::run() {
     logger->debug("Script::run()");
+
+/*
     while(scriptSource->hasMoreLines()) {
       logger->debug("Getting a line from the script source");
       logger->debug(scriptSource->getLine());
     }
+*/
+
     logger->debug("Reached end of script");
   }
 }

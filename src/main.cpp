@@ -32,7 +32,7 @@ int main(const int argc, const char ** argv) {
     ScriptSource * scriptSource = handle_args(logger, argc, argv);
     Environment * environment = new Environment(logger);
     Runtime * runtime = new Runtime(logger);
-    TokenSource * tokenSource = new Lexer(logger);
+    TokenSource * tokenSource = new Lexer(logger, scriptSource);
     Script * script = new Script(logger, scriptSource, environment, runtime,
                                  tokenSource);
     script->run();

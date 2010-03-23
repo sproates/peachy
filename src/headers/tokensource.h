@@ -4,13 +4,14 @@
 namespace peachy {
 
   class Log;
+  class ScriptSource;
   class Token;
 
   class TokenSource {
 
     public:
 
-      TokenSource(Log * logger);
+      TokenSource(Log * logger, ScriptSource * scriptSource);
       virtual ~TokenSource();
 
       virtual Token * nextToken() = 0;
@@ -18,6 +19,7 @@ namespace peachy {
     protected:
 
       Log * logger;
+      ScriptSource * scriptSource;
 
     private:
 

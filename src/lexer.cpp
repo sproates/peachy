@@ -21,20 +21,20 @@ namespace peachy {
 	  logger->debug("In state LEXER_COMPLETE");
 	  token = new Token(logger, TOKEN_EOF);
 	  gotToken = true;
-	  break;
+          break;
         case LEXER_DEFAULT:
-	  logger->debug("In state LEXER_DEFAULT");
-	  break;
+          logger->debug("In state LEXER_DEFAULT");
+          break;
         case LEXER_NEED_INPUT:
-	  logger->debug("In state LEXER_NEED_INPUT");
-	  break;
+          logger->debug("In state LEXER_NEED_INPUT");
+          break;
 	case LEXER_ERROR:
-	  logger->debug("In state LEXER_ERROR");
-	  break;
+          logger->debug("In state LEXER_ERROR");
+          break;
 	default:
-	  logger->debug("In an unknown state");
-	  this->state = LEXER_ERROR;
-	  break;
+          logger->debug("In an unknown state");
+          this->state = LEXER_ERROR;
+          break;
       }
     }
 

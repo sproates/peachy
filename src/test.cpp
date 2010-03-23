@@ -5,6 +5,7 @@
 #include "lexer.h"
 #include "log.h"
 #include "parser.h"
+#include "peachyparser.h"
 #include "runtime.h"
 #include "script.h"
 #include "scriptsource.h"
@@ -38,14 +39,13 @@ int main() {
   Environment * environment = new Environment(logger);
   Runtime * runtime = new Runtime(logger);
   TokenSource * tokenSource = new Lexer(logger, scriptSource);
-  Script * script = new Script(logger, environment, runtime, tokenSource);
-  Parser * parser = new Parser(logger, script);
+  Parser * parser = new PeachyParser(logger, tokenSource);
+  Script * script = new Script(logger, environment, runtime, parser);
 
-  token = tokenSource->nextToken();
-  delete token;
+  script->run();
 
-  delete parser;
   delete script;
+  delete parser;
   delete tokenSource;
   delete runtime;
   delete environment;

@@ -6,11 +6,14 @@
 
 namespace peachy {
 
+  class ScriptSource;
+
   class Lexer : public TokenSource {
 
     public:
 
-      Lexer(Log * logger) : TokenSource(logger) {
+      Lexer(Log * logger, ScriptSource * scriptSource)
+        : TokenSource(logger, scriptSource) {
         logger->debug("Lexer constructor");
       }
       ~Lexer();

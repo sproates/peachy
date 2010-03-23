@@ -5,7 +5,10 @@ namespace peachy {
 
   enum LexerState {
 
-    LEXER_DEFAULT
+    LEXER_COMPLETE,
+    LEXER_DEFAULT,
+    LEXER_ERROR,
+    LEXER_NEED_INPUT
   };
 }
 

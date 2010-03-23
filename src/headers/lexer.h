@@ -16,7 +16,7 @@ namespace peachy {
       Lexer(Log * logger, ScriptSource * scriptSource)
         : TokenSource(logger, scriptSource) {
         logger->debug("Lexer constructor");
-	state = LEXER_DEFAULT;
+	state = LEXER_COMPLETE;
       }
       ~Lexer();
 

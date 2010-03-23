@@ -4,19 +4,23 @@
 namespace peachy {
 
   class Log;
-  class Script;
+  class TokenSource;
 
   class Parser {
 
     public:
 
-      Parser(Log * logger, Script * script);
-      ~Parser();
+      Parser(Log * logger, TokenSource * tokenSource);
+      virtual ~Parser();
 
-    private:
+      virtual void parse() = 0;
+
+    protected:
 
       Log * logger;
-      Script * script;
+      TokenSource * tokenSource;
+
+    private:
 
       Parser();
   };

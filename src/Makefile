@@ -13,8 +13,8 @@ FINAL_EXE = peachy.exe
 HEADERS = headers
 
 OBJECTS = environment.o filescriptsource.o lexer.o log.o parser.o peachy.o \
-replscriptsource.o runtime.o script.o scriptsource.o stringscriptsource.o \
-token.o tokensource.o
+peachyparser.o replscriptsource.o runtime.o script.o scriptsource.o \
+stringscriptsource.o token.o tokensource.o
 
 TEST_EXE = testpeachy.exe
 
@@ -39,13 +39,13 @@ clean:
 # objects with entry points
 
 main.o: main.cpp $(HEADERS)/environment.h $(HEADERS)/filescriptsource.h \
-$(HEADERS)/lexer.h $(HEADERS)/log.h $(HEADERS)/peachy.h \
-$(HEADERS)/replscriptsource.h $(HEADERS)/runtime.h $(HEADERS)/script.h \
-$(HEADERS)/scriptsource.h $(HEADERS)/tokensource.h
+$(HEADERS)/lexer.h $(HEADERS)/log.h $(HEADERS)/parser.h $(HEADERS)/peachy.h \
+$(HEADERS)/peachyparser.h $(HEADERS)/replscriptsource.h $(HEADERS)/runtime.h \
+$(HEADERS)/script.h $(HEADERS)/scriptsource.h $(HEADERS)/tokensource.h
 
 test.o: test.cpp $(HEADERS)/environment.h $(HEADERS)/lexer.h $(HEADERS)/log.h \
-$(HEADERS)/parser.h $(HEADERS)/runtime.h $(HEADERS)/script.h \
-$(HEADERS)/scriptsource.h $(HEADERS)/stringscriptsource.h \
+$(HEADERS)/parser.h $(HEADERS)/peachyparser.h $(HEADERS)/runtime.h \
+$(HEADERS)/script.h $(HEADERS)/scriptsource.h $(HEADERS)/stringscriptsource.h \
 $(HEADERS)/token.h $(HEADERS)/tokensource.h $(HEADERS)/tokentype.h
 
 # intermediary objects
@@ -60,9 +60,13 @@ $(HEADERS)/scriptsource.h $(HEADERS)/token.h $(HEADERS)/tokensource.h
 
 log.o: log.cpp $(HEADERS)/log.h
 
-parser.o: parser.cpp $(HEADERS)/log.h $(HEADERS)/parser.h $(HEADERS)/script.h
+parser.o: parser.cpp $(HEADERS)/log.h $(HEADERS)/parser.h \
+$(HEADERS)/tokensource.h
 
 peachy.o: peachy.cpp $(HEADERS)/peachy.h
+
+peachyparser.o: peachyparser.cpp $(HEADERS)/log.h $(HEADERS)/parser.h \
+$(HEADERS)/peachyparser.h $(HEADERS)/token.h $(HEADERS)/tokensource.h
 
 replscriptsource.o: replscriptsource.cpp $(HEADERS)/log.h \
 $(HEADERS)/replscriptsource.h $(HEADERS)/scriptsource.h $(HEADERS)/log.h
@@ -70,7 +74,7 @@ $(HEADERS)/replscriptsource.h $(HEADERS)/scriptsource.h $(HEADERS)/log.h
 runtime.o: runtime.cpp $(HEADERS)/log.h $(HEADERS)/runtime.h
 
 script.o: script.cpp $(HEADERS)/environment.h $(HEADERS)/log.h \
-$(HEADERS)/runtime.h $(HEADERS)/tokensource.h
+$(HEADERS)/parser.h $(HEADERS)/runtime.h
 
 scriptsource.o: scriptsource.cpp $(HEADERS)/scriptsource.h
 

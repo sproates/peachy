@@ -5,24 +5,20 @@ namespace peachy {
 
   class Environment;
   class Log;
+  class Parser;
   class Runtime;
-  class TokenSource;
 
   class Script {
 
     public:
 
       Script(Log * logger, Environment * environment, Runtime * runtime,
-	     TokenSource * tokenSource);
+	     Parser * parser);
       ~Script();
-
-      void setEnvironment(Environment * environment);
-      void setRuntime(Runtime * runtime);
-      void setTokenSource(TokenSource * tokenSource);
 
       Environment * getEnvironment();
       Runtime * getRuntime();
-      TokenSource * getTokenSource();
+      Parser * getParser();
 
       void run();
 
@@ -30,8 +26,8 @@ namespace peachy {
 
       Environment * environment;
       Log * logger;
+      Parser * parser;
       Runtime * runtime;
-      TokenSource * tokenSource;
 
     private:
 

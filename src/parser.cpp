@@ -1,14 +1,14 @@
 #include "parser.h"
 
 #include "log.h"
-#include "script.h"
+#include "tokensource.h"
 
 namespace peachy {
 
-  Parser::Parser(Log * logger, Script * script) {
+  Parser::Parser(Log * logger, TokenSource * tokenSource) {
     logger->debug("Parser constructor");
     this->logger = logger;
-    this->script = script;
+    this->tokenSource = tokenSource;
   }
 
   Parser::~Parser() {

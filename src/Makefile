@@ -4,7 +4,7 @@ COMPILER = g++
 
 COMPILER_FLAGS = -c -Wall -Wextra -pedantic -I$(HEADERS) $(DEFINES)
 
-DEFINES = -DLOG_DEBUG_ENABLED -DLOG_INFO_ENABLED
+DEFINES =
 
 DELETE = rm -f -v
 

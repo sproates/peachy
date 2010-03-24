@@ -18,6 +18,14 @@ namespace peachy {
       void info(const char *message);
       void info(std::string message);
 
+      void warning(const char * message);
+      void warning(std::string message);
+
+      void error(const char * message);
+      void error(std::string message);
+
+      void fatal(const char * message);
+      void fatal(std::string message);
 
     protected:
 

@@ -15,4 +15,3 @@ namespace peachy {
     logger->debug("TokenSource destructor");
   }
 }
-

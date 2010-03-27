@@ -30,4 +30,3 @@ namespace peachy {
     outputStream << "Invalid option: " << option << std::endl;
   }
 }
-

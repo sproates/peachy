@@ -13,4 +13,3 @@ namespace peachy {
     logger->debug("Environment destructor");
   }
 }
-

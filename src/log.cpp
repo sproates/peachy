@@ -49,4 +49,3 @@ namespace peachy {
     fatal(message.c_str());
   }
 }
-

@@ -4,4 +4,3 @@ namespace peachy {
 
   ScriptSource::~ScriptSource() {}
 }
-

@@ -47,4 +47,3 @@ namespace peachy {
     return !stream->eof();
   }
 }
-

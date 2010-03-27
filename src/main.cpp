@@ -92,4 +92,3 @@ ScriptSource * handle_args(Log * logger, const int argc, const char ** argv) {
     }
   }
 }
-

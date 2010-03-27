@@ -14,4 +14,3 @@ Language design goals:
 - Support XML as a language construct (a la Scala)
 - Support JSON as a language construct
 - Simple syntax
-

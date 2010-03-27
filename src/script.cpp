@@ -45,4 +45,3 @@ namespace peachy {
     logger->debug("Reached end of script");
   }
 }
-

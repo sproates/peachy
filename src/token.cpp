@@ -63,6 +63,9 @@ namespace peachy {
       case TOKEN_NEWLINE:
         return std::string("new line");
         break;
+      case TOKEN_NUMBER:
+        return std::string("number: ").append(data);
+	break;
       case TOKEN_OPERATOR:
         return std::string("operator: ").append(data);
         break;

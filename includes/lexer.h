@@ -16,7 +16,8 @@ namespace peachy {
       Lexer(Log * logger, ScriptSource * scriptSource)
         : TokenSource(logger, scriptSource) {
         logger->debug("Lexer constructor");
-	state = LEXER_COMPLETE;
+	setState(LEXER_NEED_INPUT);
+	currentPos = 0;
       }
       ~Lexer();
 
@@ -25,6 +26,16 @@ namespace peachy {
     protected:
 
       LexerState state;
+      std::string currentLine;
+      unsigned int currentPos;
+
+      void setState(LexerState state);
+      void setCurrentLine(std::string line);
+
+      bool isNumeric(char c);
+      bool isLetter(char c);
+      bool isIdentifier(char c);
+      bool isOperator(char c);
 
     private:
 

@@ -11,6 +11,7 @@ namespace peachy {
     TOKEN_INTEGER,
     TOKEN_KEYWORD,
     TOKEN_NEWLINE,
+    TOKEN_NUMBER,
     TOKEN_OPERATOR,
     TOKEN_STRING
   };

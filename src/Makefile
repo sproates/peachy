@@ -10,7 +10,7 @@ DELETE = rm -f -v
 
 FINAL_EXE = peachy.exe
 
-HEADERS = headers
+HEADERS = ../includes
 
 OBJECTS = environment.o filescriptsource.o lexer.o log.o parser.o peachy.o \
 peachyparser.o replscriptsource.o runtime.o script.o scriptsource.o \

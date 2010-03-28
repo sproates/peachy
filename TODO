@@ -1,0 +1,1 @@
+- Makefile is currently hand rolled and only tested with mingw. Switch to autoconf and automake to make the build system generic.

@@ -12,9 +12,9 @@ FINAL_EXE = peachy.exe
 
 HEADERS = ../includes
 
-OBJECTS = environment.o filescriptsource.o lexer.o log.o parser.o peachy.o \
-peachyparser.o replscriptsource.o runtime.o script.o scriptsource.o \
-stringscriptsource.o token.o tokensource.o
+OBJECTS = environment.o filescriptsource.o lexer.o log.o nullostream.o \
+parser.o peachy.o peachyparser.o replscriptsource.o runtime.o script.o \
+scriptsource.o stringscriptsource.o token.o tokensource.o
 
 TEST_EXE = testpeachy.exe
 
@@ -60,6 +60,8 @@ $(HEADERS)/lexerstate.h $(HEADERS)/log.h $(HEADERS)/scriptsource.h \
 $(HEADERS)/token.h $(HEADERS)/tokensource.h
 
 log.o: log.cpp $(HEADERS)/log.h
+
+nullostream.o: $(HEADERS)/nullostream.h
 
 parser.o: parser.cpp $(HEADERS)/log.h $(HEADERS)/parser.h \
 $(HEADERS)/tokensource.h

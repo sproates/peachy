@@ -1,8 +1,8 @@
 #include "lexer.h"
 
-#include <stdexcept>
 #include <string>
 
+#include "lexerexception.h"
 #include "log.h"
 #include "scriptsource.h"
 #include "token.h"
@@ -55,7 +55,7 @@ namespace peachy {
 		setState(LEXER_IN_OPERATOR);
 		currentPos++;
 	      } else {
-                throw std::runtime_error(
+                throw LexerException(
 		  std::string("Invalid character encountered: ").append(
 		    1, currentChar));
 	      }

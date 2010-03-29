@@ -1,6 +1,8 @@
 #include "peachyparser.h"
 
+#include "lexerexception.h"
 #include "log.h"
+#include "parserexception.h"
 #include "token.h"
 #include "tokensource.h"
 
@@ -16,8 +18,11 @@ namespace peachy {
     while(true) {
       try {
         token = tokenSource->nextToken();
+      } catch(LexerException & e) {
+	logger->debug(std::string("Lexical error: ").append(e.what()));
+	return;
       } catch(...) {
-        logger->debug("Exception thrown by TokenSource");
+        logger->debug("Unknown exception thrown by TokenSource");
 	return;
       }
       switch(token->getTokenType()) {

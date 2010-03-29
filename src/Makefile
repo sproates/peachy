@@ -55,8 +55,9 @@ environment.o: environment.cpp $(HEADERS)/environment.h $(HEADERS)/log.h
 filescriptsource.o: filescriptsource.cpp $(HEADERS)/filescriptsource.h \
 $(HEADERS)/log.h $(HEADERS)/scriptsource.h
 
-lexer.o: lexer.cpp $(HEADERS)/lexer.h $(HEADERS)/lexerstate.h $(HEADERS)/log.h \
-$(HEADERS)/scriptsource.h $(HEADERS)/token.h $(HEADERS)/tokensource.h
+lexer.o: lexer.cpp $(HEADERS)/lexer.h $(HEADERS)/lexerexception.h \
+$(HEADERS)/lexerstate.h $(HEADERS)/log.h $(HEADERS)/scriptsource.h \
+$(HEADERS)/token.h $(HEADERS)/tokensource.h
 
 log.o: log.cpp $(HEADERS)/log.h
 
@@ -65,8 +66,9 @@ $(HEADERS)/tokensource.h
 
 peachy.o: peachy.cpp $(HEADERS)/peachy.h
 
-peachyparser.o: peachyparser.cpp $(HEADERS)/log.h $(HEADERS)/parser.h \
-$(HEADERS)/peachyparser.h $(HEADERS)/token.h $(HEADERS)/tokensource.h
+peachyparser.o: peachyparser.cpp $(HEADERS)/lexerexception.h $(HEADERS)/log.h \
+$(HEADERS)/parser.h $(HEADERS)/parserexception.h $(HEADERS)/peachyparser.h \
+$(HEADERS)/token.h $(HEADERS)/tokensource.h
 
 replscriptsource.o: replscriptsource.cpp $(HEADERS)/log.h \
 $(HEADERS)/replscriptsource.h $(HEADERS)/scriptsource.h $(HEADERS)/log.h

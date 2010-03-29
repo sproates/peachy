@@ -48,30 +48,28 @@ namespace peachy {
       case TOKEN_EMPTY:
         return std::string("empty");
 	break;
+      case TOKEN_COMMENT_LINE:
+        return std::string("comment line");
       case TOKEN_EOF:
         return std::string("EOF");
-        break;
       case TOKEN_IDENTIFIER:
         return std::string("identifier: ").append(data);
-        break;
       case TOKEN_INTEGER:
         return std::string("integer: ").append(data);
-        break;
       case TOKEN_KEYWORD:
         return std::string("keyword: ").append(data);
-        break;
+      case TOKEN_LEFT_PARENTHESIS:
+        return std::string("left parenthesis");
       case TOKEN_NEWLINE:
         return std::string("new line");
-        break;
       case TOKEN_NUMBER:
         return std::string("number: ").append(data);
-	break;
       case TOKEN_OPERATOR:
         return std::string("operator: ").append(data);
-        break;
+      case TOKEN_RIGHT_PARENTHESIS:
+        return std::string("right parenthesis");
       case TOKEN_STRING:
         return std::string("string: ").append(data);
-        break;
       default:
         return std::string("unknown token");
 	break;

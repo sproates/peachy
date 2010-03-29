@@ -96,6 +96,11 @@ namespace peachy {
 	  if(isOperator(currentChar)) {
             logger->debug("Another character of the current operator");
 	    consume(true);
+	  } else if(isNumeric(currentChar) &&
+	          currentSequence.compare("-") == 0) {
+            logger->debug("Looks like a negative number");
+	    setState(LEXER_IN_NUMBER);
+	    consume(true);
 	  } else {
             logger->debug("End of operator");
 	    token = new Token(logger, TOKEN_OPERATOR, currentSequence);
@@ -179,7 +184,9 @@ namespace peachy {
 
   bool Lexer::isOperator(char c) {
     return (
-      c == '='
+      c == '=' ||
+      c == '-' ||
+      c == '+'
     );
   }
 

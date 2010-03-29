@@ -44,9 +44,10 @@ $(HEADERS)/peachyparser.h $(HEADERS)/replscriptsource.h $(HEADERS)/runtime.h \
 $(HEADERS)/script.h $(HEADERS)/scriptsource.h $(HEADERS)/tokensource.h
 
 test.o: test.cpp $(HEADERS)/environment.h $(HEADERS)/lexer.h $(HEADERS)/log.h \
-$(HEADERS)/parser.h $(HEADERS)/peachyparser.h $(HEADERS)/runtime.h \
-$(HEADERS)/script.h $(HEADERS)/scriptsource.h $(HEADERS)/stringscriptsource.h \
-$(HEADERS)/token.h $(HEADERS)/tokensource.h $(HEADERS)/tokentype.h
+$(HEADERS)/nullostream.h $(HEADERS)/parser.h $(HEADERS)/peachyparser.h \
+$(HEADERS)/runtime.h $(HEADERS)/script.h $(HEADERS)/scriptsource.h \
+$(HEADERS)/stringscriptsource.h $(HEADERS)/token.h $(HEADERS)/tokensource.h \
+$(HEADERS)/tokentype.h
 
 # intermediary objects
 

@@ -4,6 +4,7 @@
 #include "environment.h"
 #include "lexer.h"
 #include "log.h"
+#include "nullostream.h"
 #include "parser.h"
 #include "peachyparser.h"
 #include "runtime.h"
@@ -16,19 +17,19 @@ using namespace peachy;
 
 int main() {
 
-  Log * logNoDebug = new Log(&std::cout);
-  logNoDebug->enableDebug(false);
-  logNoDebug->info("Peachy test harness");
+  NullOStream * nullOStream = new NullOStream;
+  Log * nullLogger = new Log(nullOStream);
+  Log * debugLogger = new Log(&std::cout);
 
-  Log * logger = new Log(&std::cout);
+  debugLogger->info("Peachy test harness");
 
   ScriptSource * scriptSource =
-    new StringScriptSource(logNoDebug, std::string("i = 5\napple = -932"));
-  Environment * environment = new Environment(logNoDebug);
-  Runtime * runtime = new Runtime(logNoDebug);
-  TokenSource * tokenSource = new Lexer(logNoDebug, scriptSource);
-  Parser * parser = new PeachyParser(logger, tokenSource);
-  Script * script = new Script(logNoDebug, environment, runtime, parser);
+    new StringScriptSource(nullLogger, std::string("i = 5\napple = -932"));
+  Environment * environment = new Environment(nullLogger);
+  Runtime * runtime = new Runtime(nullLogger);
+  TokenSource * tokenSource = new Lexer(nullLogger, scriptSource);
+  Parser * parser = new PeachyParser(debugLogger, tokenSource);
+  Script * script = new Script(nullLogger, environment, runtime, parser);
 
   script->run();
 
@@ -38,10 +39,11 @@ int main() {
   delete runtime;
   delete environment;
   delete scriptSource;
-  delete logger;
+  delete nullLogger;
+  delete nullOStream;
 
-  logNoDebug->info("Test harness complete");
-  delete logNoDebug;
+  debugLogger->info("Test harness complete");
+  delete debugLogger;
 
   return 0;
 }

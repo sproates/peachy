@@ -34,6 +34,7 @@ namespace peachy {
       bool isLetter(char c);
       bool isIdentifier(char c);
       bool isOperator(char c);
+      bool isKeyword(std::string s);
 
     private:
 

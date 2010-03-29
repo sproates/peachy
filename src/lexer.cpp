@@ -185,5 +185,12 @@ namespace peachy {
       isNumeric(c)
     );
   }
+
+  bool Lexer::isKeyword(std::string s) {
+    return (
+      s.compare("class") == 0 ||
+      s.compare("function") == 0
+    );
+  }
 }
 

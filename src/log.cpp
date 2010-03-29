@@ -7,10 +7,21 @@ namespace peachy {
 
   Log::Log(std::ostream * outputStream) {
     this->outputStream = outputStream;
+    debugEnabled = true;
+    infoEnabled = true;
+    warningEnabled = true;
+    errorEnabled = true;
+    fatalEnabled = true;
+  }
+
+  void Log::enableDebug(bool debugEnabled) {
+    this->debugEnabled = debugEnabled;
   }
 
   void Log::debug(const char * message) {
-    *outputStream << "DEBUG: " << message << std::endl;
+    if(debugEnabled) {
+      *outputStream << "DEBUG: " << message << std::endl;
+    }
   }
 
   void Log::debug(std::string message) {

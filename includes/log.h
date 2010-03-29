@@ -27,9 +27,21 @@ namespace peachy {
       void fatal(const char * message);
       void fatal(std::string message);
 
+      void enableDebug(bool debugEnabled);
+      void enableInfo(bool infoEnabled);
+      void enableWarning(bool warningEnabled);
+      void enableError(bool errorEnabled);
+      void enableFatal(bool fatalEnabled);
+
     protected:
 
       std::ostream * outputStream;
+
+      bool debugEnabled;
+      bool infoEnabled;
+      bool warningEnabled;
+      bool errorEnabled;
+      bool fatalEnabled;
 
     private:
 

@@ -16,16 +16,19 @@ using namespace peachy;
 
 int main() {
 
-  Log * logger = new Log(&(std::cout));
-  logger->info("Peachy test harness");
+  Log * logNoDebug = new Log(&std::cout);
+  logNoDebug->enableDebug(false);
+  logNoDebug->info("Peachy test harness");
+
+  Log * logger = new Log(&std::cout);
 
   ScriptSource * scriptSource =
-    new StringScriptSource(logger, std::string("i = 5\napple = -932"));
-  Environment * environment = new Environment(logger);
-  Runtime * runtime = new Runtime(logger);
-  TokenSource * tokenSource = new Lexer(logger, scriptSource);
+    new StringScriptSource(logNoDebug, std::string("i = 5\napple = -932"));
+  Environment * environment = new Environment(logNoDebug);
+  Runtime * runtime = new Runtime(logNoDebug);
+  TokenSource * tokenSource = new Lexer(logNoDebug, scriptSource);
   Parser * parser = new PeachyParser(logger, tokenSource);
-  Script * script = new Script(logger, environment, runtime, parser);
+  Script * script = new Script(logNoDebug, environment, runtime, parser);
 
   script->run();
 
@@ -35,9 +38,10 @@ int main() {
   delete runtime;
   delete environment;
   delete scriptSource;
-
-  logger->info("Test harness complete");
   delete logger;
+
+  logNoDebug->info("Test harness complete");
+  delete logNoDebug;
 
   return 0;
 }

@@ -23,107 +23,107 @@ namespace peachy {
       currentChar = currentLine[currentPos];
       switch(state) {
         case LEXER_COMPLETE:
-	  logger->debug("In state LEXER_COMPLETE");
-	  token = new Token(logger, TOKEN_EOF);
-	  resetToken();
-	  gotToken = true;
+          logger->debug("In state LEXER_COMPLETE");
+          token = new Token(logger, TOKEN_EOF);
+          resetToken();
+          gotToken = true;
           break;
         case LEXER_DEFAULT:
           logger->debug("In state LEXER_DEFAULT");
           switch(currentChar) {
-	    case ' ':
-	    case '\t':
-	      logger->debug("Whitespace");
-	      consume(false);
-	      break;
-	    case '\n':
-	    case '\r':
-	    case NULL:
-	      logger->debug("End of line");
-	      resetLine();
-	      break;
+            case ' ':
+            case '\t':
+              logger->debug("Whitespace");
+              consume(false);
+              break;
+            case '\n':
+            case '\r':
+            case NULL:
+              logger->debug("End of line");
+              resetLine();
+              break;
             default:
-	      if(isNumeric(currentChar)) {
+              if(isNumeric(currentChar)) {
                 logger->debug("Current char is a number");
-		setState(LEXER_IN_NUMBER);
-		consume(true);
-	      } else if(isLetter(currentChar)) {
-	        logger->debug("Current char is a letter");
+                setState(LEXER_IN_NUMBER);
+                consume(true);
+              } else if(isLetter(currentChar)) {
+                logger->debug("Current char is a letter");
                 setState(LEXER_IN_IDENTIFIER);
                 consume(true);
               } else if(isOperator(currentChar)) {
-	        logger->debug("Current char is an operator");
-		setState(LEXER_IN_OPERATOR);
-		consume(true);
-	      } else {
+                logger->debug("Current char is an operator");
+                setState(LEXER_IN_OPERATOR);
+                consume(true);
+              } else {
                 throw LexerException(
-		  std::string("Invalid character encountered: ").append(
-		    1, currentChar));
-	      }
-	      break;
-	  }
+                  std::string("Invalid character encountered: ").append(
+                    1, currentChar));
+              }
+              break;
+          }
           break;
-	case LEXER_IN_NUMBER:
-	  logger->debug("In state LEXER_IN_NUMBER");
-	  if(isNumeric(currentChar)) {
+        case LEXER_IN_NUMBER:
+          logger->debug("In state LEXER_IN_NUMBER");
+          if(isNumeric(currentChar)) {
             logger->debug("Another digit of the current number");
-	    consume(true);
-	  } else {
+            consume(true);
+          } else {
             logger->debug("End of number");
             token = new Token(logger, TOKEN_NUMBER, currentSequence);
-	    resetToken();
+            resetToken();
             gotToken = true;
-	  }
-	  break;
-	case LEXER_IN_IDENTIFIER:
-	  logger->debug("In state LEXER_IN_IDENTIFIER");
-	  if(isIdentifier(currentChar)) {
+          }
+          break;
+        case LEXER_IN_IDENTIFIER:
+          logger->debug("In state LEXER_IN_IDENTIFIER");
+          if(isIdentifier(currentChar)) {
             logger->debug("Another character of the current identifier");
-	    consume(true);
-	  } else {
+            consume(true);
+          } else {
             logger->debug("End of identifier");
-	    if(isKeyword(currentSequence)) {
+            if(isKeyword(currentSequence)) {
               token = new Token(logger, TOKEN_KEYWORD, currentSequence);
-	    } else {
-	      token = new Token(logger, TOKEN_IDENTIFIER, currentSequence);
-	    }
-	    resetToken();
-	    gotToken = true;
-	  }
-	  break;
-	case LEXER_IN_OPERATOR:
-	  logger->debug("In state LEXER_IN_OPERATOR");
-	  if(isOperator(currentChar)) {
+            } else {
+              token = new Token(logger, TOKEN_IDENTIFIER, currentSequence);
+            }
+            resetToken();
+            gotToken = true;
+          }
+          break;
+        case LEXER_IN_OPERATOR:
+          logger->debug("In state LEXER_IN_OPERATOR");
+          if(isOperator(currentChar)) {
             logger->debug("Another character of the current operator");
-	    consume(true);
-	  } else if(isNumeric(currentChar) &&
-	          currentSequence.compare("-") == 0) {
+            consume(true);
+          } else if(isNumeric(currentChar) &&
+            currentSequence.compare("-") == 0) {
             logger->debug("Looks like a negative number");
-	    setState(LEXER_IN_NUMBER);
-	    consume(true);
-	  } else {
+            setState(LEXER_IN_NUMBER);
+            consume(true);
+          } else {
             logger->debug("End of operator");
-	    token = new Token(logger, TOKEN_OPERATOR, currentSequence);
-	    resetToken();
-	    gotToken = true;
-	  }
-	  break;
+            token = new Token(logger, TOKEN_OPERATOR, currentSequence);
+            resetToken();
+            gotToken = true;
+          }
+          break;
         case LEXER_NEED_INPUT:
           logger->debug("In state LEXER_NEED_INPUT");
-	  if(!scriptSource->hasMoreLines()) {
+          if(!scriptSource->hasMoreLines()) {
             logger->debug("End of input");
-	    setState(LEXER_COMPLETE);
-	  } else {
+            setState(LEXER_COMPLETE);
+          } else {
             setCurrentLine(scriptSource->getLine());
-	    logger->debug("Got new line from script source");
-	    resetToken();
-	  }
+            logger->debug("Got new line from script source");
+            resetToken();
+          }
           break;
-	case LEXER_ERROR:
+        case LEXER_ERROR:
           logger->debug("In state LEXER_ERROR");
-	  throw LexerException("Invalid lexer state");
+          throw LexerException("Invalid lexer state");
           break;
-	default:
+        default:
           logger->debug("In an unknown state");
           setState(LEXER_ERROR);
           break;

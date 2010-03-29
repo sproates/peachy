@@ -76,7 +76,7 @@ $(HEADERS)/replscriptsource.h $(HEADERS)/scriptsource.h $(HEADERS)/log.h
 runtime.o: runtime.cpp $(HEADERS)/log.h $(HEADERS)/runtime.h
 
 script.o: script.cpp $(HEADERS)/environment.h $(HEADERS)/log.h \
-$(HEADERS)/parser.h $(HEADERS)/runtime.h
+$(HEADERS)/parser.h $(HEADERS)/parserexception.h $(HEADERS)/runtime.h
 
 scriptsource.o: scriptsource.cpp $(HEADERS)/scriptsource.h
 

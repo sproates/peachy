@@ -31,18 +31,23 @@ namespace peachy {
 	  return;
 	case TOKEN_IDENTIFIER:
 	  logger->debug("TOKEN_IDENTIFIER encountered");
+	  logger->debug(token->toString());
 	  break;
 	case TOKEN_INTEGER:
 	  logger->debug("TOKEN_INTEGER encountered");
+	  logger->debug(token->toString());
 	  break;
 	case TOKEN_NUMBER:
 	  logger->debug("TOKEN_NUMBER encountered");
+	  logger->debug(token->toString());
 	  break;
 	case TOKEN_OPERATOR:
 	  logger->debug("TOKEN_OPERATOR encountered");
+	  logger->debug(token->toString());
 	  break;
 	default:
 	  logger->debug("Unknown token encountered");
+	  throw ParserException("Unknown token encountered");
 	  break;
       }
     }

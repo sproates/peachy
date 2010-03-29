@@ -5,6 +5,7 @@
 #include "environment.h"
 #include "log.h"
 #include "parser.h"
+#include "parserexception.h"
 #include "runtime.h"
 
 namespace peachy {
@@ -40,7 +41,13 @@ namespace peachy {
   void Script::run() {
     logger->debug("Script::run()");
 
-    parser->parse();
+    try {
+      parser->parse();
+    } catch(ParserException & e) {
+      logger->info("ParserException thrown");
+      logger->info(e.what());
+      return;
+    }
 
     logger->debug("Reached end of script");
   }

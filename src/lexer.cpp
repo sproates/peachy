@@ -25,6 +25,7 @@ namespace peachy {
         case LEXER_COMPLETE:
 	  logger->debug("In state LEXER_COMPLETE");
 	  token = new Token(logger, TOKEN_EOF);
+	  resetToken();
 	  gotToken = true;
           break;
         case LEXER_DEFAULT:
@@ -33,27 +34,27 @@ namespace peachy {
 	    case ' ':
 	    case '\t':
 	      logger->debug("Whitespace");
-	      currentPos++;
+	      consume(false);
 	      break;
 	    case '\n':
 	    case '\r':
 	    case NULL:
 	      logger->debug("End of line");
-	      reset();
+	      resetLine();
 	      break;
             default:
 	      if(isNumeric(currentChar)) {
                 logger->debug("Current char is a number");
 		setState(LEXER_IN_NUMBER);
-		currentPos++;
+		consume(true);
 	      } else if(isLetter(currentChar)) {
 	        logger->debug("Current char is a letter");
                 setState(LEXER_IN_IDENTIFIER);
-                currentPos++;
+                consume(true);
               } else if(isOperator(currentChar)) {
 	        logger->debug("Current char is an operator");
 		setState(LEXER_IN_OPERATOR);
-		currentPos++;
+		consume(true);
 	      } else {
                 throw LexerException(
 		  std::string("Invalid character encountered: ").append(
@@ -66,11 +67,11 @@ namespace peachy {
 	  logger->debug("In state LEXER_IN_NUMBER");
 	  if(isNumeric(currentChar)) {
             logger->debug("Another digit of the current number");
-	    currentPos++;
+	    consume(true);
 	  } else {
             logger->debug("End of number");
-	    setState(LEXER_DEFAULT);
-            token = new Token(logger, TOKEN_NUMBER, std::string(""));
+            token = new Token(logger, TOKEN_NUMBER, currentSequence);
+	    resetToken();
             gotToken = true;
 	  }
 	  break;
@@ -78,11 +79,11 @@ namespace peachy {
 	  logger->debug("In state LEXER_IN_IDENTIFIER");
 	  if(isIdentifier(currentChar)) {
             logger->debug("Another character of the current identifier");
-	    currentPos++;
+	    consume(true);
 	  } else {
             logger->debug("End of identifier");
-	    setState(LEXER_DEFAULT);
-	    token = new Token(logger, TOKEN_IDENTIFIER, std::string(""));
+	    token = new Token(logger, TOKEN_IDENTIFIER, currentSequence);
+	    resetToken();
 	    gotToken = true;
 	  }
 	  break;
@@ -90,11 +91,11 @@ namespace peachy {
 	  logger->debug("In state LEXER_IN_OPERATOR");
 	  if(isOperator(currentChar)) {
             logger->debug("Another character of the current operator");
-	    currentPos++;
+	    consume(true);
 	  } else {
             logger->debug("End of operator");
-	    setState(LEXER_DEFAULT);
-	    token = new Token(logger, TOKEN_OPERATOR, std::string(""));
+	    token = new Token(logger, TOKEN_OPERATOR, currentSequence);
+	    resetToken();
 	    gotToken = true;
 	  }
 	  break;
@@ -106,15 +107,16 @@ namespace peachy {
 	  } else {
             setCurrentLine(scriptSource->getLine());
 	    logger->debug("Got new line from script source");
-	    setState(LEXER_DEFAULT);
+	    resetToken();
 	  }
           break;
 	case LEXER_ERROR:
           logger->debug("In state LEXER_ERROR");
+	  throw LexerException("Invalid lexer state");
           break;
 	default:
           logger->debug("In an unknown state");
-          this->state = LEXER_ERROR;
+          setState(LEXER_ERROR);
           break;
       }
     }
@@ -122,11 +124,24 @@ namespace peachy {
     return token;
   }
 
-  void Lexer::reset() {
-    logger->debug("Lexer::reset()");
+  void Lexer::consume(bool appendChar) {
+    logger->debug("Lexer::consume()");
+    if(appendChar) {
+      currentSequence.append(1, currentChar);
+    }
+    currentPos++;
+  }
+
+  void Lexer::resetLine() {
+    logger->debug("Lexer::resetLine()");
     setState(LEXER_NEED_INPUT);
     currentPos = 0;
+  }
 
+  void Lexer::resetToken() {
+    logger->debug("Lexer::resetToken()");
+    setState(LEXER_DEFAULT);
+    currentSequence = std::string("");
   }
 
   void Lexer::setState(LexerState state) {
@@ -137,6 +152,11 @@ namespace peachy {
   void Lexer::setCurrentLine(std::string line) {
     logger->debug("Lexer::setCurrentLine()");
     this->currentLine = line;
+  }
+
+  LexerState Lexer::getState() {
+    logger->debug("Lexer::getState()");
+    return this->state;
   }
 
   bool Lexer::isNumeric(char c) {

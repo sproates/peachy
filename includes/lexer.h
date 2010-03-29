@@ -25,14 +25,10 @@ namespace peachy {
 
     protected:
 
-      LexerState state;
-      std::string currentLine;
-      std::string currentSequence;
-      unsigned int currentPos;
-      char currentChar;
-
       void setState(LexerState state);
       void setCurrentLine(std::string line);
+
+      LexerState getState();
 
       bool isNumeric(char c);
       bool isLetter(char c);
@@ -41,7 +37,16 @@ namespace peachy {
 
     private:
 
-      void reset();
+      void resetLine();
+      void resetToken();
+      void consume(bool appendChar);
+
+      LexerState state;
+
+      char currentChar;
+      unsigned int currentPos;
+      std::string currentLine;
+      std::string currentSequence;
 
       Lexer();
       Lexer(const Lexer & lexer);

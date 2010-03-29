@@ -20,7 +20,7 @@ int main() {
   logger->info("Peachy test harness");
 
   ScriptSource * scriptSource =
-    new StringScriptSource(logger, std::string("i = 5"));
+    new StringScriptSource(logger, std::string("i = 5\napple = 66"));
   Environment * environment = new Environment(logger);
   Runtime * runtime = new Runtime(logger);
   TokenSource * tokenSource = new Lexer(logger, scriptSource);

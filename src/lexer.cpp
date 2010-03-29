@@ -20,7 +20,7 @@ namespace peachy {
     bool gotToken = false;
 
     while(!gotToken) {
-      char currentChar = currentLine[currentPos];
+      currentChar = currentLine[currentPos];
       switch(state) {
         case LEXER_COMPLETE:
 	  logger->debug("In state LEXER_COMPLETE");

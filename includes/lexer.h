@@ -28,6 +28,7 @@ namespace peachy {
       LexerState state;
       std::string currentLine;
       unsigned int currentPos;
+      char currentChar;
 
       void setState(LexerState state);
       void setCurrentLine(std::string line);

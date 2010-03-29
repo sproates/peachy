@@ -27,6 +27,7 @@ namespace peachy {
 
       LexerState state;
       std::string currentLine;
+      std::string currentSequence;
       unsigned int currentPos;
       char currentChar;
 
@@ -39,6 +40,8 @@ namespace peachy {
       bool isOperator(char c);
 
     private:
+
+      void reset();
 
       Lexer();
       Lexer(const Lexer & lexer);

@@ -39,8 +39,7 @@ namespace peachy {
 	    case '\r':
 	    case NULL:
 	      logger->debug("End of line");
-	      setState(LEXER_NEED_INPUT);
-	      currentPos = 0;
+	      reset();
 	      break;
             default:
 	      if(isNumeric(currentChar)) {
@@ -71,7 +70,8 @@ namespace peachy {
 	  } else {
             logger->debug("End of number");
 	    setState(LEXER_DEFAULT);
-            return new Token(logger, TOKEN_NUMBER, std::string(""));
+            token = new Token(logger, TOKEN_NUMBER, std::string(""));
+            gotToken = true;
 	  }
 	  break;
 	case LEXER_IN_IDENTIFIER:
@@ -82,7 +82,8 @@ namespace peachy {
 	  } else {
             logger->debug("End of identifier");
 	    setState(LEXER_DEFAULT);
-	    return new Token(logger, TOKEN_IDENTIFIER, std::string(""));
+	    token = new Token(logger, TOKEN_IDENTIFIER, std::string(""));
+	    gotToken = true;
 	  }
 	  break;
 	case LEXER_IN_OPERATOR:
@@ -93,7 +94,8 @@ namespace peachy {
 	  } else {
             logger->debug("End of operator");
 	    setState(LEXER_DEFAULT);
-	    return new Token(logger, TOKEN_OPERATOR, std::string(""));
+	    token = new Token(logger, TOKEN_OPERATOR, std::string(""));
+	    gotToken = true;
 	  }
 	  break;
         case LEXER_NEED_INPUT:
@@ -118,6 +120,13 @@ namespace peachy {
     }
 
     return token;
+  }
+
+  void Lexer::reset() {
+    logger->debug("Lexer::reset()");
+    setState(LEXER_NEED_INPUT);
+    currentPos = 0;
+
   }
 
   void Lexer::setState(LexerState state) {

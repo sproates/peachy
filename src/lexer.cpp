@@ -82,7 +82,11 @@ namespace peachy {
 	    consume(true);
 	  } else {
             logger->debug("End of identifier");
-	    token = new Token(logger, TOKEN_IDENTIFIER, currentSequence);
+	    if(isKeyword(currentSequence)) {
+              token = new Token(logger, TOKEN_KEYWORD, currentSequence);
+	    } else {
+	      token = new Token(logger, TOKEN_IDENTIFIER, currentSequence);
+	    }
 	    resetToken();
 	    gotToken = true;
 	  }

@@ -37,6 +37,10 @@ namespace peachy {
 	  logger->debug("TOKEN_INTEGER encountered");
 	  logger->debug(token->toString());
 	  break;
+        case TOKEN_KEYWORD:
+	  logger->debug("TOKEN_KEYWORD encountered");
+	  logger->debug(token->toString());
+	  break;
 	case TOKEN_NUMBER:
 	  logger->debug("TOKEN_NUMBER encountered");
 	  logger->debug(token->toString());

@@ -1,0 +1,10 @@
+i <- 5
+
+# comment line
+
+function add (x[Int], y[Int]) Int = (
+  x + y
+)
+
+fruitBasket <- {"apples":"5", "oranges":"3"}
+

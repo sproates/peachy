@@ -27,7 +27,7 @@ int main() {
     new StringScriptSource(nullLogger, std::string("i = 5\napple = -932"));
   Environment * environment = new Environment(nullLogger);
   Runtime * runtime = new Runtime(nullLogger);
-  TokenSource * tokenSource = new Lexer(nullLogger, scriptSource);
+  TokenSource * tokenSource = new Lexer(debugLogger, scriptSource);
   Parser * parser = new PeachyParser(debugLogger, tokenSource);
   Script * script = new Script(nullLogger, environment, runtime, parser);
 

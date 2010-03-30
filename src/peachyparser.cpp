@@ -1,5 +1,7 @@
 #include "peachyparser.h"
 
+#include <memory>
+
 #include "lexerexception.h"
 #include "log.h"
 #include "parserexception.h"
@@ -14,7 +16,7 @@ namespace peachy {
 
   void PeachyParser::parse() {
     logger->debug("PeachyParser::parse()");
-    Token * token;
+    std::auto_ptr<Token> token;
     while(true) {
       try {
         token = tokenSource->nextToken();
@@ -25,7 +27,7 @@ namespace peachy {
         logger->debug("Unknown exception thrown by TokenSource");
 	return;
       }
-      switch(token->getTokenType()) {
+      switch(token.get()->getTokenType()) {
         case TOKEN_EOF:
 	  logger->debug("TOKEN_EOF encountered");
 	  return;

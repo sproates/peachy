@@ -1,5 +1,6 @@
 #include "lexer.h"
 
+#include <memory>
 #include <string>
 
 #include "lexerexception.h"
@@ -13,7 +14,7 @@ namespace peachy {
     logger->debug("Lexer destructor");
   }
 
-  Token * Lexer::nextToken() {
+  std::auto_ptr<Token> Lexer::nextToken() {
     logger->debug("Lexer::nextToken()");
 
     Token * token;
@@ -130,7 +131,7 @@ namespace peachy {
       }
     }
 
-    return token;
+    return std::auto_ptr<Token> (token);
   }
 
   void Lexer::consume(bool appendChar) {

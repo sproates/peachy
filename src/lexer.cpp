@@ -69,7 +69,7 @@ namespace peachy {
                 logger->debug("Current char is a letter");
                 setState(LEXER_IN_IDENTIFIER);
                 consume(true);
-              } else if(isOperator(currentChar)) {
+              } else if(isOperatorChar(currentChar)) {
                 logger->debug("Current char is an operator");
                 setState(LEXER_IN_OPERATOR);
                 consume(true);
@@ -110,7 +110,7 @@ namespace peachy {
           break;
         case LEXER_IN_OPERATOR:
           logger->debug("In state LEXER_IN_OPERATOR");
-          if(isOperator(currentChar)) {
+          if(isOperatorChar(currentChar)) {
             logger->debug("Another character of the current operator");
             consume(true);
           } else if(isNumeric(currentChar) &&
@@ -119,10 +119,15 @@ namespace peachy {
             setState(LEXER_IN_NUMBER);
             consume(true);
           } else {
-            logger->debug("End of operator");
-            token = new Token(logger, TOKEN_OPERATOR, currentSequence);
-            resetToken();
-            gotToken = true;
+            if(isOperator(currentSequence)) {
+              logger->debug("End of operator");
+              token = new Token(logger, TOKEN_OPERATOR, currentSequence);
+              resetToken();
+              gotToken = true;
+            } else {
+              logger->debug("Invalid operator sequence");
+              throw LexerException("Invalid operator sequence");
+            }
           }
           break;
         case LEXER_IN_COMMENT_LINE:
@@ -211,11 +216,29 @@ namespace peachy {
     );
   }
 
-  bool Lexer::isOperator(char c) {
+  bool Lexer::isOperatorChar(char c) {
     return (
       c == '=' ||
       c == '-' ||
-      c == '+'
+      c == '+' ||
+      c == '>' ||
+      c == '<' ||
+      c == '|'
+    );
+  }
+
+  bool Lexer::isOperator(std::string s) {
+    return (
+      s.compare("<-") == 0 ||
+      s.compare("=") == 0 ||
+      s.compare(">=") == 0 ||
+      s.compare("<=") == 0 ||
+      s.compare("<") == 0 ||
+      s.compare(">") == 0 ||
+      s.compare("+") == 0 ||
+      s.compare("-") == 0 ||
+      s.compare("|") == 0 ||
+      s.compare("&") == 0      
     );
   }
 

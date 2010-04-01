@@ -35,9 +35,10 @@ namespace peachy {
       bool isNumeric(char c);
       bool isLetter(char c);
       bool isIdentifier(char c);
-      bool isOperator(char c);
+      bool isOperatorChar(char c);
       bool isKeyword(std::string s);
       bool isLineEnding(char c);
+      bool isOperator(std::string s);
 
     private:
 

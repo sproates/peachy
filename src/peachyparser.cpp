@@ -31,6 +31,10 @@ namespace peachy {
         case TOKEN_EOF:
           logger->debug("TOKEN_EOF encountered");
           return;
+        case TOKEN_COMMENT_LINE:
+          logger->debug("TOKEN_COMMENT_LINE encountered");
+          logger->debug(token->toString());
+          break;
         case TOKEN_IDENTIFIER:
           logger->debug("TOKEN_IDENTIFIER encountered");
           logger->debug(token->toString());
@@ -51,8 +55,8 @@ namespace peachy {
           logger->debug("TOKEN_OPERATOR encountered");
           logger->debug(token->toString());
           break;
-        case TOKEN_COMMENT_LINE:
-          logger->debug("TOKEN_COMMENT_LINE encountered");
+        case TOKEN_STRING:
+          logger->debug("TOKEN_STRING encountered");
           logger->debug(token->toString());
           break;
         default:

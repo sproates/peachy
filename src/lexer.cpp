@@ -21,6 +21,9 @@ namespace peachy {
     bool gotToken = false;
 
     while(!gotToken) {
+      if(atEndOfLine()) {
+        throw LexerException("Overflowed input buffer");
+      }
       currentChar = currentLine[currentPos];
       switch(state) {
         case LEXER_COMPLETE:
@@ -60,6 +63,11 @@ namespace peachy {
               setState(LEXER_IN_COMMENT_LINE);
               consume(false);
               break;
+            case '"':
+              logger->debug("Start of string");
+              setState(LEXER_IN_STRING);
+              consume(false);
+              break;
             default:
               if(isNumeric(currentChar)) {
                 logger->debug("Current char is a number");
@@ -77,6 +85,31 @@ namespace peachy {
                 throw LexerException(
                   std::string("Invalid character encountered: ").append(
                     1, currentChar));
+              }
+          }
+          break;
+        case LEXER_IN_STRING:
+          logger->debug("In state LEXER_IN_STRING");
+          switch(currentChar) {
+            case '"':
+              logger->debug("End quote");
+              token = new Token(logger, TOKEN_STRING, currentSequence);
+              consume(false);
+              resetToken();
+              gotToken = true;
+              break;
+            default:
+              logger->debug(std::string("Another character: ").append(1, currentChar));
+              consume(true);
+              if(atEndOfLine()) {
+                if(!scriptSource->hasMoreLines()) {
+                  logger->debug("End of input but still inside string");
+                  throw LexerException("Input terminated inside open string");
+                } else {
+                  logger->debug("Getting a new line from script source");
+                  setCurrentLine(scriptSource->getLine());
+                  currentPos = 0;
+                }
               }
           }
           break;
@@ -175,6 +208,10 @@ namespace peachy {
     currentPos++;
   }
 
+  bool Lexer::atEndOfLine() {
+    return(currentPos > currentLine.length());
+  }
+
   void Lexer::resetLine() {
     logger->debug("Lexer::resetLine()");
     setState(LEXER_NEED_INPUT);
@@ -245,7 +282,8 @@ namespace peachy {
   bool Lexer::isIdentifier(char c) {
     return (
       isLetter(c) ||
-      isNumeric(c)
+      isNumeric(c) ||
+      c == '_'
     );
   }
 

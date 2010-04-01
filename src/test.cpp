@@ -27,7 +27,7 @@ int main() {
     new FileScriptSource(nullLogger, "test.peachy");
   Environment * environment = new Environment(nullLogger);
   Runtime * runtime = new Runtime(nullLogger);
-  TokenSource * tokenSource = new Lexer(nullLogger, scriptSource);
+  TokenSource * tokenSource = new Lexer(debugLogger, scriptSource);
   Parser * parser = new PeachyParser(debugLogger, tokenSource);
   Script * script = new Script(nullLogger, environment, runtime, parser);
 
@@ -41,6 +41,8 @@ int main() {
   delete scriptSource;
   delete nullLogger;
   delete nullOStream;
+
+  debugLogger->debug(std::string("a line\nwith a break"));
 
   debugLogger->info("Test harness complete");
   delete debugLogger;

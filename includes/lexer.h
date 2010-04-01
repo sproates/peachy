@@ -29,6 +29,7 @@ namespace peachy {
 
       void setState(LexerState state);
       void setCurrentLine(std::string line);
+      bool atEndOfLine();
 
       LexerState getState();
 

@@ -12,6 +12,7 @@ namespace peachy {
     LEXER_IN_IDENTIFIER,
     LEXER_IN_NUMBER,
     LEXER_IN_OPERATOR,
+    LEXER_IN_STRING,
     LEXER_NEED_INPUT
   };
 }

@@ -45,11 +45,10 @@ namespace peachy {
 
   std::string Token::toString() {
     switch(tokenType) {
+      case TOKEN_COMMENT_LINE:
+        return std::string("comment line: ").append(data);
       case TOKEN_EMPTY:
         return std::string("empty");
-	break;
-      case TOKEN_COMMENT_LINE:
-        return std::string("comment line");
       case TOKEN_EOF:
         return std::string("EOF");
       case TOKEN_IDENTIFIER:
@@ -72,7 +71,6 @@ namespace peachy {
         return std::string("string: ").append(data);
       default:
         return std::string("unknown token");
-	break;
     }
   }
 }

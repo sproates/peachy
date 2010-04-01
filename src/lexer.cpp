@@ -43,6 +43,23 @@ namespace peachy {
               logger->debug("End of line");
               resetLine();
               break;
+            case '(':
+              logger->debug("Left paren");
+              token = new Token(logger, TOKEN_LEFT_PARENTHESIS);
+              resetToken();
+              gotToken = true;
+              break;
+            case ')':
+              logger->debug("Right paren");
+              token = new Token(logger, TOKEN_RIGHT_PARENTHESIS);
+              resetToken();
+              gotToken = true;
+              break;
+            case '#':
+              logger->debug("Comment line");
+              setState(LEXER_IN_COMMENT_LINE);
+              consume(false);
+              break;
             default:
               if(isNumeric(currentChar)) {
                 logger->debug("Current char is a number");
@@ -61,7 +78,6 @@ namespace peachy {
                   std::string("Invalid character encountered: ").append(
                     1, currentChar));
               }
-              break;
           }
           break;
         case LEXER_IN_NUMBER:
@@ -107,6 +123,18 @@ namespace peachy {
             token = new Token(logger, TOKEN_OPERATOR, currentSequence);
             resetToken();
             gotToken = true;
+          }
+          break;
+        case LEXER_IN_COMMENT_LINE:
+          logger->debug("In state LEXER_IN_COMMENT_LINE");
+          if(isLineEnding(currentChar)) {
+            logger->debug("End of comment");
+            token = new Token(logger, TOKEN_COMMENT_LINE, currentSequence);
+            resetToken();
+            gotToken = true;
+          } else {
+            logger->debug("Another character of the current comment");
+            consume(true);
           }
           break;
         case LEXER_NEED_INPUT:
@@ -202,6 +230,13 @@ namespace peachy {
     return (
       s.compare("class") == 0 ||
       s.compare("function") == 0
+    );
+  }
+
+  bool Lexer::isLineEnding(char c) {
+    return (
+      c == '\r' ||
+      c == '\n'
     );
   }
 }

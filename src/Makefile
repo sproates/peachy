@@ -2,7 +2,7 @@
 
 COMPILER = g++
 
-COMPILER_FLAGS = -c -Wall -Wextra -pedantic -I$(HEADERS) $(DEFINES)
+COMPILER_FLAGS = -c -Wall -Wextra -Werror -Wunreachable-code -Wredundant-decls -Wwrite-strings -Wundef -Wendif-labels -Wcast-qual -pedantic -I$(HEADERS) $(DEFINES)
 
 DEFINES =
 

@@ -2,6 +2,7 @@
 #include <string>
 
 #include "environment.h"
+#include "filescriptsource.h"
 #include "lexer.h"
 #include "log.h"
 #include "nullostream.h"
@@ -10,7 +11,6 @@
 #include "runtime.h"
 #include "script.h"
 #include "scriptsource.h"
-#include "stringscriptsource.h"
 #include "tokensource.h"
 
 using namespace peachy;
@@ -24,10 +24,10 @@ int main() {
   debugLogger->info("Peachy test harness");
 
   ScriptSource * scriptSource =
-    new StringScriptSource(nullLogger, std::string("i = 5\napple = -932"));
+    new FileScriptSource(nullLogger, "test.peachy");
   Environment * environment = new Environment(nullLogger);
   Runtime * runtime = new Runtime(nullLogger);
-  TokenSource * tokenSource = new Lexer(debugLogger, scriptSource);
+  TokenSource * tokenSource = new Lexer(nullLogger, scriptSource);
   Parser * parser = new PeachyParser(debugLogger, tokenSource);
   Script * script = new Script(nullLogger, environment, runtime, parser);
 

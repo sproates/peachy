@@ -1,4 +1,2 @@
 i <- 5
-
-apple_core <- "a multi 
- line string"
+apple_core <- "a string"

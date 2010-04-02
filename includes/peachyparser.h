@@ -3,6 +3,7 @@
 
 #include "log.h"
 #include "parser.h"
+#include "parserstate.h"
 
 namespace peachy {
 
@@ -15,13 +16,21 @@ namespace peachy {
       PeachyParser(Log * logger, TokenSource * tokenSource)
         : Parser(logger, tokenSource) {
         logger->debug("PeachyParser constuctor");
+        setState(PARSER_NEED_TOKEN);
       }
 
       ~PeachyParser();
 
       void parse();
 
+    protected:
+
+      ParserState getState();
+      void setState(ParserState state);
+
     private:
+
+      ParserState state;
 
       PeachyParser();
       PeachyParser(const PeachyParser & peachyParser);

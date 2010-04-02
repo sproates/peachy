@@ -1,5 +1,6 @@
 #include "lexer.h"
 
+#include <iostream>
 #include <memory>
 #include <string>
 
@@ -22,6 +23,7 @@ namespace peachy {
 
     while(!gotToken) {
       if(atEndOfLine()) {
+        logger->debug("Overflowed input buffer");
         throw LexerException("Overflowed input buffer");
       }
       currentChar = currentLine[currentPos];
@@ -98,19 +100,24 @@ namespace peachy {
               resetToken();
               gotToken = true;
               break;
-            default:
-              logger->debug(std::string("Another character: ").append(1, currentChar));
-              consume(true);
-              if(atEndOfLine()) {
-                if(!scriptSource->hasMoreLines()) {
-                  logger->debug("End of input but still inside string");
-                  throw LexerException("Input terminated inside open string");
-                } else {
-                  logger->debug("Getting a new line from script source");
-                  setCurrentLine(scriptSource->getLine());
-                  currentPos = 0;
-                }
+            case 0:
+              logger->debug("Newline found");
+              currentSequence.append(1, '\n');
+              logger->debug(currentSequence);
+              if(!scriptSource->hasMoreLines()) {
+                logger->debug("End of input but still inside string");
+                throw LexerException("Input terminated inside open string");
+              } else {
+                logger->debug("Getting a new line from script source");
+                setCurrentLine(scriptSource->getLine());
+                currentPos = 0;
               }
+              break;
+            default:
+              logger->debug("Ordinary character");
+              consume(true);
+              logger->debug(currentSequence);
+              break;
           }
           break;
         case LEXER_IN_NUMBER:

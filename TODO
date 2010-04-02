@@ -7,3 +7,5 @@
 - Parser!
 
 - Complete logger
+
+- TokenFactory so token's logger can be injected from outside

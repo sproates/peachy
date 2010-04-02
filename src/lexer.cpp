@@ -8,6 +8,7 @@
 #include "log.h"
 #include "scriptsource.h"
 #include "token.h"
+#include "tokenfactory.h"
 
 namespace peachy {
 
@@ -30,7 +31,7 @@ namespace peachy {
       switch(state) {
         case LEXER_COMPLETE:
           logger->debug("In state LEXER_COMPLETE");
-          token = new Token(logger, TOKEN_EOF);
+          token = tokenFactory->createToken(TOKEN_EOF);
           resetToken();
           gotToken = true;
           break;
@@ -50,13 +51,13 @@ namespace peachy {
               break;
             case '(':
               logger->debug("Left paren");
-              token = new Token(logger, TOKEN_LEFT_PARENTHESIS);
+              token = tokenFactory->createToken(TOKEN_LEFT_PARENTHESIS);
               resetToken();
               gotToken = true;
               break;
             case ')':
               logger->debug("Right paren");
-              token = new Token(logger, TOKEN_RIGHT_PARENTHESIS);
+              token = tokenFactory->createToken(TOKEN_RIGHT_PARENTHESIS);
               resetToken();
               gotToken = true;
               break;
@@ -95,7 +96,7 @@ namespace peachy {
           switch(currentChar) {
             case '"':
               logger->debug("End quote");
-              token = new Token(logger, TOKEN_STRING, currentSequence);
+              token = tokenFactory->createToken(TOKEN_STRING, currentSequence);
               consume(false);
               resetToken();
               gotToken = true;
@@ -127,7 +128,7 @@ namespace peachy {
             consume(true);
           } else {
             logger->debug("End of number");
-            token = new Token(logger, TOKEN_NUMBER, currentSequence);
+            token = tokenFactory->createToken(TOKEN_NUMBER, currentSequence);
             resetToken();
             gotToken = true;
           }
@@ -140,9 +141,10 @@ namespace peachy {
           } else {
             logger->debug("End of identifier");
             if(isKeyword(currentSequence)) {
-              token = new Token(logger, TOKEN_KEYWORD, currentSequence);
+              token = tokenFactory->createToken(TOKEN_KEYWORD, currentSequence);
             } else {
-              token = new Token(logger, TOKEN_IDENTIFIER, currentSequence);
+              token = tokenFactory->createToken(TOKEN_IDENTIFIER,
+                currentSequence);
             }
             resetToken();
             gotToken = true;
@@ -161,7 +163,7 @@ namespace peachy {
           } else {
             if(isOperator(currentSequence)) {
               logger->debug("End of operator");
-              token = new Token(logger, TOKEN_OPERATOR, currentSequence);
+              token = tokenFactory->createToken(TOKEN_OPERATOR, currentSequence);
               resetToken();
               gotToken = true;
             } else {
@@ -174,7 +176,8 @@ namespace peachy {
           logger->debug("In state LEXER_IN_COMMENT_LINE");
           if(isLineEnding(currentChar)) {
             logger->debug("End of comment");
-            token = new Token(logger, TOKEN_COMMENT_LINE, currentSequence);
+            token = tokenFactory->createToken(TOKEN_COMMENT_LINE,
+              currentSequence);
             resetToken();
             gotToken = true;
           } else {

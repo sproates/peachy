@@ -28,7 +28,7 @@ int main() {
     new FileScriptSource(nullLogger, "test.peachy");
   Environment * environment = new Environment(nullLogger);
   Runtime * runtime = new Runtime(nullLogger);
-  TokenFactory * tokenFactory = new TokenFactory(debugLogger, debugLogger);
+  TokenFactory * tokenFactory = new TokenFactory(debugLogger, nullLogger);
   TokenSource * tokenSource = new Lexer(nullLogger, tokenFactory, scriptSource);
   Parser * parser = new PeachyParser(debugLogger, tokenSource);
   Script * script = new Script(nullLogger, environment, runtime, parser);

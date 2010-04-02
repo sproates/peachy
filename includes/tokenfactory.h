@@ -16,6 +16,8 @@ namespace peachy {
 
       TokenFactory(Log * logger, Log * tokenLogger);
       virtual ~TokenFactory();
+      Token * createToken(TokenType tokenType);
+      Token * createToken(TokenType tokenType, std::string data);
       Token * createToken(Log * logger, TokenType tokenType);
       Token * createToken(Log * logger, TokenType tokenType, std::string data);
 

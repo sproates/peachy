@@ -17,9 +17,10 @@ FINAL_EXE = peachy.exe
 
 HEADERS = ./includes
 
-OBJECTS = environment.o filescriptsource.o lexer.o log.o nullostream.o \
-parser.o peachy.o peachyparser.o replscriptsource.o runtime.o script.o \
-scriptsource.o stringscriptsource.o token.o tokenfactory.o tokensource.o
+OBJECTS = environment.o expression.o expressionfactory.o filescriptsource.o \
+lexer.o log.o nullostream.o parser.o peachy.o peachyparser.o \
+replscriptsource.o runtime.o script.o scriptsource.o stringscriptsource.o \
+token.o tokenfactory.o tokensource.o
 
 SOURCE = ./src
 
@@ -46,17 +47,19 @@ test: $(TEST_EXE)
 # objects with entry points
 
 main.o: $(SOURCE)/main.cpp $(HEADERS)/environment.h \
+$(HEADERS)/expression.h $(HEADERS)/expressionfactory.h \
 $(HEADERS)/filescriptsource.h $(HEADERS)/lexer.h $(HEADERS)/log.h \
 $(HEADERS)/parser.h $(HEADERS)/peachy.h $(HEADERS)/peachyparser.h \
 $(HEADERS)/replscriptsource.h $(HEADERS)/runtime.h $(HEADERS)/script.h \
 $(HEADERS)/scriptsource.h $(HEADERS)/tokenfactory.h $(HEADERS)/tokensource.h
 	$(COMPILER) $(COMPILER_FLAGS) $(SOURCE)/main.cpp
 
-test.o: $(SOURCE)/test.cpp $(HEADERS)/environment.h $(HEADERS)/lexer.h \
-$(HEADERS)/log.h $(HEADERS)/nullostream.h $(HEADERS)/parser.h \
-$(HEADERS)/peachyparser.h $(HEADERS)/runtime.h $(HEADERS)/script.h \
-$(HEADERS)/scriptsource.h $(HEADERS)/stringscriptsource.h $(HEADERS)/token.h \
-$(HEADERS)/tokenfactory.h $(HEADERS)/tokensource.h $(HEADERS)/tokentype.h
+test.o: $(SOURCE)/test.cpp $(HEADERS)/environment.h $(HEADERS)/expression.h \
+$(HEADERS)/expressionfactory.h $(HEADERS)/lexer.h $(HEADERS)/log.h \
+$(HEADERS)/nullostream.h $(HEADERS)/parser.h $(HEADERS)/peachyparser.h \
+$(HEADERS)/runtime.h $(HEADERS)/script.h $(HEADERS)/scriptsource.h \
+$(HEADERS)/stringscriptsource.h $(HEADERS)/token.h $(HEADERS)/tokenfactory.h \
+$(HEADERS)/tokensource.h $(HEADERS)/tokentype.h
 	$(COMPILER) $(COMPILER_FLAGS) $(SOURCE)/test.cpp
 
 # intermediary objects
@@ -64,6 +67,14 @@ $(HEADERS)/tokenfactory.h $(HEADERS)/tokensource.h $(HEADERS)/tokentype.h
 environment.o: $(SOURCE)/environment.cpp $(HEADERS)/environment.h \
 $(HEADERS)/log.h
 	$(COMPILER) $(COMPILER_FLAGS) $(SOURCE)/environment.cpp
+
+expression.o: $(SOURCE)/expression.cpp $(HEADERS)/expression.h \
+$(HEADERS)/log.h
+	$(COMPILER) $(COMPILER_FLAGS) $(SOURCE)/expression.cpp
+
+expressionfactory.o: $(SOURCE)/expressionfactory.cpp $(HEADERS)/expression.h \
+$(HEADERS)/expressionfactory.h $(HEADERS)/log.h
+	$(COMPILER) $(COMPILER_FLAGS) $(SOURCE)/expressionfactory.cpp
 
 filescriptsource.o: $(SOURCE)/filescriptsource.cpp \
 $(HEADERS)/filescriptsource.h $(HEADERS)/log.h $(HEADERS)/scriptsource.h

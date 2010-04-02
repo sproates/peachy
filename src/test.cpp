@@ -1,4 +1,5 @@
 #include <iostream>
+#include <stdexcept>
 #include <string>
 
 #include "environment.h"
@@ -16,7 +17,10 @@
 
 using namespace peachy;
 
-int main() {
+int main(int argc, char ** argv) {
+
+  (void) argc;
+  (void) argv;
 
   NullOStream * nullOStream = new NullOStream;
   Log * nullLogger = new Log(nullOStream);
@@ -24,8 +28,14 @@ int main() {
 
   debugLogger->info("Peachy test harness");
 
-  ScriptSource * scriptSource =
-    new FileScriptSource(nullLogger, "test.peachy");
+  ScriptSource * scriptSource;
+
+  try {
+    scriptSource = new FileScriptSource(nullLogger, "test.peachy");
+  } catch(std::runtime_error e) {
+    debugLogger->info("Unable to acquire script source");
+    goto shortexit;
+  }
   Environment * environment = new Environment(nullLogger);
   Runtime * runtime = new Runtime(nullLogger);
   TokenFactory * tokenFactory = new TokenFactory(debugLogger, nullLogger);
@@ -42,10 +52,11 @@ int main() {
   delete runtime;
   delete environment;
   delete scriptSource;
+
+shortexit:
+
   delete nullLogger;
   delete nullOStream;
-
-  debugLogger->debug(std::string("a line\nwith a break"));
 
   debugLogger->info("Test harness complete");
   delete debugLogger;

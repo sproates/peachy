@@ -1,5 +1,6 @@
 #include "lexer.h"
 
+#include <iostream>
 #include <memory>
 #include <string>
 
@@ -21,6 +22,10 @@ namespace peachy {
     bool gotToken = false;
 
     while(!gotToken) {
+      if(atEndOfLine()) {
+        logger->debug("Overflowed input buffer");
+        throw LexerException("Overflowed input buffer");
+      }
       currentChar = currentLine[currentPos];
       switch(state) {
         case LEXER_COMPLETE:
@@ -43,6 +48,28 @@ namespace peachy {
               logger->debug("End of line");
               resetLine();
               break;
+            case '(':
+              logger->debug("Left paren");
+              token = new Token(logger, TOKEN_LEFT_PARENTHESIS);
+              resetToken();
+              gotToken = true;
+              break;
+            case ')':
+              logger->debug("Right paren");
+              token = new Token(logger, TOKEN_RIGHT_PARENTHESIS);
+              resetToken();
+              gotToken = true;
+              break;
+            case '#':
+              logger->debug("Comment line");
+              setState(LEXER_IN_COMMENT_LINE);
+              consume(false);
+              break;
+            case '"':
+              logger->debug("Start of string");
+              setState(LEXER_IN_STRING);
+              consume(false);
+              break;
             default:
               if(isNumeric(currentChar)) {
                 logger->debug("Current char is a number");
@@ -52,7 +79,7 @@ namespace peachy {
                 logger->debug("Current char is a letter");
                 setState(LEXER_IN_IDENTIFIER);
                 consume(true);
-              } else if(isOperator(currentChar)) {
+              } else if(isOperatorChar(currentChar)) {
                 logger->debug("Current char is an operator");
                 setState(LEXER_IN_OPERATOR);
                 consume(true);
@@ -61,6 +88,35 @@ namespace peachy {
                   std::string("Invalid character encountered: ").append(
                     1, currentChar));
               }
+          }
+          break;
+        case LEXER_IN_STRING:
+          logger->debug("In state LEXER_IN_STRING");
+          switch(currentChar) {
+            case '"':
+              logger->debug("End quote");
+              token = new Token(logger, TOKEN_STRING, currentSequence);
+              consume(false);
+              resetToken();
+              gotToken = true;
+              break;
+            case 0:
+              logger->debug("Newline found");
+              currentSequence.append(1, '\n');
+              logger->debug(currentSequence);
+              if(!scriptSource->hasMoreLines()) {
+                logger->debug("End of input but still inside string");
+                throw LexerException("Input terminated inside open string");
+              } else {
+                logger->debug("Getting a new line from script source");
+                setCurrentLine(scriptSource->getLine());
+                currentPos = 0;
+              }
+              break;
+            default:
+              logger->debug("Ordinary character");
+              consume(true);
+              logger->debug(currentSequence);
               break;
           }
           break;
@@ -94,7 +150,7 @@ namespace peachy {
           break;
         case LEXER_IN_OPERATOR:
           logger->debug("In state LEXER_IN_OPERATOR");
-          if(isOperator(currentChar)) {
+          if(isOperatorChar(currentChar)) {
             logger->debug("Another character of the current operator");
             consume(true);
           } else if(isNumeric(currentChar) &&
@@ -103,10 +159,27 @@ namespace peachy {
             setState(LEXER_IN_NUMBER);
             consume(true);
           } else {
-            logger->debug("End of operator");
-            token = new Token(logger, TOKEN_OPERATOR, currentSequence);
+            if(isOperator(currentSequence)) {
+              logger->debug("End of operator");
+              token = new Token(logger, TOKEN_OPERATOR, currentSequence);
+              resetToken();
+              gotToken = true;
+            } else {
+              logger->debug("Invalid operator sequence");
+              throw LexerException("Invalid operator sequence");
+            }
+          }
+          break;
+        case LEXER_IN_COMMENT_LINE:
+          logger->debug("In state LEXER_IN_COMMENT_LINE");
+          if(isLineEnding(currentChar)) {
+            logger->debug("End of comment");
+            token = new Token(logger, TOKEN_COMMENT_LINE, currentSequence);
             resetToken();
             gotToken = true;
+          } else {
+            logger->debug("Another character of the current comment");
+            consume(true);
           }
           break;
         case LEXER_NEED_INPUT:
@@ -140,6 +213,10 @@ namespace peachy {
       currentSequence.append(1, currentChar);
     }
     currentPos++;
+  }
+
+  bool Lexer::atEndOfLine() {
+    return(currentPos > currentLine.length());
   }
 
   void Lexer::resetLine() {
@@ -183,25 +260,55 @@ namespace peachy {
     );
   }
 
-  bool Lexer::isOperator(char c) {
+  bool Lexer::isOperatorChar(char c) {
     return (
       c == '=' ||
       c == '-' ||
-      c == '+'
+      c == '+' ||
+      c == '>' ||
+      c == '<' ||
+      c == '|'
+    );
+  }
+
+  bool Lexer::isOperator(std::string s) {
+    return (
+      s.compare("<-") == 0 ||
+      s.compare("=") == 0 ||
+      s.compare(">=") == 0 ||
+      s.compare("<=") == 0 ||
+      s.compare("<") == 0 ||
+      s.compare(">") == 0 ||
+      s.compare("+") == 0 ||
+      s.compare("-") == 0 ||
+      s.compare("|") == 0 ||
+      s.compare("&") == 0      
     );
   }
 
   bool Lexer::isIdentifier(char c) {
     return (
       isLetter(c) ||
-      isNumeric(c)
+      isNumeric(c) ||
+      c == '_'
     );
   }
 
   bool Lexer::isKeyword(std::string s) {
     return (
+      s.compare("while") == 0 ||
+      s.compare("function") == 0 ||
+      s.compare("return") == 0 ||
       s.compare("class") == 0 ||
-      s.compare("function") == 0
+      s.compare("for") == 0 ||
+      s.compare("print") == 0
+    );
+  }
+
+  bool Lexer::isLineEnding(char c) {
+    return (
+      c == '\r' ||
+      c == '\n'
     );
   }
 }

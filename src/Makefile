@@ -2,7 +2,7 @@
 
 COMPILER = g++
 
-COMPILER_FLAGS = -c -Wall -Wextra -pedantic -I$(HEADERS) $(DEFINES)
+COMPILER_FLAGS = -c -Wall -Wextra -Werror -Wunreachable-code -Wredundant-decls -Wwrite-strings -Wundef -Wendif-labels -Wcast-qual -pedantic -I$(HEADERS) $(DEFINES)
 
 DEFINES =
 
@@ -70,8 +70,8 @@ $(HEADERS)/tokensource.h
 peachy.o: peachy.cpp $(HEADERS)/peachy.h
 
 peachyparser.o: peachyparser.cpp $(HEADERS)/lexerexception.h $(HEADERS)/log.h \
-$(HEADERS)/parser.h $(HEADERS)/parserexception.h $(HEADERS)/peachyparser.h \
-$(HEADERS)/token.h $(HEADERS)/tokensource.h
+$(HEADERS)/parser.h $(HEADERS)/parserexception.h $(HEADERS)/parserstate.h \
+$(HEADERS)/peachyparser.h $(HEADERS)/token.h $(HEADERS)/tokensource.h
 
 replscriptsource.o: replscriptsource.cpp $(HEADERS)/log.h \
 $(HEADERS)/replscriptsource.h $(HEADERS)/scriptsource.h $(HEADERS)/log.h

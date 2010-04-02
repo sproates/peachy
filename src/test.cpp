@@ -11,6 +11,7 @@
 #include "runtime.h"
 #include "script.h"
 #include "scriptsource.h"
+#include "tokenfactory.h"
 #include "tokensource.h"
 
 using namespace peachy;
@@ -27,7 +28,8 @@ int main() {
     new FileScriptSource(nullLogger, "test.peachy");
   Environment * environment = new Environment(nullLogger);
   Runtime * runtime = new Runtime(nullLogger);
-  TokenSource * tokenSource = new Lexer(nullLogger, scriptSource);
+  TokenFactory * tokenFactory = new TokenFactory(debugLogger, debugLogger);
+  TokenSource * tokenSource = new Lexer(nullLogger, tokenFactory, scriptSource);
   Parser * parser = new PeachyParser(debugLogger, tokenSource);
   Script * script = new Script(nullLogger, environment, runtime, parser);
 
@@ -36,6 +38,7 @@ int main() {
   delete script;
   delete parser;
   delete tokenSource;
+  delete tokenFactory;
   delete runtime;
   delete environment;
   delete scriptSource;

@@ -2,7 +2,9 @@
 
 COMPILER = g++
 
-COMPILER_FLAGS = -c -Wall -Wextra -Werror -Wunreachable-code -Wredundant-decls -Wwrite-strings -Wundef -Wendif-labels -Wcast-qual -pedantic -I$(HEADERS) $(DEFINES)
+COMPILER_FLAGS = -c -Wall -Wextra -Werror -Wunreachable-code -Wredundant-decls \
+-Wwrite-strings -Wundef -Wendif-labels -Wcast-qual -pedantic -I$(HEADERS) \
+$(DEFINES)
 
 DEFINES =
 
@@ -14,7 +16,7 @@ HEADERS = ../includes
 
 OBJECTS = environment.o filescriptsource.o lexer.o log.o nullostream.o \
 parser.o peachy.o peachyparser.o replscriptsource.o runtime.o script.o \
-scriptsource.o stringscriptsource.o token.o tokensource.o
+scriptsource.o stringscriptsource.o token.o tokenfactory.o tokensource.o
 
 TEST_EXE = testpeachy.exe
 
@@ -41,13 +43,14 @@ clean:
 main.o: main.cpp $(HEADERS)/environment.h $(HEADERS)/filescriptsource.h \
 $(HEADERS)/lexer.h $(HEADERS)/log.h $(HEADERS)/parser.h $(HEADERS)/peachy.h \
 $(HEADERS)/peachyparser.h $(HEADERS)/replscriptsource.h $(HEADERS)/runtime.h \
-$(HEADERS)/script.h $(HEADERS)/scriptsource.h $(HEADERS)/tokensource.h
+$(HEADERS)/script.h $(HEADERS)/scriptsource.h $(HEADERS)/tokenfactory.h \
+$(HEADERS)/tokensource.h
 
 test.o: test.cpp $(HEADERS)/environment.h $(HEADERS)/lexer.h $(HEADERS)/log.h \
 $(HEADERS)/nullostream.h $(HEADERS)/parser.h $(HEADERS)/peachyparser.h \
 $(HEADERS)/runtime.h $(HEADERS)/script.h $(HEADERS)/scriptsource.h \
-$(HEADERS)/stringscriptsource.h $(HEADERS)/token.h $(HEADERS)/tokensource.h \
-$(HEADERS)/tokentype.h
+$(HEADERS)/stringscriptsource.h $(HEADERS)/token.h $(HEADERS)/tokenfactory.h \
+$(HEADERS)/tokensource.h $(HEADERS)/tokentype.h
 
 # intermediary objects
 
@@ -58,7 +61,7 @@ $(HEADERS)/log.h $(HEADERS)/scriptsource.h
 
 lexer.o: lexer.cpp $(HEADERS)/lexer.h $(HEADERS)/lexerexception.h \
 $(HEADERS)/lexerstate.h $(HEADERS)/log.h $(HEADERS)/scriptsource.h \
-$(HEADERS)/token.h $(HEADERS)/tokensource.h
+$(HEADERS)/token.h $(HEADERS)/tokenfactory.h $(HEADERS)/tokensource.h
 
 log.o: log.cpp $(HEADERS)/log.h
 
@@ -88,5 +91,8 @@ $(HEADERS)/stringscriptsource.h $(HEADERS)/scriptsource.h $(HEADERS)/log.h
 
 token.o: token.cpp $(HEADERS)/log.h $(HEADERS)/token.h $(HEADERS)/tokentype.h
 
+tokenfactory.o: tokenfactory.cpp $(HEADERS)/token.h $(HEADERS)/tokenfactory.h \
+$(HEADERS)/tokentype.h
+
 tokensource.o: tokensource.cpp $(HEADERS)/log.h $(HEADERS)/scriptsource.h \
-$(HEADERS)/token.h $(HEADERS)/tokensource.h
+$(HEADERS)/token.h $(HEADERS)/tokenfactory.h $(HEADERS)/tokensource.h

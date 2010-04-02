@@ -8,12 +8,14 @@ namespace peachy {
   class Log;
   class ScriptSource;
   class Token;
+  class TokenFactory;
 
   class TokenSource {
 
     public:
 
-      TokenSource(Log * logger, ScriptSource * scriptSource);
+      TokenSource(Log * logger, TokenFactory * tokenFactory,
+                  ScriptSource * scriptSource);
       virtual ~TokenSource();
 
       virtual std::auto_ptr<Token> nextToken() = 0;
@@ -22,6 +24,7 @@ namespace peachy {
 
       Log * logger;
       ScriptSource * scriptSource;
+      TokenFactory * tokenFactory;
 
     private:
 

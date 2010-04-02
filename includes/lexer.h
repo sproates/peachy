@@ -2,6 +2,7 @@
 #define PEACHY_LEXER_H
 
 #include <memory>
+#include <string>
 
 #include "lexerstate.h"
 #include "log.h"
@@ -10,13 +11,15 @@
 namespace peachy {
 
   class ScriptSource;
+  class TokenFactory;
 
   class Lexer : public TokenSource {
 
     public:
 
-      Lexer(Log * logger, ScriptSource * scriptSource)
-        : TokenSource(logger, scriptSource) {
+      Lexer(Log * logger, TokenFactory * tokenFactory,
+            ScriptSource * scriptSource)
+        : TokenSource(logger, tokenFactory, scriptSource) {
         logger->debug("Lexer constructor");
         setState(LEXER_NEED_INPUT);
         currentPos = 0;

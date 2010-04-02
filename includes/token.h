@@ -1,7 +1,6 @@
 #ifndef PEACHY_TOKEN_H
 #define PEACHY_TOKEN_H
 
-#include <ostream>
 #include <string>
 
 #include "tokentype.h"
@@ -14,7 +13,6 @@ namespace peachy {
 
     public:
 
-      Token(Log * logger);
       Token(Log * logger, TokenType tokenType);
       Token(Log * logger, TokenType tokenType, std::string data);
       ~Token();

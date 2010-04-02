@@ -17,10 +17,7 @@
 
 using namespace peachy;
 
-int main(int argc, char ** argv) {
-
-  (void) argc;
-  (void) argv;
+int main() {
 
   NullOStream * nullOStream = new NullOStream;
   Log * nullLogger = new Log(nullOStream);

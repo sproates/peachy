@@ -27,8 +27,8 @@ namespace peachy {
       Log * logger;
       StringScriptSource();
       void construct(Log * logger, std::string scriptString);
-      StringScriptSource(const StringScriptSource & stringScriptSource);
-      StringScriptSource & operator = (const StringScriptSource & stringScriptSource);
+      StringScriptSource(const StringScriptSource & s);
+      StringScriptSource & operator = (const StringScriptSource & s);
   };
 
 }

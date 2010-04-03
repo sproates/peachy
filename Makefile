@@ -122,8 +122,9 @@ $(HEADERS)/parser.h $(HEADERS)/parserexception.h $(HEADERS)/runtime.h
 scriptsource.o: $(SOURCE)/scriptsource.cpp $(HEADERS)/scriptsource.h
 	$(COMPILER) $(COMPILER_FLAGS) $(SOURCE)/scriptsource.cpp
 
-stringscriptsource.o: $(SOURCE)/stringscriptsource.cpp $(HEADERS)/log.h \
-$(HEADERS)/stringscriptsource.h $(HEADERS)/scriptsource.h $(HEADERS)/log.h
+stringscriptsource.o: $(SOURCE)/stringscriptsource.cpp \
+$(HEADERS)/istreamscriptsource.h $(HEADERS)/log.h \
+$(HEADERS)/stringscriptsource.h 
 	$(COMPILER) $(COMPILER_FLAGS) $(SOURCE)/stringscriptsource.cpp
 
 token.o: $(SOURCE)/token.cpp $(HEADERS)/log.h $(HEADERS)/token.h \

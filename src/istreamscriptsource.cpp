@@ -16,6 +16,7 @@ namespace peachy {
 
   IStreamScriptSource::~IStreamScriptSource() {
     logger->debug("IStreamScriptSource destructor");
+    delete stream;
   }
 
   std::string IStreamScriptSource::getLine() {

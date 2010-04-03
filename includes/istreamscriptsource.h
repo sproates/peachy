@@ -18,13 +18,14 @@ namespace peachy {
 
     protected:
 
+      IStreamScriptSource() {}
+
       std::istream * stream;
       std::string currentLine;
       Log * logger;
 
     private:
 
-      IStreamScriptSource();
       IStreamScriptSource(const IStreamScriptSource & s);
       IStreamScriptSource & operator = (const IStreamScriptSource & s);
   };

@@ -9,7 +9,7 @@
 #include "lexer.h"
 #include "log.h"
 #include "nullostream.h"
-#include "peachyparser.h"
+#include "parser.h"
 #include "runtime.h"
 #include "script.h"
 #include "scriptsource.h"
@@ -40,7 +40,7 @@ int main() {
   TokenSource * tokenSource = new Lexer(nullLogger, tokenFactory, scriptSource);
   ExpressionFactory * expressionFactory = new ExpressionFactory(debugLogger,
     debugLogger);
-  ExpressionSource * expressionSource = new PeachyParser(debugLogger,
+  ExpressionSource * expressionSource = new Parser(debugLogger,
     expressionFactory, tokenSource);
   Script * script = new Script(debugLogger, environment, runtime,
     expressionSource);

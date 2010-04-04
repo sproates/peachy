@@ -1,5 +1,5 @@
-#ifndef PEACHY_PEACHYPARSER_H
-#define PEACHY_PEACHYPARSER_H
+#ifndef PEACHY_PARSER_H
+#define PEACHY_PARSER_H
 
 #include <memory>
 
@@ -11,18 +11,18 @@ namespace peachy {
 
   class ExpressionFactory;
 
-  class PeachyParser : public ExpressionSource {
+  class Parser : public ExpressionSource {
 
     public:
 
-      PeachyParser(Log * logger, ExpressionFactory * expressionFactory,
+      Parser(Log * logger, ExpressionFactory * expressionFactory,
         TokenSource * tokenSource)
         : ExpressionSource(logger, expressionFactory, tokenSource) {
-        logger->debug("PeachyParser constuctor");
+        logger->debug("Parser constuctor");
         setState(PARSER_NEED_TOKEN);
       }
 
-      ~PeachyParser();
+      ~Parser();
 
       std::auto_ptr<Expression> nextExpression();
 
@@ -33,9 +33,9 @@ namespace peachy {
       void setState(ParserState state);
       ParserState getState();
 
-      PeachyParser();
-      PeachyParser(const PeachyParser & peachyParser);
-      PeachyParser & operator = (const PeachyParser & peachyParser);
+      Parser();
+      Parser(const Parser & p);
+      Parser & operator = (const Parser & p);
   };
 }
 

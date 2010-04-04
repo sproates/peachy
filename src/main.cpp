@@ -12,7 +12,7 @@
 #include "lexer.h"
 #include "log.h"
 #include "peachy.h"
-#include "peachyparser.h"
+#include "parser.h"
 #include "replscriptsource.h"
 #include "runtime.h"
 #include "script.h"
@@ -40,7 +40,7 @@ int main(const int argc, const char ** argv) {
     TokenSource * tokenSource = new Lexer(logger, tokenFactory, scriptSource);
     ExpressionFactory * expressionFactory = new ExpressionFactory(logger,
       logger);
-    ExpressionSource * expressionSource = new PeachyParser(logger,
+    ExpressionSource * expressionSource = new Parser(logger,
       expressionFactory, tokenSource);
     Script * script = new Script(logger, environment, runtime,
       expressionSource);

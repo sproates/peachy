@@ -1,4 +1,4 @@
-#include "peachyparser.h"
+#include "parser.h"
 
 #include <memory>
 
@@ -14,12 +14,12 @@
 
 namespace peachy {
 
-  PeachyParser::~PeachyParser() {
-    logger->debug("PeachyParser destructor");
+  Parser::~Parser() {
+    logger->debug("Parser destructor");
   }
 
-  std::auto_ptr<Expression> PeachyParser::nextExpression() {
-    logger->debug("PeachyParser::nextExpression()");
+  std::auto_ptr<Expression> Parser::nextExpression() {
+    logger->debug("Parser::nextExpression()");
     Expression * expression = expressionFactory->createQuitExpression();
     return std::auto_ptr<Expression> (expression);
     /*
@@ -92,13 +92,13 @@ namespace peachy {
     */
   }
 
-  ParserState PeachyParser::getState() {
-    logger->debug("PeachyParser::getState()");
+  ParserState Parser::getState() {
+    logger->debug("Parser::getState()");
     return state;
   }
 
-  void PeachyParser::setState(ParserState state) {
-    logger->debug("PeachyParser::setState()");
+  void Parser::setState(ParserState state) {
+    logger->debug("Parser::setState()");
     this->state = state;
   }
 }

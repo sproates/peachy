@@ -1,6 +1,8 @@
 #ifndef PEACHY_EXPRESSION_H
 #define PEACHY_EXPRESSION_H
 
+#include "expressiontype.h"
+
 namespace peachy {
 
   class Log;
@@ -9,12 +11,14 @@ namespace peachy {
 
     public:
 
-      Expression(Log * logger);
       virtual ~Expression();
+      ExpressionType getExpressionType();
 
     protected:
 
+      Expression(Log * logger);
       Log * logger;
+      ExpressionType expressionType;
 
     private:
 

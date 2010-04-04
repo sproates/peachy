@@ -69,7 +69,7 @@ $(HEADERS)/log.h
 	$(COMPILER) $(COMPILER_FLAGS) $(SOURCE)/environment.cpp
 
 expression.o: $(SOURCE)/expression.cpp $(HEADERS)/expression.h \
-$(HEADERS)/log.h
+$(HEADERS)/expressiontype.h $(HEADERS)/log.h
 	$(COMPILER) $(COMPILER_FLAGS) $(SOURCE)/expression.cpp
 
 expressionfactory.o: $(SOURCE)/expressionfactory.cpp $(HEADERS)/expression.h \
@@ -110,7 +110,7 @@ peachy.o: $(SOURCE)/peachy.cpp $(HEADERS)/peachy.h
 	$(COMPILER) $(COMPILER_FLAGS) $(SOURCE)/peachy.cpp
 
 quitexpression.o: $(SOURCE)/quitexpression.cpp $(HEADERS)/expression.h \
-$(HEADERS)/log.h $(HEADERS)/quitexpression.h
+$(HEADERS)/expressiontype.h $(HEADERS)/log.h $(HEADERS)/quitexpression.h
 	$(COMPILER) $(COMPILER_FLAGS) $(SOURCE)/quitexpression.cpp
 
 replscriptsource.o: $(SOURCE)/replscriptsource.cpp $(HEADERS)/log.h \

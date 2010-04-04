@@ -14,6 +14,8 @@ namespace peachy {
       virtual ~ExpressionFactory();
       Expression * createExpression();
       Expression * createExpression(Log * logger);
+      Expression * createQuitExpression();
+      Expression * createQuitExpression(Log * logger);
 
     protected:
 

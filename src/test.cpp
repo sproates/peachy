@@ -3,11 +3,12 @@
 #include <string>
 
 #include "environment.h"
+#include "expressionfactory.h"
+#include "expressionsource.h"
 #include "filescriptsource.h"
 #include "lexer.h"
 #include "log.h"
 #include "nullostream.h"
-#include "parser.h"
 #include "peachyparser.h"
 #include "runtime.h"
 #include "script.h"
@@ -37,13 +38,18 @@ int main() {
   Runtime * runtime = new Runtime(nullLogger);
   TokenFactory * tokenFactory = new TokenFactory(nullLogger, nullLogger);
   TokenSource * tokenSource = new Lexer(nullLogger, tokenFactory, scriptSource);
-  Parser * parser = new PeachyParser(debugLogger, tokenSource);
-  Script * script = new Script(nullLogger, environment, runtime, parser);
+  ExpressionFactory * expressionFactory = new ExpressionFactory(debugLogger,
+    debugLogger);
+  ExpressionSource * expressionSource = new PeachyParser(debugLogger,
+    expressionFactory, tokenSource);
+  Script * script = new Script(debugLogger, environment, runtime,
+    expressionSource);
 
   script->run();
 
   delete script;
-  delete parser;
+  delete expressionSource;
+  delete expressionFactory;
   delete tokenSource;
   delete tokenFactory;
   delete runtime;

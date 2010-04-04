@@ -6,10 +6,11 @@
 #include <string>
 
 #include "environment.h"
+#include "expressionfactory.h"
+#include "expressionsource.h"
 #include "filescriptsource.h"
 #include "lexer.h"
 #include "log.h"
-#include "parser.h"
 #include "peachy.h"
 #include "peachyparser.h"
 #include "replscriptsource.h"
@@ -37,13 +38,18 @@ int main(const int argc, const char ** argv) {
     Runtime * runtime = new Runtime(logger);
     TokenFactory * tokenFactory = new TokenFactory(logger, logger);
     TokenSource * tokenSource = new Lexer(logger, tokenFactory, scriptSource);
-    Parser * parser = new PeachyParser(logger, tokenSource);
-    Script * script = new Script(logger, environment, runtime, parser);
+    ExpressionFactory * expressionFactory = new ExpressionFactory(logger,
+      logger);
+    ExpressionSource * expressionSource = new PeachyParser(logger,
+      expressionFactory, tokenSource);
+    Script * script = new Script(logger, environment, runtime,
+      expressionSource);
 
     script->run();
 
     delete script;
-    delete parser;
+    delete expressionSource;
+    delete expressionFactory;
     delete tokenSource;
     delete tokenFactory;
     delete runtime;

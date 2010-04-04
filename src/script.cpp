@@ -1,48 +1,35 @@
 #include "script.h"
 
 #include <iostream>
+#include <memory>
 
 #include "environment.h"
+#include "expression.h"
+#include "expressionsource.h"
 #include "log.h"
-#include "parser.h"
 #include "parserexception.h"
 #include "runtime.h"
 
 namespace peachy {
 
   Script::Script(Log * logger, Environment * environment, Runtime * runtime,
-		 Parser * parser) {
+		 ExpressionSource * expressionSource) {
     logger->debug("Script constructor");
     this->logger = logger;
     this->environment = environment;
     this->runtime = runtime;
-    this->parser = parser;
+    this->expressionSource = expressionSource;
   }
 
   Script::~Script() {
     logger->debug("Script destructor");
   }
 
-  Environment * Script::getEnvironment() {
-    logger->debug("Script::getEnvironment()");
-    return environment;
-  }
-
-  Parser * Script::getParser() {
-    logger->debug("Script::getParser()");
-    return parser;
-  }
-
-  Runtime * Script::getRuntime() {
-    logger->debug("Script::getRuntime()");
-    return runtime;
-  }
-
   void Script::run() {
     logger->debug("Script::run()");
 
     try {
-      parser->parse();
+      std::auto_ptr<Expression> expression = expressionSource->nextExpression();
     } catch(ParserException & e) {
       logger->info("ParserException thrown");
       logger->info(e.what());

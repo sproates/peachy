@@ -18,9 +18,9 @@ FINAL_EXE = peachy.exe
 HEADERS = ./includes
 
 OBJECTS = environment.o expression.o expressionfactory.o expressionsource.o \
-filescriptsource.o istreamscriptsource.o lexer.o log.o nullostream.o parser.o \
-peachy.o peachyparser.o replscriptsource.o runtime.o script.o scriptsource.o \
-stringscriptsource.o token.o tokenfactory.o tokensource.o
+filescriptsource.o istreamscriptsource.o lexer.o log.o nullostream.o peachy.o \
+peachyparser.o quitexpression.o replscriptsource.o runtime.o script.o \
+scriptsource.o stringscriptsource.o token.o tokenfactory.o tokensource.o
 
 SOURCE = ./src
 
@@ -48,18 +48,18 @@ test: $(TEST_EXE)
 
 main.o: $(SOURCE)/main.cpp $(HEADERS)/environment.h \
 $(HEADERS)/expression.h $(HEADERS)/expressionfactory.h \
-$(HEADERS)/filescriptsource.h $(HEADERS)/lexer.h $(HEADERS)/log.h \
-$(HEADERS)/parser.h $(HEADERS)/peachy.h $(HEADERS)/peachyparser.h \
+$(HEADERS)/expressionsource.h $(HEADERS)/filescriptsource.h $(HEADERS)/lexer.h \
+$(HEADERS)/log.h $(HEADERS)/peachy.h $(HEADERS)/peachyparser.h \
 $(HEADERS)/replscriptsource.h $(HEADERS)/runtime.h $(HEADERS)/script.h \
 $(HEADERS)/scriptsource.h $(HEADERS)/tokenfactory.h $(HEADERS)/tokensource.h
 	$(COMPILER) $(COMPILER_FLAGS) $(SOURCE)/main.cpp
 
 test.o: $(SOURCE)/test.cpp $(HEADERS)/environment.h $(HEADERS)/expression.h \
-$(HEADERS)/expressionfactory.h $(HEADERS)/lexer.h $(HEADERS)/log.h \
-$(HEADERS)/nullostream.h $(HEADERS)/parser.h $(HEADERS)/peachyparser.h \
-$(HEADERS)/runtime.h $(HEADERS)/script.h $(HEADERS)/scriptsource.h \
-$(HEADERS)/stringscriptsource.h $(HEADERS)/token.h $(HEADERS)/tokenfactory.h \
-$(HEADERS)/tokensource.h $(HEADERS)/tokentype.h
+$(HEADERS)/expressionfactory.h $(HEADERS)/expressionsource.h \
+$(HEADERS)/lexer.h $(HEADERS)/log.h $(HEADERS)/nullostream.h \
+$(HEADERS)/peachyparser.h $(HEADERS)/runtime.h $(HEADERS)/script.h \
+$(HEADERS)/scriptsource.h $(HEADERS)/stringscriptsource.h $(HEADERS)/token.h \
+$(HEADERS)/tokenfactory.h $(HEADERS)/tokensource.h $(HEADERS)/tokentype.h
 	$(COMPILER) $(COMPILER_FLAGS) $(SOURCE)/test.cpp
 
 # intermediary objects
@@ -73,7 +73,7 @@ $(HEADERS)/log.h
 	$(COMPILER) $(COMPILER_FLAGS) $(SOURCE)/expression.cpp
 
 expressionfactory.o: $(SOURCE)/expressionfactory.cpp $(HEADERS)/expression.h \
-$(HEADERS)/expressionfactory.h $(HEADERS)/log.h
+$(HEADERS)/expressionfactory.h $(HEADERS)/log.h $(HEADERS)/quitexpression.h
 	$(COMPILER) $(COMPILER_FLAGS) $(SOURCE)/expressionfactory.cpp
 
 expressionsource.o: $(SOURCE)/expressionsource.cpp $(HEADERS)/expression.h\
@@ -100,18 +100,18 @@ log.o: $(SOURCE)/log.cpp $(HEADERS)/log.h
 nullostream.o: $(SOURCE)/nullostream.cpp $(HEADERS)/nullostream.h
 	$(COMPILER) $(COMPILER_FLAGS) $(SOURCE)/nullostream.cpp
 
-parser.o: $(SOURCE)/parser.cpp $(HEADERS)/log.h $(HEADERS)/parser.h \
-$(HEADERS)/tokensource.h
-	$(COMPILER) $(COMPILER_FLAGS) $(SOURCE)/parser.cpp
-
 peachy.o: $(SOURCE)/peachy.cpp $(HEADERS)/peachy.h
 	$(COMPILER) $(COMPILER_FLAGS) $(SOURCE)/peachy.cpp
 
-peachyparser.o: $(SOURCE)/peachyparser.cpp $(HEADERS)/lexerexception.h \
-$(HEADERS)/log.h $(HEADERS)/parser.h $(HEADERS)/parserexception.h \
-$(HEADERS)/parserstate.h $(HEADERS)/peachyparser.h $(HEADERS)/token.h \
-$(HEADERS)/tokensource.h
+peachyparser.o: $(SOURCE)/peachyparser.cpp $(HEADERS)/expressionfactory.h \
+$(HEADERS)/expressionsource.h $(HEADERS)/lexerexception.h \
+$(HEADERS)/log.h $(HEADERS)/parserexception.h $(HEADERS)/parserstate.h \
+$(HEADERS)/peachyparser.h $(HEADERS)/token.h $(HEADERS)/tokensource.h
 	$(COMPILER) $(COMPILER_FLAGS) $(SOURCE)/peachyparser.cpp
+
+quitexpression.o: $(SOURCE)/quitexpression.cpp $(HEADERS)/expression.h \
+$(HEADERS)/log.h $(HEADERS)/quitexpression.h
+	$(COMPILER) $(COMPILER_FLAGS) $(SOURCE)/quitexpression.cpp
 
 replscriptsource.o: $(SOURCE)/replscriptsource.cpp $(HEADERS)/log.h \
 $(HEADERS)/replscriptsource.h $(HEADERS)/scriptsource.h $(HEADERS)/log.h
@@ -120,8 +120,9 @@ $(HEADERS)/replscriptsource.h $(HEADERS)/scriptsource.h $(HEADERS)/log.h
 runtime.o: $(SOURCE)/runtime.cpp $(HEADERS)/log.h $(HEADERS)/runtime.h
 	$(COMPILER) $(COMPILER_FLAGS) $(SOURCE)/runtime.cpp
 
-script.o: $(SOURCE)/script.cpp $(HEADERS)/environment.h $(HEADERS)/log.h \
-$(HEADERS)/parser.h $(HEADERS)/parserexception.h $(HEADERS)/runtime.h
+script.o: $(SOURCE)/script.cpp $(HEADERS)/environment.h \
+$(HEADERS)/expressionsource.h $(HEADERS)/log.h $(HEADERS)/parserexception.h \
+$(HEADERS)/runtime.h
 	$(COMPILER) $(COMPILER_FLAGS) $(SOURCE)/script.cpp
 
 scriptsource.o: $(SOURCE)/scriptsource.cpp $(HEADERS)/scriptsource.h

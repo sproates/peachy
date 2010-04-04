@@ -2,10 +2,13 @@
 
 #include <memory>
 
+#include "expression.h"
+#include "expressionfactory.h"
 #include "lexerexception.h"
 #include "log.h"
 #include "parserexception.h"
 #include "parserstate.h"
+#include "quitexpression.h"
 #include "token.h"
 #include "tokensource.h"
 
@@ -15,8 +18,11 @@ namespace peachy {
     logger->debug("PeachyParser destructor");
   }
 
-  void PeachyParser::parse() {
-    logger->debug("PeachyParser::parse()");
+  std::auto_ptr<Expression> PeachyParser::nextExpression() {
+    logger->debug("PeachyParser::nextExpression()");
+    Expression * expression = expressionFactory->createQuitExpression();
+    return std::auto_ptr<Expression> (expression);
+    /*
     std::auto_ptr<Token> token;
     while(true) {
       switch(state) {
@@ -83,6 +89,7 @@ namespace peachy {
           setState(PARSER_ERROR);
       }
     }
+    */
   }
 
   ParserState PeachyParser::getState() {

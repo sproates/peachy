@@ -2,15 +2,12 @@ Peachy is an interpreted scripting language.
 
 Software design goals:
 
-- Don't use any external dependencies other than std and stl
-- Be multi-platform from a single build system
-- Support unit testing and mock objects to the hilt
-- Have complete and clear documentation
-- Have a complete test suit
+- Don't use any external dependencies
+- Have complete documentation
+- Have a complete test suite
 
 Language design goals:
 
-- Simple syntax
 - Support XML as a language construct (a la Scala)
-- Support JSON as a language construct
-- Simple syntax
+- Support JSON as a language construct (a la JavaScript)
+- Everything is an object (a la Ruby)

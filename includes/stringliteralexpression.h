@@ -1,6 +1,8 @@
 #ifndef PEACHY_STRINGLITERALEXPRESSION_H
 #define PEACHY_STRINGLITERALEXPRESSION_H
 
+#include <string>
+
 #include "expression.h"
 #include "expressiontype.h"
 #include "log.h"
@@ -16,6 +18,12 @@ namespace peachy {
         this->expressionType = EXPRESSION_STRING_LITERAL;
       }
       virtual ~StringLiteralExpression();
+      void setStringValue(std::string stringValue);
+      std::string getStringValue();
+
+    protected:
+
+      std::string stringValue;
   };
 }
 

@@ -3,18 +3,20 @@
 
 namespace peachy {
 
+  class ExpressionSource;
   class Log;
 
   class Interpreter {
 
     public:
 
-      Interpreter(Log * logger);
+      Interpreter(Log * logger, ExpressionSource * expressionSource);
       virtual ~Interpreter();
 
     protected:
 
       Log * logger;
+      ExpressionSource * expressionSource;
 
     private:
 

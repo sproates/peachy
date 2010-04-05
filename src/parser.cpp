@@ -11,6 +11,7 @@
 #include "parserexception.h"
 #include "parserstate.h"
 #include "quitexpression.h"
+#include "stringliteralexpression.h"
 #include "token.h"
 #include "tokensource.h"
 
@@ -110,7 +111,10 @@ namespace peachy {
                 case TOKEN_EOF:
                 case TOKEN_IDENTIFIER:
                   logger->debug("Ok, looks like we got the end of the statement");
-                  // create string literal expression here
+                  StringLiteralExpression * s =
+                    expressionFactory->createStringLiteralExpression();
+                  s->setStringValue(tokenBuffer.front()->getData());
+                  expression->setRValue(s);
                   gotExpression = true;
                   break;
                 default:

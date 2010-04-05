@@ -15,11 +15,13 @@ namespace peachy {
 
       virtual ~Expression();
       ExpressionType getExpressionType();
-      void setLValue(std::string identifier);
+      void setLValue(Expression * e);
       void setRValue(Expression * e);
       std::string toString();
       Expression(const Expression & e);
       Expression & operator = (const Expression & e);
+      Expression * getLValue();
+      Expression * getRValue();
 
     protected:
 
@@ -27,7 +29,7 @@ namespace peachy {
       Log * logger;
       ExpressionType expressionType;
 
-      std::string lValue;
+      Expression * lValue;
       Expression * rValue;
 
     private:

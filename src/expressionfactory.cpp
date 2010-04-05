@@ -5,6 +5,7 @@
 #include "log.h"
 #include "quitexpression.h"
 #include "stringliteralexpression.h"
+#include "variableexpression.h"
 
 namespace peachy {
 
@@ -47,5 +48,16 @@ namespace peachy {
     Log * logger) {
     this->logger->debug("ExpressionFactory::createStringLiteralExpression()");
     return new StringLiteralExpression(logger);
+  }
+
+  VariableExpression * ExpressionFactory::createVariableExpression() {
+    logger->debug("ExpressionFactory::createVariableExpression()");
+    return new VariableExpression(expressionLogger);
+  }
+
+  VariableExpression * ExpressionFactory::createVariableExpression(
+    Log * logger) {
+    this->logger->debug("ExpressionFactory::createVariableExpression()");
+    return new VariableExpression(logger);
   }
 }

@@ -22,19 +22,14 @@ namespace peachy {
     return expressionType;
   }
 
-  void Expression::setLValue(std::string identifier) {
+  void Expression::setLValue(Expression * e) {
     logger->debug("Expression::setLValue()");
-    lValue = identifier;
+    lValue = e;
   }
 
   void Expression::setRValue(Expression * e) {
     logger->debug("Expression::setRValue()");
-    if(e != NULL) {
-      logger->debug("e is not null");
-    } else {
-      logger->debug("e is null");
-    }
-    //rValue = e;
+    rValue = e;
   }
 
   std::string Expression::toString() {
@@ -73,5 +68,15 @@ namespace peachy {
       rValue = e.rValue;
     }
     return *this;
+  }
+
+  Expression * Expression::getLValue() {
+    logger->debug("Expression::getLValue()");
+    return lValue;
+  }
+
+  Expression * Expression::getRValue() {
+    logger->debug("Expression::getRValue()");
+    return rValue;
   }
 }

@@ -8,6 +8,7 @@ namespace peachy {
   class Log;
   class QuitExpression;
   class StringLiteralExpression;
+  class VariableExpression;
 
   class ExpressionFactory {
 
@@ -22,6 +23,8 @@ namespace peachy {
       QuitExpression * createQuitExpression(Log * logger);
       StringLiteralExpression * createStringLiteralExpression();
       StringLiteralExpression * createStringLiteralExpression(Log * logger);
+      VariableExpression * createVariableExpression();
+      VariableExpression * createVariableExpression(Log * logger);
 
     protected:
 

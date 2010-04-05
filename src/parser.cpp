@@ -13,6 +13,7 @@
 #include "stringliteralexpression.h"
 #include "token.h"
 #include "tokensource.h"
+#include "variableexpression.h"
 
 namespace peachy {
 
@@ -57,8 +58,12 @@ namespace peachy {
                   if(tokenBuffer[1]->getData().compare("<-") == 0) {
                     logger->debug("Looks like an assignment");
                     setState(PARSER_ASSIGNMENT);
-                    expression = expressionFactory->createAssignmentExpression();
-                    expression->setLValue(tokenBuffer[0]->getData());
+                    expression =
+                      expressionFactory->createAssignmentExpression();
+                    VariableExpression * e =
+                      expressionFactory->createVariableExpression();
+                    e->setVariableName(tokenBuffer[0]->getData());
+                    expression->setLValue(e);
                     tokenBuffer.pop_front();
                     tokenBuffer.pop_front();
                   } else {
@@ -114,6 +119,7 @@ namespace peachy {
                   expression->setRValue(s);
                   gotExpression = true;
                   tokenBuffer.pop_front();
+                  setState(PARSER_DEFAULT);
                   break;
                 default:
                   logger->debug("Ok I have no idea what's going on");

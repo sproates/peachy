@@ -39,9 +39,9 @@ int main() {
   Runtime * runtime = new Runtime(nullLogger);
   TokenFactory * tokenFactory = new TokenFactory(nullLogger, nullLogger);
   TokenSource * tokenSource = new Lexer(nullLogger, tokenFactory, scriptSource);
-  ExpressionFactory * expressionFactory = new ExpressionFactory(debugLogger,
-    debugLogger);
-  ExpressionSource * expressionSource = new Parser(debugLogger,
+  ExpressionFactory * expressionFactory = new ExpressionFactory(nullLogger,
+    nullLogger);
+  ExpressionSource * expressionSource = new Parser(nullLogger,
     expressionFactory, tokenSource);
   Interpreter * interpreter = new Interpreter(debugLogger, expressionSource);
   Script * script = new Script(debugLogger, environment, runtime, interpreter);

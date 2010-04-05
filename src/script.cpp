@@ -5,6 +5,7 @@
 
 #include "environment.h"
 #include "interpreter.h"
+#include "interpreterexception.h"
 #include "log.h"
 #include "parserexception.h"
 #include "runtime.h"
@@ -28,9 +29,16 @@ namespace peachy {
     logger->debug("Script::run()");
     try {
       interpreter->run();
-    } catch(ParserException & e) {
+    } catch(ParserException & pe) {
       logger->info("ParserException thrown");
-      logger->info(e.what());
+      logger->info(pe.what());
+      return;
+    } catch(InterpreterException & ie) {
+      logger->info("InterpreterException thrown");
+      logger->info(ie.what());
+      return;
+    } catch(...) {
+      logger->debug("Something bad happened");
       return;
     }
     logger->debug("Reached end of script");

@@ -5,6 +5,7 @@
 #include "expression.h"
 #include "expressionsource.h"
 #include "expressiontype.h"
+#include "interpreterexception.h"
 #include "log.h"
 
 namespace peachy {
@@ -24,10 +25,29 @@ namespace peachy {
     std::auto_ptr<Expression> expression;
     bool quitting = false;
     while(!quitting) {
+      logger->debug("Getting next expression");
       expression = expressionSource->nextExpression();
       switch(expression->getExpressionType()) {
         case EXPRESSION_ASSIGNMENT:
           logger->debug("Assignment expression found");
+          Expression * lValue = expression.get()->getLValue();
+          Expression * rValue = expression.get()->getRValue();
+          switch(lValue->getExpressionType()) {
+            case EXPRESSION_VARIABLE:
+              logger->debug("Assigning to a variable");
+              switch(rValue->getExpressionType()) {
+                case EXPRESSION_STRING_LITERAL:
+                  logger->debug("It's a string literal, I know this");
+                  break;
+                default:
+                  logger->debug("I don't know how to assign one of those");
+                  throw InterpreterException("I don't know how to assign one of those");
+              }
+              break;
+            default:
+              logger->debug("Assigning to what now?");
+              throw InterpreterException("Assigning to what now?");
+          }
           break;
         case EXPRESSION_QUIT:
           logger->debug("Quit expression found");

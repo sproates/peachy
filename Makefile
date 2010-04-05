@@ -22,7 +22,7 @@ expressionfactory.o expressionsource.o filescriptsource.o interpreter.o \
 istreamscriptsource.o lexer.o log.o nullostream.o peachy.o parser.o \
 quitexpression.o replscriptsource.o runtime.o script.o scriptsource.o \
 stringliteralexpression.o stringscriptsource.o token.o tokenfactory.o \
-tokensource.o
+tokensource.o variableexpression.o
 
 SOURCE = ./src
 
@@ -83,7 +83,8 @@ $(HEADERS)/expressiontype.h $(HEADERS)/log.h
 
 expressionfactory.o: $(SOURCE)/expressionfactory.cpp \
 $(HEADERS)/assignmentexpression.h $(HEADERS)/expression.h \
-$(HEADERS)/expressionfactory.h $(HEADERS)/log.h $(HEADERS)/quitexpression.h
+$(HEADERS)/expressionfactory.h $(HEADERS)/log.h $(HEADERS)/quitexpression.h \
+$(HEADERS)/variableexpression.h
 	$(COMPILER) $(COMPILER_FLAGS) $(SOURCE)/expressionfactory.cpp
 
 expressionsource.o: $(SOURCE)/expressionsource.cpp $(HEADERS)/expression.h \
@@ -96,7 +97,8 @@ $(HEADERS)/filescriptsource.h $(HEADERS)/istreamscriptsource.h $(HEADERS)/log.h
 	$(COMPILER) $(COMPILER_FLAGS) $(SOURCE)/filescriptsource.cpp
 
 interpreter.o: $(SOURCE)/interpreter.cpp $(HEADERS)/expressionsource.h \
-$(HEADERS)/expressiontype.h $(HEADERS)/interpreter.h $(HEADERS)/log.h
+$(HEADERS)/expressiontype.h $(HEADERS)/interpreter.h \
+$(HEADERS)/interpreterexception.h $(HEADERS)/log.h
 	$(COMPILER) $(COMPILER_FLAGS) $(SOURCE)/interpreter.cpp
 
 istreamscriptsource.o: $(SOURCE)/istreamscriptsource.cpp \
@@ -118,7 +120,8 @@ parser.o: $(SOURCE)/parser.cpp $(HEADERS)/assignmentexpression.h \
 $(HEADERS)/expressionfactory.h $(HEADERS)/expressionsource.h \
 $(HEADERS)/lexerexception.h $(HEADERS)/log.h $(HEADERS)/parserexception.h \
 $(HEADERS)/parserstate.h $(HEADERS)/parser.h $(HEADERS)/quitexpression.h \
-$(HEADERS)/token.h $(HEADERS)/tokensource.h
+$(HEADERS)/stringliteralexpression.h $(HEADERS)/token.h \
+$(HEADERS)/tokensource.h $(HEADERS)/variableexpression.h
 	$(COMPILER) $(COMPILER_FLAGS) $(SOURCE)/parser.cpp
 
 peachy.o: $(SOURCE)/peachy.cpp $(HEADERS)/peachy.h
@@ -136,8 +139,8 @@ runtime.o: $(SOURCE)/runtime.cpp $(HEADERS)/log.h $(HEADERS)/runtime.h
 	$(COMPILER) $(COMPILER_FLAGS) $(SOURCE)/runtime.cpp
 
 script.o: $(SOURCE)/script.cpp $(HEADERS)/environment.h \
-$(HEADERS)/interpreter.h $(HEADERS)/log.h $(HEADERS)/parserexception.h \
-$(HEADERS)/runtime.h
+$(HEADERS)/interpreter.h $(HEADERS)/interpreterexception.h $(HEADERS)/log.h \
+$(HEADERS)/parserexception.h $(HEADERS)/runtime.h
 	$(COMPILER) $(COMPILER_FLAGS) $(SOURCE)/script.cpp
 
 scriptsource.o: $(SOURCE)/scriptsource.cpp $(HEADERS)/scriptsource.h
@@ -165,3 +168,8 @@ tokensource.o: $(SOURCE)/tokensource.cpp $(HEADERS)/log.h \
 $(HEADERS)/scriptsource.h $(HEADERS)/token.h $(HEADERS)/tokenfactory.h \
 $(HEADERS)/tokensource.h
 	$(COMPILER) $(COMPILER_FLAGS) $(SOURCE)/tokensource.cpp
+
+variableexpression.o: $(SOURCE)/variableexpression.cpp \
+$(HEADERS)/expression.h $(HEADERS)/expressiontype.h $(HEADERS)/log.h \
+$(HEADERS)/variableexpression.h
+	$(COMPILER) $(COMPILER_FLAGS) $(SOURCE)/variableexpression.cpp

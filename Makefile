@@ -83,7 +83,7 @@ $(HEADERS)/tokensource.h
 	$(COMPILER) $(COMPILER_FLAGS) $(SOURCE)/expressionsource.cpp
 
 filescriptsource.o: $(SOURCE)/filescriptsource.cpp \
-$(HEADERS)/filescriptsource.h $(HEADERS)/log.h $(HEADERS)/scriptsource.h
+$(HEADERS)/filescriptsource.h $(HEADERS)/istreamscriptsource.h $(HEADERS)/log.h
 	$(COMPILER) $(COMPILER_FLAGS) $(SOURCE)/filescriptsource.cpp
 
 interpreter.o: $(SOURCE)/interpreter.cpp $(HEADERS)/interpreter.h \

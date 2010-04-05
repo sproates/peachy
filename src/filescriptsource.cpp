@@ -32,18 +32,5 @@ namespace peachy {
 
   FileScriptSource::~FileScriptSource() {
     logger->debug("FileScriptSource destructor");
-    stream->close();
-    delete stream;
-  }
-
-  std::string FileScriptSource::getLine() {
-    logger->debug("FileScriptSource::getLine()");
-    std::getline(*stream, currentLine);
-    return currentLine;
-  }
-
-  bool FileScriptSource::hasMoreLines() {
-    logger->debug("FileScriptSource::hasMoreLines()");
-    return !stream->eof();
   }
 }

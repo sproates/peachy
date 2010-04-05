@@ -2,6 +2,7 @@
 #define PEACHY_PARSER_H
 
 #include <memory>
+#include <string>
 
 #include "expressionsource.h"
 #include "log.h"
@@ -29,6 +30,7 @@ namespace peachy {
     private:
 
       ParserState state;
+      std::string errorMessage;
 
       void setState(ParserState state);
       ParserState getState();

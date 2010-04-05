@@ -20,7 +20,41 @@ namespace peachy {
 
   std::auto_ptr<Expression> Parser::nextExpression() {
     logger->debug("Parser::nextExpression()");
-    Expression * expression = expressionFactory->createQuitExpression();
+
+    Expression * expression;
+    std::auto_ptr<Token> currentToken;
+    bool gotExpression = false;
+
+    while(!gotExpression) {
+      switch(state) {
+        case PARSER_NEED_TOKEN:
+          logger->debug("In state PARSER_NEED_TOKEN");
+          currentToken = tokenSource->nextToken();
+          setState(PARSER_DEFAULT);
+          break;
+        case PARSER_DEFAULT:
+          logger->debug("In state PARSER_DEFAULT");
+          switch(currentToken.get()->getTokenType()) {
+            case TOKEN_IDENTIFIER:
+              logger->debug("Current token is TOKEN_IDENTIFIER");
+              setState(PARSER_NEED_TOKEN);
+              break;
+            default:
+              logger->debug("Unknown token type");
+              errorMessage = std::string("Unknown token type encountered");
+              setState(PARSER_ERROR);
+          }
+          break;
+        case PARSER_ERROR:
+          logger->debug("In state PARSER_ERROR");
+          throw ParserException(errorMessage);
+        default:
+          logger->debug("Unknown state");
+          errorMessage = std::string("Parser in unknown state");
+          setState(PARSER_ERROR);
+      }      
+    }
+
     return std::auto_ptr<Expression> (expression);
     /*
     std::auto_ptr<Token> token;

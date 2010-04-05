@@ -18,9 +18,10 @@ FINAL_EXE = peachy.exe
 HEADERS = ./includes
 
 OBJECTS = environment.o expression.o expressionfactory.o expressionsource.o \
-filescriptsource.o istreamscriptsource.o lexer.o log.o nullostream.o peachy.o \
-parser.o quitexpression.o replscriptsource.o runtime.o script.o scriptsource.o \
-stringscriptsource.o token.o tokenfactory.o tokensource.o
+filescriptsource.o interpreter.o istreamscriptsource.o lexer.o log.o \
+nullostream.o peachy.o parser.o quitexpression.o replscriptsource.o runtime.o \
+script.o scriptsource.o stringscriptsource.o token.o tokenfactory.o \
+tokensource.o
 
 SOURCE = ./src
 
@@ -84,6 +85,10 @@ $(HEADERS)/tokensource.h
 filescriptsource.o: $(SOURCE)/filescriptsource.cpp \
 $(HEADERS)/filescriptsource.h $(HEADERS)/log.h $(HEADERS)/scriptsource.h
 	$(COMPILER) $(COMPILER_FLAGS) $(SOURCE)/filescriptsource.cpp
+
+interpreter.o: $(SOURCE)/interpreter.cpp $(HEADERS)/interpreter.h \
+$(HEADERS)/log.h
+	$(COMPILER) $(COMPILER_FLAGS) $(SOURCE)/interpreter.cpp
 
 istreamscriptsource.o: $(SOURCE)/istreamscriptsource.cpp \
 $(HEADERS)/istreamscriptsource.h $(HEADERS)/log.h $(HEADERS)/scriptsource.h

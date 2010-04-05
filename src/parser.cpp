@@ -26,11 +26,11 @@ namespace peachy {
     Expression * expression;
     bool gotExpression = false;
 
-    while(!gotExpression) { 
+    while(!gotExpression) {
+      fillTokenBuffer();
       switch(state) {
         case PARSER_NEED_TOKEN:
           logger->debug("In state PARSER_NEED_TOKEN");
-          fillTokenBuffer();
           if(tokenBuffer.size() > 0) {
             logger->debug("Got more tokens");
             setState(PARSER_DEFAULT);
@@ -63,7 +63,6 @@ namespace peachy {
                     expression = e;
                     tokenBuffer.pop_front();
                     tokenBuffer.pop_front();
-                    fillTokenBuffer();
                   } else {
                     logger->debug("I don't know what to do with that operator");
                     errorMessage = std::string("I don't know what to do with that operator");
@@ -94,8 +93,37 @@ namespace peachy {
           break;
         case PARSER_ASSIGNMENT:
           logger->debug("In state PARSER_ASSIGNMENT");
-          errorMessage = std::string("PARSER_ASSIGNMENT not implemented yet");
-          setState(PARSER_ERROR);
+          switch(tokenBuffer.front()->getTokenType()) {
+            case TOKEN_NUMBER:
+              logger->debug("Assigning a number");
+              errorMessage = std::string("I don't know how to assign numbers yet");
+              setState(PARSER_ERROR);
+              break;
+            case TOKEN_STRING:
+              logger->debug("Assigning a string?");
+              switch(tokenBuffer[1]->getTokenType()) {
+                case TOKEN_OPERATOR:
+                  logger->debug("Uh oh, next token is an operator");
+                  errorMessage = std::string("I don't know what to do when an operator follows a string in an assignment");
+                  setState(PARSER_ERROR);
+                  break;
+                case TOKEN_EOF:
+                case TOKEN_IDENTIFIER:
+                  logger->debug("Ok, looks like we got the end of the statement");
+                  // create string literal expression here
+                  gotExpression = true;
+                  break;
+                default:
+                  logger->debug("Ok I have no idea what's going on");
+                  errorMessage = std::string("Unknown token sequence");
+                  setState(PARSER_ERROR);
+              }
+              break;
+            default:
+              logger->debug("Unknown type of assignment");
+              errorMessage = std::string("I don't know how to do that kind of assignment");
+              setState(PARSER_ERROR);
+          }
           break;
         case PARSER_ERROR:
           logger->debug("In state PARSER_ERROR");

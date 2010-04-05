@@ -1,8 +1,6 @@
 #ifndef PEACHY_ASSINGMENTEXPRESSION_H
 #define PEACHY_ASSINGMENTEXPRESSION_H
 
-#include <string>
-
 #include "expression.h"
 #include "expressiontype.h"
 #include "log.h"
@@ -18,12 +16,6 @@ namespace peachy {
         this->expressionType = EXPRESSION_ASSIGNMENT;
       }
       virtual ~AssignmentExpression();
-
-      void setLValue(std::string identifier);
-
-    private:
-
-      std::string lValue;
   };
 }
 

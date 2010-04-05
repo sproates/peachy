@@ -29,6 +29,49 @@ namespace peachy {
 
   void Expression::setRValue(Expression * e) {
     logger->debug("Expression::setRValue()");
-    rValue = e;
+    if(e != NULL) {
+      logger->debug("e is not null");
+    } else {
+      logger->debug("e is null");
+    }
+    //rValue = e;
+  }
+
+  std::string Expression::toString() {
+    std::string s = std::string("Expression: \n");
+    switch(expressionType) {
+      case EXPRESSION_ASSIGNMENT:
+        s.append("Assignment\n");
+        break;
+      case EXPRESSION_STRING_LITERAL:
+        s.append("String literal\n");
+        break;
+      case EXPRESSION_QUIT:
+        s.append("Quit");
+        break;
+      case EXPRESSION_UNKNOWN:
+      default:
+        s.append("Unknown type\n");
+    }
+    return s;
+  }
+
+  Expression::Expression(const Expression & e) {
+    e.logger->debug("Expression copy constructor");
+    logger = e.logger;
+    expressionType = e.expressionType;
+    lValue = e.lValue;
+    rValue = e.rValue;
+  }
+
+  Expression & Expression::operator = (const Expression & e) {
+    logger->debug("Expression assignment operator");
+    if(this != &e) {
+      logger = e.logger;
+      expressionType = e.expressionType;
+      lValue = e.lValue;
+      rValue = e.rValue;
+    }
+    return *this;
   }
 }

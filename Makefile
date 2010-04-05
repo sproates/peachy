@@ -96,7 +96,7 @@ $(HEADERS)/filescriptsource.h $(HEADERS)/istreamscriptsource.h $(HEADERS)/log.h
 	$(COMPILER) $(COMPILER_FLAGS) $(SOURCE)/filescriptsource.cpp
 
 interpreter.o: $(SOURCE)/interpreter.cpp $(HEADERS)/expressionsource.h \
-$(HEADERS)/interpreter.h $(HEADERS)/log.h
+$(HEADERS)/expressiontype.h $(HEADERS)/interpreter.h $(HEADERS)/log.h
 	$(COMPILER) $(COMPILER_FLAGS) $(SOURCE)/interpreter.cpp
 
 istreamscriptsource.o: $(SOURCE)/istreamscriptsource.cpp \

@@ -70,7 +70,8 @@ namespace peachy {
   }
 
   Token::Token(const Token & t) {
-    logger->debug("Token copy constructor");
+    t.logger->debug("Token copy constructor");
+    logger = t.logger;
     tokenType = t.tokenType;
     data = t.data;
   }

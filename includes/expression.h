@@ -17,6 +17,9 @@ namespace peachy {
       ExpressionType getExpressionType();
       void setLValue(std::string identifier);
       void setRValue(Expression * e);
+      std::string toString();
+      Expression(const Expression & e);
+      Expression & operator = (const Expression & e);
 
     protected:
 
@@ -30,8 +33,6 @@ namespace peachy {
     private:
 
       Expression();
-      Expression(const Expression & expression);
-      Expression & operator = (const Expression & expression);
   };
 }
 

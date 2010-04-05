@@ -1,6 +1,5 @@
 #include "parser.h"
 
-#include <iostream>
 #include <memory>
 
 #include "assignmentexpression.h"
@@ -43,7 +42,6 @@ namespace peachy {
           break;
         case PARSER_DEFAULT:
           logger->debug("In state PARSER_DEFAULT");
-          std::cout << tokenBuffer.front()->toString() << std::endl;
           logger->debug(tokenBuffer.front()->toString());
           switch(tokenBuffer.front()->getTokenType()) {
             case TOKEN_EOF:
@@ -59,9 +57,8 @@ namespace peachy {
                   if(tokenBuffer[1]->getData().compare("<-") == 0) {
                     logger->debug("Looks like an assignment");
                     setState(PARSER_ASSIGNMENT);
-                    AssignmentExpression * e = expressionFactory->createAssignmentExpression();
-                    e->setLValue(tokenBuffer[0]->getData());
-                    expression = e;
+                    expression = expressionFactory->createAssignmentExpression();
+                    expression->setLValue(tokenBuffer[0]->getData());
                     tokenBuffer.pop_front();
                     tokenBuffer.pop_front();
                   } else {
@@ -116,6 +113,7 @@ namespace peachy {
                   s->setStringValue(tokenBuffer.front()->getData());
                   expression->setRValue(s);
                   gotExpression = true;
+                  tokenBuffer.pop_front();
                   break;
                 default:
                   logger->debug("Ok I have no idea what's going on");

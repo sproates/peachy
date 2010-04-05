@@ -21,6 +21,9 @@ namespace peachy {
       std::string getData() const;
       std::string toString();
 
+      Token(const Token & t);
+      Token & operator = (const Token & token);
+
     private:
 
       Log * logger;
@@ -30,8 +33,6 @@ namespace peachy {
       void construct(Log * logger, TokenType tokenType, std::string data);
 
       Token();
-      Token(const Token & token);
-      Token & operator = (const Token & token);
   };
 }
 

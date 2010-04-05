@@ -1,7 +1,6 @@
 #ifndef PEACHY_LEXER_H
 #define PEACHY_LEXER_H
 
-#include <memory>
 #include <string>
 
 #include "lexerstate.h"
@@ -26,7 +25,7 @@ namespace peachy {
       }
       ~Lexer();
 
-      std::auto_ptr<Token> nextToken();
+      Token * nextToken();
 
     protected:
 

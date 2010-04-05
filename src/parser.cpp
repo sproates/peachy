@@ -1,5 +1,6 @@
 #include "parser.h"
 
+#include <iostream>
 #include <memory>
 
 #include "expression.h"
@@ -22,19 +23,27 @@ namespace peachy {
     logger->debug("Parser::nextExpression()");
 
     Expression * expression;
-    std::auto_ptr<Token> currentToken;
     bool gotExpression = false;
 
-    while(!gotExpression) {
+    while(!gotExpression) { 
       switch(state) {
         case PARSER_NEED_TOKEN:
           logger->debug("In state PARSER_NEED_TOKEN");
-          currentToken = tokenSource->nextToken();
-          setState(PARSER_DEFAULT);
+          fillTokenBuffer();
+          if(tokenBuffer.size() > 0) {
+            logger->debug("Got more tokens");
+            setState(PARSER_DEFAULT);
+          } else {
+            logger->debug("No more tokens");
+            gotExpression = true;
+            expression = expressionFactory->createQuitExpression();
+          }
           break;
         case PARSER_DEFAULT:
           logger->debug("In state PARSER_DEFAULT");
-          switch(currentToken.get()->getTokenType()) {
+          std::cout << tokenBuffer.front()->toString() << std::endl;
+          logger->debug(tokenBuffer.front()->toString());
+          switch(tokenBuffer.front()->getTokenType()) {
             case TOKEN_EOF:
               logger->debug("Current token is TOKEN_EOF");
               gotExpression = true;
@@ -42,14 +51,17 @@ namespace peachy {
               break;
             case TOKEN_IDENTIFIER:
               logger->debug("Current token is TOKEN_IDENTIFIER");
+              tokenBuffer.pop();
               setState(PARSER_NEED_TOKEN);
               break;
             case TOKEN_OPERATOR:
               logger->debug("Current token is TOKEN_OPERATOR");
+              tokenBuffer.pop();
               setState(PARSER_NEED_TOKEN);
               break;
             case TOKEN_STRING:
               logger->debug("current token is TOKEN_STRING");
+              tokenBuffer.pop();
               setState(PARSER_NEED_TOKEN);
               break;
             default:
@@ -79,5 +91,15 @@ namespace peachy {
   void Parser::setState(ParserState state) {
     logger->debug("Parser::setState()");
     this->state = state;
+  }
+
+  void Parser::fillTokenBuffer() {
+    logger->debug("Parser::fillTokenBuffer()");
+    while(tokenBuffer.size() < 2) {
+      Token * token = tokenSource->nextToken();
+      logger->debug("Adding token to buffer:");
+      logger->debug(token->toString());
+      tokenBuffer.push(token);
+    }
   }
 }

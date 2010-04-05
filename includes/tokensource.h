@@ -1,8 +1,6 @@
 #ifndef PEACHY_TOKENSOURCE_H
 #define PEACHY_TOKENSOURCE_H
 
-#include <memory>
-
 namespace peachy {
 
   class Log;
@@ -18,7 +16,7 @@ namespace peachy {
                   ScriptSource * scriptSource);
       virtual ~TokenSource();
 
-      virtual std::auto_ptr<Token> nextToken() = 0;
+      virtual Token * nextToken() = 0;
 
     protected:
 

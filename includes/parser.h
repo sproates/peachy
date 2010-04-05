@@ -2,6 +2,7 @@
 #define PEACHY_PARSER_H
 
 #include <memory>
+#include <queue>
 #include <string>
 
 #include "expressionsource.h"
@@ -11,6 +12,8 @@
 namespace peachy {
 
   class ExpressionFactory;
+  class Token;
+  class TokenSource;
 
   class Parser : public ExpressionSource {
 
@@ -31,9 +34,11 @@ namespace peachy {
 
       ParserState state;
       std::string errorMessage;
+      std::queue< Token * > tokenBuffer;
 
       void setState(ParserState state);
       ParserState getState();
+      void fillTokenBuffer();
 
       Parser();
       Parser(const Parser & p);

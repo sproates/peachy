@@ -68,4 +68,19 @@ namespace peachy {
         return std::string("unknown token");
     }
   }
+
+  Token::Token(const Token & t) {
+    logger->debug("Token copy constructor");
+    tokenType = t.tokenType;
+    data = t.data;
+  }
+
+  Token & Token::operator = (const Token & t) {
+    logger->debug("Token assignment operator");
+    if(this != &t) {
+      this->tokenType = t.tokenType;
+      this->data = t.data;
+    }
+    return *this;
+  }
 }

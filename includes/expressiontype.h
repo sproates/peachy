@@ -6,6 +6,7 @@ namespace peachy {
   enum ExpressionType {
     EXPRESSION_ASSIGNMENT,
     EXPRESSION_QUIT,
+    EXPRESSION_STRING_LITERAL,
     EXPRESSION_UNKNOWN
   };
 }

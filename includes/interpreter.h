@@ -12,6 +12,7 @@ namespace peachy {
 
       Interpreter(Log * logger, ExpressionSource * expressionSource);
       virtual ~Interpreter();
+      void run();
 
     protected:
 

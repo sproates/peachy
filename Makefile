@@ -50,18 +50,20 @@ test: $(TEST_EXE)
 
 main.o: $(SOURCE)/main.cpp $(HEADERS)/environment.h \
 $(HEADERS)/expression.h $(HEADERS)/expressionfactory.h \
-$(HEADERS)/expressionsource.h $(HEADERS)/filescriptsource.h $(HEADERS)/lexer.h \
-$(HEADERS)/log.h $(HEADERS)/peachy.h $(HEADERS)/parser.h \
-$(HEADERS)/replscriptsource.h $(HEADERS)/runtime.h $(HEADERS)/script.h \
-$(HEADERS)/scriptsource.h $(HEADERS)/tokenfactory.h $(HEADERS)/tokensource.h
+$(HEADERS)/expressionsource.h $(HEADERS)/filescriptsource.h \
+$(HEADERS)/interpreter.h $(HEADERS)/lexer.h $(HEADERS)/log.h \
+$(HEADERS)/peachy.h $(HEADERS)/parser.h $(HEADERS)/replscriptsource.h \
+$(HEADERS)/runtime.h $(HEADERS)/script.h $(HEADERS)/scriptsource.h \
+$(HEADERS)/tokenfactory.h $(HEADERS)/tokensource.h
 	$(COMPILER) $(COMPILER_FLAGS) $(SOURCE)/main.cpp
 
 test.o: $(SOURCE)/test.cpp $(HEADERS)/environment.h $(HEADERS)/expression.h \
 $(HEADERS)/expressionfactory.h $(HEADERS)/expressionsource.h \
-$(HEADERS)/lexer.h $(HEADERS)/log.h $(HEADERS)/nullostream.h \
-$(HEADERS)/parser.h $(HEADERS)/runtime.h $(HEADERS)/script.h \
-$(HEADERS)/scriptsource.h $(HEADERS)/stringscriptsource.h $(HEADERS)/token.h \
-$(HEADERS)/tokenfactory.h $(HEADERS)/tokensource.h $(HEADERS)/tokentype.h
+$(HEADERS)/interpreter.h $(HEADERS)/lexer.h $(HEADERS)/log.h \
+$(HEADERS)/nullostream.h $(HEADERS)/parser.h $(HEADERS)/runtime.h \
+$(HEADERS)/script.h $(HEADERS)/scriptsource.h $(HEADERS)/stringscriptsource.h \
+$(HEADERS)/token.h $(HEADERS)/tokenfactory.h $(HEADERS)/tokensource.h \
+$(HEADERS)/tokentype.h
 	$(COMPILER) $(COMPILER_FLAGS) $(SOURCE)/test.cpp
 
 # intermediary objects
@@ -84,7 +86,7 @@ $(HEADERS)/assignmentexpression.h $(HEADERS)/expression.h \
 $(HEADERS)/expressionfactory.h $(HEADERS)/log.h $(HEADERS)/quitexpression.h
 	$(COMPILER) $(COMPILER_FLAGS) $(SOURCE)/expressionfactory.cpp
 
-expressionsource.o: $(SOURCE)/expressionsource.cpp $(HEADERS)/expression.h\
+expressionsource.o: $(SOURCE)/expressionsource.cpp $(HEADERS)/expression.h \
 $(HEADERS)/expressionfactory.h $(HEADERS)/expressionsource.h $(HEADERS)/log.h \
 $(HEADERS)/tokensource.h
 	$(COMPILER) $(COMPILER_FLAGS) $(SOURCE)/expressionsource.cpp
@@ -134,7 +136,7 @@ runtime.o: $(SOURCE)/runtime.cpp $(HEADERS)/log.h $(HEADERS)/runtime.h
 	$(COMPILER) $(COMPILER_FLAGS) $(SOURCE)/runtime.cpp
 
 script.o: $(SOURCE)/script.cpp $(HEADERS)/environment.h \
-$(HEADERS)/expressionsource.h $(HEADERS)/log.h $(HEADERS)/parserexception.h \
+$(HEADERS)/interpreter.h $(HEADERS)/log.h $(HEADERS)/parserexception.h \
 $(HEADERS)/runtime.h
 	$(COMPILER) $(COMPILER_FLAGS) $(SOURCE)/script.cpp
 

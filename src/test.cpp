@@ -6,6 +6,7 @@
 #include "expressionfactory.h"
 #include "expressionsource.h"
 #include "filescriptsource.h"
+#include "interpreter.h"
 #include "lexer.h"
 #include "log.h"
 #include "nullostream.h"
@@ -42,12 +43,13 @@ int main() {
     debugLogger);
   ExpressionSource * expressionSource = new Parser(debugLogger,
     expressionFactory, tokenSource);
-  Script * script = new Script(debugLogger, environment, runtime,
-    expressionSource);
+  Interpreter * interpreter = new Interpreter(debugLogger, expressionSource);
+  Script * script = new Script(debugLogger, environment, runtime, interpreter);
 
   script->run();
 
   delete script;
+  delete interpreter;
   delete expressionSource;
   delete expressionFactory;
   delete tokenSource;

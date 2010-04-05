@@ -9,6 +9,7 @@
 #include "expressionfactory.h"
 #include "expressionsource.h"
 #include "filescriptsource.h"
+#include "interpreter.h"
 #include "lexer.h"
 #include "log.h"
 #include "peachy.h"
@@ -42,12 +43,13 @@ int main(const int argc, const char ** argv) {
       logger);
     ExpressionSource * expressionSource = new Parser(logger,
       expressionFactory, tokenSource);
-    Script * script = new Script(logger, environment, runtime,
-      expressionSource);
+    Interpreter * interpreter = new Interpreter(logger, expressionSource);
+    Script * script = new Script(logger, environment, runtime, interpreter);
 
     script->run();
 
     delete script;
+    delete interpreter;
     delete expressionSource;
     delete expressionFactory;
     delete tokenSource;

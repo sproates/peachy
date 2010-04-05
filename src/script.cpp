@@ -4,8 +4,7 @@
 #include <memory>
 
 #include "environment.h"
-#include "expression.h"
-#include "expressionsource.h"
+#include "interpreter.h"
 #include "log.h"
 #include "parserexception.h"
 #include "runtime.h"
@@ -13,12 +12,12 @@
 namespace peachy {
 
   Script::Script(Log * logger, Environment * environment, Runtime * runtime,
-		 ExpressionSource * expressionSource) {
+		 Interpreter * interpreter) {
     logger->debug("Script constructor");
     this->logger = logger;
     this->environment = environment;
     this->runtime = runtime;
-    this->expressionSource = expressionSource;
+    this->interpreter = interpreter;
   }
 
   Script::~Script() {
@@ -27,15 +26,13 @@ namespace peachy {
 
   void Script::run() {
     logger->debug("Script::run()");
-
     try {
-      std::auto_ptr<Expression> expression = expressionSource->nextExpression();
+      interpreter->run();
     } catch(ParserException & e) {
       logger->info("ParserException thrown");
       logger->info(e.what());
       return;
     }
-
     logger->debug("Reached end of script");
   }
 }

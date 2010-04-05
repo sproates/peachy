@@ -3,8 +3,10 @@
 
 namespace peachy {
 
+  class AssignmentExpression;
   class Expression;
   class Log;
+  class QuitExpression;
 
   class ExpressionFactory {
 
@@ -12,8 +14,11 @@ namespace peachy {
 
       ExpressionFactory(Log * logger, Log * expressionLogger);
       virtual ~ExpressionFactory();
-      Expression * createQuitExpression();
-      Expression * createQuitExpression(Log * logger);
+
+      AssignmentExpression * createAssignmentExpression();
+      AssignmentExpression * createAssignmentExpression(Log * logger);
+      QuitExpression * createQuitExpression();
+      QuitExpression * createQuitExpression(Log * logger);
 
     protected:
 

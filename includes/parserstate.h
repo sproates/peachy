@@ -4,6 +4,7 @@
 namespace peachy {
 
   enum ParserState {
+    PARSER_ASSIGNMENT,
     PARSER_DEFAULT,
     PARSER_ERROR,
     PARSER_NEED_TOKEN

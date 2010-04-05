@@ -1,8 +1,8 @@
 #ifndef PEACHY_PARSER_H
 #define PEACHY_PARSER_H
 
+#include <deque>
 #include <memory>
-#include <queue>
 #include <string>
 
 #include "expressionsource.h"
@@ -34,7 +34,7 @@ namespace peachy {
 
       ParserState state;
       std::string errorMessage;
-      std::queue< Token * > tokenBuffer;
+      std::deque< Token * > tokenBuffer;
 
       void setState(ParserState state);
       ParserState getState();

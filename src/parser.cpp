@@ -3,6 +3,7 @@
 #include <iostream>
 #include <memory>
 
+#include "assignmentexpression.h"
 #include "expression.h"
 #include "expressionfactory.h"
 #include "lexerexception.h"
@@ -51,17 +52,38 @@ namespace peachy {
               break;
             case TOKEN_IDENTIFIER:
               logger->debug("Current token is TOKEN_IDENTIFIER");
-              tokenBuffer.pop();
-              setState(PARSER_NEED_TOKEN);
+              switch(tokenBuffer[1]->getTokenType()) {
+                case TOKEN_OPERATOR:
+                  logger->debug("Next token is TOKEN_OPERATOR");
+                  if(tokenBuffer[1]->getData().compare("<-") == 0) {
+                    logger->debug("Looks like an assignment");
+                    setState(PARSER_ASSIGNMENT);
+                    AssignmentExpression * e = expressionFactory->createAssignmentExpression();
+                    e->setLValue(tokenBuffer[0]->getData());
+                    expression = e;
+                    tokenBuffer.pop_front();
+                    tokenBuffer.pop_front();
+                    fillTokenBuffer();
+                  } else {
+                    logger->debug("I don't know what to do with that operator");
+                    errorMessage = std::string("I don't know what to do with that operator");
+                    setState(PARSER_ERROR);
+                  }
+                  break;
+                default:
+                  logger->debug("I have no idea what to do with the next token");
+                  errorMessage = std::string("I have no idea what to do with the next token");
+                  setState(PARSER_ERROR);
+              }
               break;
             case TOKEN_OPERATOR:
               logger->debug("Current token is TOKEN_OPERATOR");
-              tokenBuffer.pop();
+              tokenBuffer.pop_front();
               setState(PARSER_NEED_TOKEN);
               break;
             case TOKEN_STRING:
               logger->debug("current token is TOKEN_STRING");
-              tokenBuffer.pop();
+              tokenBuffer.pop_front();
               setState(PARSER_NEED_TOKEN);
               break;
             default:
@@ -69,6 +91,11 @@ namespace peachy {
               errorMessage = std::string("Unknown token type encountered");
               setState(PARSER_ERROR);
           }
+          break;
+        case PARSER_ASSIGNMENT:
+          logger->debug("In state PARSER_ASSIGNMENT");
+          errorMessage = std::string("PARSER_ASSIGNMENT not implemented yet");
+          setState(PARSER_ERROR);
           break;
         case PARSER_ERROR:
           logger->debug("In state PARSER_ERROR");
@@ -99,7 +126,7 @@ namespace peachy {
       Token * token = tokenSource->nextToken();
       logger->debug("Adding token to buffer:");
       logger->debug(token->toString());
-      tokenBuffer.push(token);
+      tokenBuffer.push_back(token);
     }
   }
 }

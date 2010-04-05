@@ -1,5 +1,6 @@
 #include "expressionfactory.h"
 
+#include "assignmentexpression.h"
 #include "expression.h"
 #include "log.h"
 #include "quitexpression.h"
@@ -16,12 +17,22 @@ namespace peachy {
     logger->debug("ExpressionFactory destructor");
   }
 
-  Expression * ExpressionFactory::createQuitExpression() {
+  AssignmentExpression * ExpressionFactory::createAssignmentExpression() {
+    logger->debug("ExpressionFactory::createAssignmentExpression()");
+    return new AssignmentExpression(expressionLogger);
+  }
+
+  AssignmentExpression * ExpressionFactory::createAssignmentExpression(Log * logger) {
+    this->logger->debug("ExpressionFactory::createAssignmentExpression()");
+    return new AssignmentExpression(logger);
+  }
+
+  QuitExpression * ExpressionFactory::createQuitExpression() {
     logger->debug("ExpressionFactory::createQuitExpression()");
     return new QuitExpression(expressionLogger);
   }
 
-  Expression * ExpressionFactory::createQuitExpression(Log * logger) {
+  QuitExpression * ExpressionFactory::createQuitExpression(Log * logger) {
     this->logger->debug("ExpressionFactory::createQuitExpression()");
     return new QuitExpression(logger);
   }

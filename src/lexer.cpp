@@ -47,6 +47,12 @@ namespace peachy {
               logger->debug("End of line");
               resetLine();
               break;
+            case ':':
+              logger->debug("Colon");
+              token = tokenFactory->createToken(TOKEN_COLON);
+              resetToken();
+              gotToken = true;
+              break; 
             case '{':
               logger->debug("Left brace");
               token = tokenFactory->createToken(TOKEN_LEFT_BRACE);

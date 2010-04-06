@@ -4,6 +4,7 @@
 namespace peachy {
 
   enum TokenType {
+    TOKEN_COLON,
     TOKEN_COMMENT_LINE,
     TOKEN_EMPTY,
     TOKEN_EOF,

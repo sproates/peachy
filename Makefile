@@ -20,7 +20,7 @@ HEADERS = ./includes
 OBJECTS = assignmentexpression.o environment.o expression.o \
 expressionfactory.o expressionsource.o filescriptsource.o interpreter.o \
 istreamscriptsource.o lexer.o log.o nullostream.o peachy.o parser.o \
-quitexpression.o replscriptsource.o runtime.o script.o scriptsource.o \
+quitexpression.o replscriptsource.o runtime.o scope.o script.o scriptsource.o \
 stringliteralexpression.o stringscriptsource.o token.o tokenfactory.o \
 tokensource.o variableexpression.o
 
@@ -98,7 +98,8 @@ $(HEADERS)/filescriptsource.h $(HEADERS)/istreamscriptsource.h $(HEADERS)/log.h
 
 interpreter.o: $(SOURCE)/interpreter.cpp $(HEADERS)/expressionsource.h \
 $(HEADERS)/expressiontype.h $(HEADERS)/interpreter.h \
-$(HEADERS)/interpreterexception.h $(HEADERS)/log.h
+$(HEADERS)/interpreterexception.h $(HEADERS)/log.h \
+$(HEADERS)/stringliteralexpression.h
 	$(COMPILER) $(COMPILER_FLAGS) $(SOURCE)/interpreter.cpp
 
 istreamscriptsource.o: $(SOURCE)/istreamscriptsource.cpp \
@@ -137,6 +138,9 @@ $(HEADERS)/replscriptsource.h $(HEADERS)/scriptsource.h $(HEADERS)/log.h
 
 runtime.o: $(SOURCE)/runtime.cpp $(HEADERS)/log.h $(HEADERS)/runtime.h
 	$(COMPILER) $(COMPILER_FLAGS) $(SOURCE)/runtime.cpp
+
+scope.o: $(SOURCE)/scope.cpp $(HEADERS)/scope.h
+	$(COMPILER) $(COMPILER_FLAGS) $(SOURCE)/scope.cpp
 
 script.o: $(SOURCE)/script.cpp $(HEADERS)/environment.h \
 $(HEADERS)/interpreter.h $(HEADERS)/interpreterexception.h $(HEADERS)/log.h \

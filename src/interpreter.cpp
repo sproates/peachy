@@ -1,5 +1,6 @@
 #include "interpreter.h"
 
+#include <iostream>
 #include <memory>
 
 #include "expression.h"
@@ -7,6 +8,7 @@
 #include "expressiontype.h"
 #include "interpreterexception.h"
 #include "log.h"
+#include "stringliteralexpression.h"
 
 namespace peachy {
   
@@ -38,6 +40,8 @@ namespace peachy {
               switch(rValue->getExpressionType()) {
                 case EXPRESSION_STRING_LITERAL:
                   logger->debug("It's a string literal, I know this");
+                  StringLiteralExpression * e = static_cast<StringLiteralExpression*>(rValue);
+                  logger->debug(e->getStringValue());
                   break;
                 default:
                   logger->debug("I don't know how to assign one of those");
@@ -48,6 +52,8 @@ namespace peachy {
               logger->debug("Assigning to what now?");
               throw InterpreterException("Assigning to what now?");
           }
+          delete lValue;
+          delete rValue;
           break;
         case EXPRESSION_QUIT:
           logger->debug("Quit expression found");

@@ -16,7 +16,7 @@ namespace peachy {
   void print_exception(std::exception & exception, std::ostream & outputStream);
 
   // Print a 'fatal' message (to be used when we don't know what's happened).
-  void print_fatal(std::string message, std::ostream & outputStream);
+  void print_fatal(const char * message, std::ostream & outputStream);
 
   // Print a message letting the user know the option they specified was invalid.
   void print_invalid(const char * option, std::ostream & outputStream);

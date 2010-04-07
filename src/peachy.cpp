@@ -1,6 +1,5 @@
 #include <exception>
 #include <iostream>
-#include <string>
 
 #include "peachy.h"
 
@@ -22,7 +21,7 @@ namespace peachy {
     outputStream << name << " exception: " << exception.what() << std::endl;
   }
 
-  void print_fatal(std::string message, std::ostream & outputStream) {
+  void print_fatal(const char * message, std::ostream & outputStream) {
     outputStream << "Fatal error: " << message << std::endl;
   }
 

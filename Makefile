@@ -101,7 +101,7 @@ $(HEADERS)/filescriptsource.h $(HEADERS)/istreamscriptsource.h $(HEADERS)/log.h
 
 interpreter.o: $(SOURCE)/interpreter.cpp $(HEADERS)/expressionsource.h \
 $(HEADERS)/expressiontype.h $(HEADERS)/interpreter.h \
-$(HEADERS)/interpreterexception.h $(HEADERS)/log.h \
+$(HEADERS)/interpreterexception.h $(HEADERS)/log.h $(HEADERS)/object.h \
 $(HEADERS)/stringliteralexpression.h
 	$(COMPILER) $(COMPILER_FLAGS) $(SOURCE)/interpreter.cpp
 
@@ -120,7 +120,8 @@ log.o: $(SOURCE)/log.cpp $(HEADERS)/log.h
 nullostream.o: $(SOURCE)/nullostream.cpp $(HEADERS)/nullostream.h
 	$(COMPILER) $(COMPILER_FLAGS) $(SOURCE)/nullostream.cpp
 
-object.o: $(SOURCE)/object.cpp $(HEADERS)/log.h $(HEADERS)/object.h
+object.o: $(SOURCE)/object.cpp $(HEADERS)/class.h $(HEADERS)/log.h \
+$(HEADERS)/object.h
 	$(COMPILER) $(COMPILER_FLAGS) $(SOURCE)/object.cpp
 
 parser.o: $(SOURCE)/parser.cpp $(HEADERS)/assignmentexpression.h \

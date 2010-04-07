@@ -3,7 +3,6 @@
 #include <exception>
 #include <iostream>
 #include <stdexcept>
-#include <string>
 
 #include "environment.h"
 #include "expressionfactory.h"
@@ -68,7 +67,7 @@ int main(const int argc, const char ** argv) {
     returnCode = 1;
   } catch(...) {
     logger->debug("something else caught");
-    print_fatal(std::string("Unknown fatal error"), std::cerr);
+    print_fatal("Unknown fatal error", std::cerr);
     returnCode = 1;
   }
 

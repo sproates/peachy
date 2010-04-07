@@ -1,6 +1,8 @@
 #ifndef PEACHY_CLASS_H
 #define PEACHY_CLASS_H
 
+#include <string>
+
 namespace peachy {
 
   class Log;
@@ -9,12 +11,14 @@ namespace peachy {
 
     public:
 
-      Class(Log * logger);
+      Class(Log * logger, std::string name);
       virtual ~Class();
+      std::string getName();
 
     protected:
 
       Log * logger;
+      std::string name;
 
     private:
 

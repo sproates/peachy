@@ -3,6 +3,7 @@
 
 namespace peachy {
 
+  class Class;
   class Log;
 
   class Object {
@@ -11,10 +12,12 @@ namespace peachy {
 
       Object(Log * logger);
       virtual ~Object();
+      Class * getClass();
 
     protected:
 
       Log * logger;
+      Class * clazz;
 
     private:
 

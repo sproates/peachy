@@ -1,5 +1,6 @@
 #include "object.h"
 
+#include "class.h"
 #include "log.h"
 
 namespace peachy {
@@ -11,5 +12,9 @@ namespace peachy {
 
   Object::~Object() {
     logger->debug("Object destructor");
+  }
+
+  Class * Object::getClass() {
+    return clazz;
   }
 }

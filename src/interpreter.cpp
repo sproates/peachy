@@ -8,6 +8,7 @@
 #include "expressiontype.h"
 #include "interpreterexception.h"
 #include "log.h"
+#include "object.h"
 #include "stringliteralexpression.h"
 
 namespace peachy {
@@ -24,11 +25,14 @@ namespace peachy {
 
   void Interpreter::run() {
     logger->debug("Interpreter::run()");
-    evaluate(expressionSource->nextExpression());
+    Object * finalValue = evaluate(expressionSource->nextExpression());
+    if(finalValue != NULL) {
+      delete finalValue;
+    }
     logger->debug("Interpreter complete");
   }
 
-  void Interpreter::evaluate(Expression * expression) {
+  Object * Interpreter::evaluate(Expression * expression) {
     logger->debug("Interpreter::evaluate()");
     switch(expression->getExpressionType()) {
       case EXPRESSION_ASSIGNMENT:
@@ -43,13 +47,11 @@ namespace peachy {
             switch(rValue->getExpressionType()) {
               case EXPRESSION_STRING_LITERAL:
                 logger->debug("It's a string literal, I know this");
-                StringLiteralExpression * e =
-                  static_cast<StringLiteralExpression*>(rValue);
-                logger->debug(e->getStringValue());
-                break;
+                delete lValue;
+                return evaluate(rValue);
               case EXPRESSION_ASSIGNMENT:
                 logger->debug("recursive assignment!");
-                throw InterpreterException("I don't do recurisve assignment yet :(");
+                return evaluate(rValue);
               default:
                 logger->debug("I don't know how to assign one of those");
                 throw InterpreterException("I don't know how to assign one of those");
@@ -59,15 +61,17 @@ namespace peachy {
             logger->debug("Assigning to what now?");
             throw InterpreterException("Assigning to what now?");
         }
-        delete lValue;
-        delete rValue;
         break;
       case EXPRESSION_QUIT:
         logger->debug("Quit expression found");
-        return;
+        return NULL;
       case EXPRESSION_STRING_LITERAL:
+        logger->debug("Returning string literal object");
+        delete expression;
+        return new Object(logger);
       case EXPRESSION_UNKNOWN:
       default:
+        logger->debug("Unknown expression type");
         throw InterpreterException("I don't know what to do with that expression type");
     }
   }

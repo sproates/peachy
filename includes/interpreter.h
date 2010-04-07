@@ -3,6 +3,7 @@
 
 namespace peachy {
 
+  class Expression;
   class ExpressionSource;
   class Log;
 
@@ -21,6 +22,7 @@ namespace peachy {
 
     private:
 
+      void evaluate(Expression * expression);
       Interpreter();
       Interpreter(const Interpreter & i);
       Interpreter & operator = (const Interpreter & i);

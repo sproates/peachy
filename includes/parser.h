@@ -30,12 +30,12 @@ namespace peachy {
 
     private:
 
-      Expression * nextExpression(ParserState state,
-        Expression * currentExpression);
+      Expression * nextExpression(ParserState state);
       std::string errorMessage;
       std::deque< Token * > tokenBuffer;
 
       void fillTokenBuffer();
+      void logTokenBuffer();
 
       Parser();
       Parser(const Parser & p);

@@ -17,10 +17,7 @@ namespace peachy {
   Token * Lexer::nextToken() {
     logger->debug("Lexer::nextToken()");
 
-    Token * token;
-    bool gotToken = false;
-
-    while(!gotToken) {
+    while(true) {
       if(atEndOfLine()) {
         logger->debug("Overflowed input buffer");
         throw LexerException("Overflowed input buffer");
@@ -29,9 +26,7 @@ namespace peachy {
       switch(state) {
         case LEXER_COMPLETE:
           logger->debug("In state LEXER_COMPLETE");
-          token = tokenFactory->createToken(TOKEN_EOF);
-          gotToken = true;
-          break;
+          return tokenFactory->createToken(TOKEN_EOF);
         case LEXER_DEFAULT:
           logger->debug("In state LEXER_DEFAULT");
           switch(currentChar) {
@@ -48,46 +43,32 @@ namespace peachy {
               break;
             case ':':
               logger->debug("Colon");
-              token = tokenFactory->createToken(TOKEN_COLON);
               resetToken();
-              gotToken = true;
-              break; 
+              return tokenFactory->createToken(TOKEN_COLON);
             case '{':
               logger->debug("Left brace");
-              token = tokenFactory->createToken(TOKEN_LEFT_BRACE);
               resetToken();
-              gotToken = true;
-              break;
+              return tokenFactory->createToken(TOKEN_LEFT_BRACE);
             case '[':
               logger->debug("Left bracket");
-              token = tokenFactory->createToken(TOKEN_LEFT_BRACKET);
               resetToken();
-              gotToken = true;
-              break;
+              return tokenFactory->createToken(TOKEN_LEFT_BRACKET);
             case '(':
               logger->debug("Left paren");
-              token = tokenFactory->createToken(TOKEN_LEFT_PARENTHESIS);
               resetToken();
-              gotToken = true;
-              break;
+              return tokenFactory->createToken(TOKEN_LEFT_PARENTHESIS);
             case '}':
               logger->debug("Right brace");
-              token = tokenFactory->createToken(TOKEN_RIGHT_BRACE);
               resetToken();
-              gotToken = true;
-              break;
+              return tokenFactory->createToken(TOKEN_RIGHT_BRACE);
             case ']':
               logger->debug("Right bracket");
-              token = tokenFactory->createToken(TOKEN_RIGHT_BRACKET);
               resetToken();
-              gotToken = true;
-              break;
+              return tokenFactory->createToken(TOKEN_RIGHT_BRACKET);
             case ')':
               logger->debug("Right paren");
-              token = tokenFactory->createToken(TOKEN_RIGHT_PARENTHESIS);
               resetToken();
-              gotToken = true;
-              break;
+              return tokenFactory->createToken(TOKEN_RIGHT_PARENTHESIS);
             case '#':
               logger->debug("Comment line");
               setState(LEXER_IN_COMMENT_LINE);
@@ -123,11 +104,10 @@ namespace peachy {
           switch(currentChar) {
             case '"':
               logger->debug("End quote");
-              token = tokenFactory->createToken(TOKEN_STRING, currentSequence);
+              Token * token = tokenFactory->createToken(TOKEN_STRING, currentSequence);
               consume(false);
               resetToken();
-              gotToken = true;
-              break;
+              return token;
             case 0:
               logger->debug("Newline found");
               currentSequence.append(1, '\n');
@@ -155,9 +135,9 @@ namespace peachy {
             consume(true);
           } else {
             logger->debug("End of number");
-            token = tokenFactory->createToken(TOKEN_NUMBER, currentSequence);
+            Token * token = tokenFactory->createToken(TOKEN_NUMBER, currentSequence);
             resetToken();
-            gotToken = true;
+            return token;
           }
           break;
         case LEXER_IN_IDENTIFIER:
@@ -167,6 +147,7 @@ namespace peachy {
             consume(true);
           } else {
             logger->debug("End of identifier");
+            Token * token;
             if(isKeyword(currentSequence)) {
               token = tokenFactory->createToken(TOKEN_KEYWORD, currentSequence);
             } else {
@@ -174,7 +155,7 @@ namespace peachy {
                 currentSequence);
             }
             resetToken();
-            gotToken = true;
+            return token;
           }
           break;
         case LEXER_IN_OPERATOR:
@@ -190,9 +171,9 @@ namespace peachy {
           } else {
             if(isOperator(currentSequence)) {
               logger->debug("End of operator");
-              token = tokenFactory->createToken(TOKEN_OPERATOR, currentSequence);
+              Token * token = tokenFactory->createToken(TOKEN_OPERATOR, currentSequence);
               resetToken();
-              gotToken = true;
+              return token;
             } else {
               logger->debug("Invalid operator sequence");
               throw LexerException("Invalid operator sequence");
@@ -203,10 +184,10 @@ namespace peachy {
           logger->debug("In state LEXER_IN_COMMENT_LINE");
           if(isLineEnding(currentChar)) {
             logger->debug("End of comment");
-            token = tokenFactory->createToken(TOKEN_COMMENT_LINE,
+            Token * token = tokenFactory->createToken(TOKEN_COMMENT_LINE,
               currentSequence);
             resetToken();
-            gotToken = true;
+            return token;
           } else {
             logger->debug("Another character of the current comment");
             consume(true);
@@ -233,8 +214,6 @@ namespace peachy {
           break;
       }
     }
-
-    return token;
   }
 
   void Lexer::consume(bool appendChar) {

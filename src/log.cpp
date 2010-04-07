@@ -7,45 +7,90 @@ namespace peachy {
 
   Log::Log(std::ostream * outputStream) {
     this->outputStream = outputStream;
+    debugEnabled = true;
+    infoEnabled = true;
+    warningEnabled = true;
+    errorEnabled = true;
+    fatalEnabled = true;
+  }
+
+  void Log::enableDebug(bool b) {
+    debugEnabled = b;
+  }
+
+  void Log::enableInfo(bool b) {
+    infoEnabled = b;
+  }
+
+  void Log::enableWarning(bool b) {
+    warningEnabled = b;
+  }
+
+  void Log::enableError(bool b) {
+    errorEnabled = b;
+  }
+
+  void Log::enableFatal(bool b) {
+    fatalEnabled = b;
   }
 
   void Log::debug(const char * message) {
-    *outputStream << "DEBUG: " << message << std::endl;
+    if(debugEnabled) {
+      *outputStream << "DEBUG: " << message << std::endl;
+    }
   }
 
   void Log::debug(std::string message) {
-    debug(message.c_str());
+    if(debugEnabled) {
+      debug(message.c_str());
+    }
   }
 
   void Log::info(const char * message) {
-    *outputStream << "INFO: " << message << std::endl;
+    if(infoEnabled) {
+      *outputStream << "INFO: " << message << std::endl;
+    }
   }
 
   void Log::info(std::string message) {
-    info(message.c_str());
+    if(infoEnabled) {
+      info(message.c_str());
+    }
   }
 
   void Log::warning(const char * message) {
-    *outputStream << "WARNING : " << message << std::endl;
+    if(warningEnabled) {
+      *outputStream << "WARNING : " << message << std::endl;
+    }
   }
 
   void Log::warning(std::string message) {
-    warning(message.c_str());
+    if(warningEnabled) {
+      warning(message.c_str());
+    }
   }
 
   void Log::error(const char * message) {
-    *outputStream << "ERROR : " << message << std::endl;
+    if(errorEnabled) {
+      *outputStream << "ERROR : " << message << std::endl;
+    }
   }
 
   void Log::error(std::string message) {
-    error(message.c_str());
+    if(errorEnabled) {
+      error(message.c_str());
+    }
   }
 
   void Log::fatal(const char * message) {
-    *outputStream << "FATAL : " << message << std::endl;
+    if(fatalEnabled) {
+      *outputStream << "FATAL : " << message << std::endl;
+    }
   }
 
   void Log::fatal(std::string message) {
-    fatal(message.c_str());
+    if(fatalEnabled) {
+      fatal(message.c_str());
+    }
   }
 }

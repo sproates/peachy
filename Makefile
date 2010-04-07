@@ -17,7 +17,7 @@ FINAL_EXE = peachy.exe
 
 HEADERS = ./includes
 
-OBJECTS = assignmentexpression.o environment.o expression.o \
+OBJECTS = assignmentexpression.o class.o environment.o expression.o \
 expressionfactory.o expressionsource.o filescriptsource.o interpreter.o \
 istreamscriptsource.o lexer.o log.o nullostream.o object.o peachy.o parser.o \
 quitexpression.o replscriptsource.o runtime.o scope.o script.o scriptsource.o \
@@ -72,6 +72,9 @@ assignmentexpression.o: $(SOURCE)/assignmentexpression.cpp \
 $(HEADERS)/assignmentexpression.h $(HEADERS)/expression.h \
 $(HEADERS)/expressiontype.h $(HEADERS)/log.h
 	$(COMPILER) $(COMPILER_FLAGS) $(SOURCE)/assignmentexpression.cpp
+
+class.o: $(SOURCE)/class.cpp $(HEADERS)/class.h $(HEADERS)/log.h
+	$(COMPILER) $(COMPILER_FLAGS) $(SOURCE)/class.cpp
 
 environment.o: $(SOURCE)/environment.cpp $(HEADERS)/environment.h \
 $(HEADERS)/log.h

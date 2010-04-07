@@ -21,7 +21,7 @@ OBJECTS = assignmentexpression.o class.o environment.o expression.o \
 expressionfactory.o expressionsource.o filescriptsource.o interpreter.o \
 istreamscriptsource.o lexer.o log.o nullostream.o object.o peachy.o parser.o \
 quitexpression.o replscriptsource.o runtime.o scope.o script.o scriptsource.o \
-stringliteralexpression.o stringscriptsource.o token.o tokenfactory.o \
+string.o stringliteralexpression.o stringscriptsource.o token.o tokenfactory.o \
 tokensource.o variableexpression.o
 
 SOURCE = ./src
@@ -156,6 +156,9 @@ $(HEADERS)/parserexception.h $(HEADERS)/runtime.h
 
 scriptsource.o: $(SOURCE)/scriptsource.cpp $(HEADERS)/scriptsource.h
 	$(COMPILER) $(COMPILER_FLAGS) $(SOURCE)/scriptsource.cpp
+
+string.o: $(SOURCE)/types/string.cpp $(HEADERS)/types/string.h
+	$(COMPILER) $(COMPILER_FLAGS) $(SOURCE)/types/string.cpp
 
 stringliteralexpression.o: $(SOURCE)/stringliteralexpression.cpp \
 $(HEADERS)/expression.h $(HEADERS)/expressiontype.h $(HEADERS)/log.h \

@@ -1,7 +1,5 @@
 #include "parser.h"
 
-#include <memory>
-
 #include "assignmentexpression.h"
 #include "expression.h"
 #include "expressionfactory.h"
@@ -21,7 +19,7 @@ namespace peachy {
     logger->debug("Parser destructor");
   }
 
-  std::auto_ptr<Expression> Parser::nextExpression() {
+  Expression * Parser::nextExpression() {
     logger->debug("Parser::nextExpression()");
 
     Expression * expression;
@@ -143,7 +141,7 @@ namespace peachy {
       }      
     }
 
-    return std::auto_ptr<Expression> (expression);
+    return expression;
   }
 
   ParserState Parser::getState() {

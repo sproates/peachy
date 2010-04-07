@@ -1,7 +1,5 @@
 #include "expressionsource.h"
 
-#include <memory>
-
 #include "expression.h"
 #include "expressionfactory.h"
 #include "log.h"

@@ -1,8 +1,6 @@
 #ifndef PEACHY_EXPRESSIONSOURCE_H
 #define PEACHY_EXPRESSIONSOURCE_H
 
-#include <memory>
-
 namespace peachy {
 
   class Expression;
@@ -18,7 +16,7 @@ namespace peachy {
         TokenSource * tokenSource);
       virtual ~ExpressionSource();
 
-      virtual std::auto_ptr<Expression> nextExpression() = 0;
+      virtual Expression * nextExpression() = 0;
 
     protected:
 

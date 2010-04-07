@@ -2,7 +2,6 @@
 #define PEACHY_PARSER_H
 
 #include <deque>
-#include <memory>
 #include <string>
 
 #include "expressionsource.h"
@@ -28,7 +27,7 @@ namespace peachy {
 
       ~Parser();
 
-      std::auto_ptr<Expression> nextExpression();
+      Expression * nextExpression();
 
     private:
 

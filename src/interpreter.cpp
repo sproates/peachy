@@ -1,8 +1,8 @@
 #include "interpreter.h"
 
 #include <iostream>
-#include <memory>
 
+#include "assignmentexpression.h"
 #include "expression.h"
 #include "expressionsource.h"
 #include "expressiontype.h"
@@ -24,7 +24,7 @@ namespace peachy {
 
   void Interpreter::run() {
     logger->debug("Interpreter::run()");
-    std::auto_ptr<Expression> expression;
+    Expression * expression;
     bool quitting = false;
     while(!quitting) {
       logger->debug("Getting next expression");
@@ -32,8 +32,9 @@ namespace peachy {
       switch(expression->getExpressionType()) {
         case EXPRESSION_ASSIGNMENT:
           logger->debug("Assignment expression found");
-          Expression * lValue = expression.get()->getLValue();
-          Expression * rValue = expression.get()->getRValue();
+          expression = static_cast<AssignmentExpression*>(expression);
+          Expression * lValue = expression->getLValue();
+          Expression * rValue = expression->getRValue();
           switch(lValue->getExpressionType()) {
             case EXPRESSION_VARIABLE:
               logger->debug("Assigning to a variable");

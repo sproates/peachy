@@ -22,7 +22,6 @@ namespace peachy {
         TokenSource * tokenSource)
         : ExpressionSource(logger, expressionFactory, tokenSource) {
         logger->debug("Parser constuctor");
-        setState(PARSER_NEED_TOKEN);
       }
 
       ~Parser();
@@ -31,12 +30,11 @@ namespace peachy {
 
     private:
 
-      ParserState state;
+      Expression * nextExpression(ParserState state,
+        Expression * currentExpression);
       std::string errorMessage;
       std::deque< Token * > tokenBuffer;
 
-      void setState(ParserState state);
-      ParserState getState();
       void fillTokenBuffer();
 
       Parser();

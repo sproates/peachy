@@ -21,22 +21,23 @@ namespace peachy {
 
   Expression * Parser::nextExpression() {
     logger->debug("Parser::nextExpression()");
+    return nextExpression(PARSER_NEED_TOKEN, NULL);
+  }
 
-    Expression * expression;
-    bool gotExpression = false;
+  Expression * Parser::nextExpression(ParserState state,
+    Expression * currentExpression) {
 
-    while(!gotExpression) {
+    while(true) {
       fillTokenBuffer();
       switch(state) {
         case PARSER_NEED_TOKEN:
           logger->debug("In state PARSER_NEED_TOKEN");
           if(tokenBuffer.size() > 0) {
             logger->debug("Got more tokens");
-            setState(PARSER_DEFAULT);
+            state = PARSER_DEFAULT;
           } else {
             logger->debug("No more tokens");
-            gotExpression = true;
-            expression = expressionFactory->createQuitExpression();
+            return expressionFactory->createQuitExpression();
           }
           break;
         case PARSER_DEFAULT:
@@ -45,9 +46,7 @@ namespace peachy {
           switch(tokenBuffer.front()->getTokenType()) {
             case TOKEN_EOF:
               logger->debug("Current token is TOKEN_EOF");
-              gotExpression = true;
-              expression = expressionFactory->createQuitExpression();
-              break;
+              return expressionFactory->createQuitExpression();
             case TOKEN_IDENTIFIER:
               logger->debug("Current token is TOKEN_IDENTIFIER");
               switch(tokenBuffer[1]->getTokenType()) {
@@ -55,50 +54,52 @@ namespace peachy {
                   logger->debug("Next token is TOKEN_OPERATOR");
                   if(tokenBuffer[1]->getData().compare("<-") == 0) {
                     logger->debug("Looks like an assignment");
-                    setState(PARSER_ASSIGNMENT);
-                    expression =
+                    state = PARSER_ASSIGNMENT;
+                    AssignmentExpression * ae =
                       expressionFactory->createAssignmentExpression();
                     VariableExpression * e =
                       expressionFactory->createVariableExpression();
                     e->setVariableName(tokenBuffer[0]->getData());
-                    expression->setLValue(e);
+                    ae->setLValue(e);
                     tokenBuffer.pop_front();
                     tokenBuffer.pop_front();
+                    return nextExpression(PARSER_ASSIGNMENT, ae);
                   } else {
                     logger->debug("I don't know what to do with that operator");
                     errorMessage = std::string("I don't know what to do with that operator");
-                    setState(PARSER_ERROR);
+                    state = PARSER_ERROR;
                   }
                   break;
                 default:
                   logger->debug("I have no idea what to do with the next token");
                   errorMessage = std::string("I have no idea what to do with the next token");
-                  setState(PARSER_ERROR);
+                  state = PARSER_ERROR;
               }
               break;
             case TOKEN_OPERATOR:
               logger->debug("Current token is TOKEN_OPERATOR");
               tokenBuffer.pop_front();
-              setState(PARSER_NEED_TOKEN);
+              state = PARSER_NEED_TOKEN;
               break;
             case TOKEN_STRING:
               logger->debug("current token is TOKEN_STRING");
               tokenBuffer.pop_front();
-              setState(PARSER_NEED_TOKEN);
+              state = PARSER_NEED_TOKEN;
               break;
             default:
               logger->debug("Unknown token type");
               errorMessage = std::string("Unknown token type encountered");
-              setState(PARSER_ERROR);
+              state = PARSER_ERROR;
           }
           break;
         case PARSER_ASSIGNMENT:
           logger->debug("In state PARSER_ASSIGNMENT");
+          AssignmentExpression * expression = static_cast<AssignmentExpression*>(currentExpression);
           switch(tokenBuffer.front()->getTokenType()) {
             case TOKEN_NUMBER:
               logger->debug("Assigning a number");
               errorMessage = std::string("I don't know how to assign numbers yet");
-              setState(PARSER_ERROR);
+              state = PARSER_ERROR;
               break;
             case TOKEN_STRING:
               logger->debug("Assigning a string?");
@@ -106,7 +107,7 @@ namespace peachy {
                 case TOKEN_OPERATOR:
                   logger->debug("Uh oh, next token is an operator");
                   errorMessage = std::string("I don't know what to do when an operator follows a string in an assignment");
-                  setState(PARSER_ERROR);
+                  state = PARSER_ERROR;
                   break;
                 case TOKEN_EOF:
                 case TOKEN_IDENTIFIER:
@@ -115,20 +116,18 @@ namespace peachy {
                     expressionFactory->createStringLiteralExpression();
                   s->setStringValue(tokenBuffer.front()->getData());
                   expression->setRValue(s);
-                  gotExpression = true;
                   tokenBuffer.pop_front();
-                  setState(PARSER_DEFAULT);
-                  break;
+                  return expression;
                 default:
                   logger->debug("Ok I have no idea what's going on");
                   errorMessage = std::string("Unknown token sequence");
-                  setState(PARSER_ERROR);
+                  state = PARSER_ERROR;
               }
               break;
             default:
               logger->debug("Unknown type of assignment");
               errorMessage = std::string("I don't know how to do that kind of assignment");
-              setState(PARSER_ERROR);
+              state = PARSER_ERROR;
           }
           break;
         case PARSER_ERROR:
@@ -137,21 +136,9 @@ namespace peachy {
         default:
           logger->debug("Unknown state");
           errorMessage = std::string("Parser in unknown state");
-          setState(PARSER_ERROR);
+          state = PARSER_ERROR;
       }      
     }
-
-    return expression;
-  }
-
-  ParserState Parser::getState() {
-    logger->debug("Parser::getState()");
-    return state;
-  }
-
-  void Parser::setState(ParserState state) {
-    logger->debug("Parser::setState()");
-    this->state = state;
   }
 
   void Parser::fillTokenBuffer() {

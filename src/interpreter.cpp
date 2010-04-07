@@ -32,16 +32,18 @@ namespace peachy {
       switch(expression->getExpressionType()) {
         case EXPRESSION_ASSIGNMENT:
           logger->debug("Assignment expression found");
-          expression = static_cast<AssignmentExpression*>(expression);
-          Expression * lValue = expression->getLValue();
-          Expression * rValue = expression->getRValue();
+          AssignmentExpression * ae =
+            static_cast<AssignmentExpression*>(expression);
+          Expression * lValue = ae->getLValue();
+          Expression * rValue = ae->getRValue();
           switch(lValue->getExpressionType()) {
             case EXPRESSION_VARIABLE:
               logger->debug("Assigning to a variable");
               switch(rValue->getExpressionType()) {
                 case EXPRESSION_STRING_LITERAL:
                   logger->debug("It's a string literal, I know this");
-                  StringLiteralExpression * e = static_cast<StringLiteralExpression*>(rValue);
+                  StringLiteralExpression * e =
+                    static_cast<StringLiteralExpression*>(rValue);
                   logger->debug(e->getStringValue());
                   break;
                 default:

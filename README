@@ -14,7 +14,7 @@ Features of the interpreter:
 - Single threaded
 - Stack based
 - No external dependencies
-- Lexer and parser written from scratch as a learning exercise (i.e. no lexx or yacc)
+- Lexer and parser written from scratch as a learning exercise (i.e. no lex or yacc)
 - Test suite
 - Good (whatever that might mean) documentation
 

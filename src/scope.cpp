@@ -36,4 +36,14 @@ namespace peachy {
     logger->debug("Scope::replace()");
     variables[name] = value;
   }
+
+  std::string Scope::toString() {
+    std::string s = std::string("Scope: \n");
+    std::map<std::string, Object*>::iterator it;
+    for(it = variables.begin(); it != variables.end(); it++) {
+      s.append(it->first);
+      s.append("\n");
+    }
+    return s;
+  }
 }

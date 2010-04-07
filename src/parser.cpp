@@ -89,6 +89,7 @@ namespace peachy {
               switch(tokenBuffer[1]->getTokenType()) {
                 case TOKEN_EOF:
                 case TOKEN_IDENTIFIER:
+                case TOKEN_KEYWORD:
                   logger->debug("Nothing more to do in current expression");
                   logger->debug("Returning string literal expression");
                   StringLiteralExpression * e =
@@ -102,8 +103,8 @@ namespace peachy {
                   state = PARSER_ERROR;
                   break;
                 default:
-                  logger->debug("Unknown token following string literal");
-                  errorMessage = std::string("I don't know what to do when an operator follows a string literal");
+                  logger->debug("Wtf...");
+                  errorMessage = std::string("I don't know what to do!!!!");
                   state = PARSER_ERROR;
               }
               break;

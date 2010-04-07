@@ -29,6 +29,7 @@ namespace peachy {
     logger->debug("Interpreter::run()");
     Scope * globalScope = new Scope(logger);
     Object * finalValue = evaluate(expressionSource->nextExpression(), globalScope);
+    logger->debug(globalScope->toString());
     if(finalValue != NULL) {
       delete finalValue;
     }
@@ -52,19 +53,17 @@ namespace peachy {
               static_cast<VariableExpression*>(lValue);
             switch(rValue->getExpressionType()) {
               case EXPRESSION_STRING_LITERAL:
-                logger->debug("It's a string literal, I know this");
+              case EXPRESSION_ASSIGNMENT:
                 Object * o = evaluate(rValue, scope);
                 if(scope->has(var->getVariableName())) {
                   logger->debug("Variable is already in scope");
+                  // need to do type checking here
                   scope->replace(var->getVariableName(), o);
                 } else {
                   logger->debug("Variable not in scope");
                   scope->add(var->getVariableName(), o);
                 }
                 return o;
-              case EXPRESSION_ASSIGNMENT:
-                logger->debug("recursive assignment!");
-                return evaluate(rValue, scope);
               default:
                 logger->debug("I don't know how to assign one of those");
                 throw InterpreterException("I don't know how to assign one of those");
@@ -72,7 +71,7 @@ namespace peachy {
             break;
           default:
             logger->debug("Assigning to what now?");
-            throw InterpreterException("Assigning to what now?");
+            throw InterpreterException("The target of an assignment should be a variable");
         }
         break;
       case EXPRESSION_QUIT:

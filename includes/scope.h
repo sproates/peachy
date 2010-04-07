@@ -19,6 +19,7 @@ namespace peachy {
       Object * get(const std::string name);
       void add(const std::string name, Object * value);
       void replace(const std::string name, Object * value);
+      std::string toString();
 
     protected:
 

@@ -15,4 +15,9 @@ namespace peachy {
   Class::~Class() {
     logger->debug("Class destructor");
   }
+
+  std::string Class::getName() {
+    logger->debug("Class::getName()");
+    return name;
+  }
 }

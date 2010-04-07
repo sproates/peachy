@@ -17,11 +17,11 @@ FINAL_EXE = peachy.exe
 
 HEADERS = ./includes
 
-OBJECTS = assignmentexpression.o class.o environment.o expression.o \
-expressionfactory.o expressionsource.o filescriptsource.o function.o \
-interpreter.o istreamscriptsource.o lexer.o log.o nullostream.o object.o \
-peachy.o parser.o quitexpression.o replscriptsource.o runtime.o scope.o \
-script.o scriptsource.o string.o stringliteralexpression.o \
+OBJECTS = assignmentexpression.o class.o classfactory.o environment.o \
+expression.o expressionfactory.o expressionsource.o filescriptsource.o \
+function.o interpreter.o istreamscriptsource.o lexer.o log.o nullostream.o \
+object.o peachy.o parser.o quitexpression.o replscriptsource.o runtime.o \
+scope.o script.o scriptsource.o string.o stringliteralexpression.o \
 stringscriptsource.o token.o tokenfactory.o tokensource.o variableexpression.o
 
 SOURCE = ./src
@@ -48,7 +48,7 @@ test: $(TEST_EXE)
 
 # objects with entry points
 
-main.o: $(SOURCE)/main.cpp $(HEADERS)/environment.h \
+main.o: $(SOURCE)/main.cpp $(HEADERS)/classfactory.h $(HEADERS)/environment.h \
 $(HEADERS)/expression.h $(HEADERS)/expressionfactory.h \
 $(HEADERS)/expressionsource.h $(HEADERS)/filescriptsource.h \
 $(HEADERS)/interpreter.h $(HEADERS)/lexer.h $(HEADERS)/log.h \
@@ -57,13 +57,13 @@ $(HEADERS)/runtime.h $(HEADERS)/script.h $(HEADERS)/scriptsource.h \
 $(HEADERS)/tokenfactory.h $(HEADERS)/tokensource.h
 	$(COMPILER) $(COMPILER_FLAGS) $(SOURCE)/main.cpp
 
-test.o: $(SOURCE)/test.cpp $(HEADERS)/environment.h $(HEADERS)/expression.h \
-$(HEADERS)/expressionfactory.h $(HEADERS)/expressionsource.h \
-$(HEADERS)/interpreter.h $(HEADERS)/lexer.h $(HEADERS)/log.h \
-$(HEADERS)/nullostream.h $(HEADERS)/parser.h $(HEADERS)/runtime.h \
-$(HEADERS)/script.h $(HEADERS)/scriptsource.h $(HEADERS)/stringscriptsource.h \
-$(HEADERS)/token.h $(HEADERS)/tokenfactory.h $(HEADERS)/tokensource.h \
-$(HEADERS)/tokentype.h
+test.o: $(SOURCE)/test.cpp $(HEADERS)/classfactory.h $(HEADERS)/environment.h \
+$(HEADERS)/expression.h $(HEADERS)/expressionfactory.h \
+$(HEADERS)/expressionsource.h $(HEADERS)/interpreter.h $(HEADERS)/lexer.h \
+$(HEADERS)/log.h $(HEADERS)/nullostream.h $(HEADERS)/parser.h \
+$(HEADERS)/runtime.h $(HEADERS)/script.h $(HEADERS)/scriptsource.h \
+$(HEADERS)/stringscriptsource.h $(HEADERS)/token.h $(HEADERS)/tokenfactory.h \
+$(HEADERS)/tokensource.h $(HEADERS)/tokentype.h
 	$(COMPILER) $(COMPILER_FLAGS) $(SOURCE)/test.cpp
 
 # intermediary objects
@@ -75,6 +75,10 @@ $(HEADERS)/expressiontype.h $(HEADERS)/log.h
 
 class.o: $(SOURCE)/class.cpp $(HEADERS)/class.h $(HEADERS)/log.h
 	$(COMPILER) $(COMPILER_FLAGS) $(SOURCE)/class.cpp
+
+classfactory.o: $(SOURCE)/classfactory.cpp $(HEADERS)/class.h \
+$(HEADERS)/classfactory.h $(HEADERS)/log.h
+	$(COMPILER) $(COMPILER_FLAGS) $(SOURCE)/classfactory.cpp
 
 environment.o: $(SOURCE)/environment.cpp $(HEADERS)/environment.h \
 $(HEADERS)/log.h
@@ -103,7 +107,8 @@ function.o: $(SOURCE)/function.cpp $(HEADERS)/function.h \
 $(HEADERS)/log.h
 	$(COMPILER) $(COMPILER_FLAGS) $(SOURCE)/function.cpp
 
-interpreter.o: $(SOURCE)/interpreter.cpp $(HEADERS)/expressionsource.h \
+interpreter.o: $(SOURCE)/interpreter.cpp $(HEADERS)/class.h \
+$(HEADERS)/classfactory.h $(HEADERS)/expressionsource.h \
 $(HEADERS)/expressiontype.h $(HEADERS)/interpreter.h \
 $(HEADERS)/interpreterexception.h $(HEADERS)/log.h $(HEADERS)/object.h \
 $(HEADERS)/scope.h $(HEADERS)/stringliteralexpression.h

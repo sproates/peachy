@@ -4,6 +4,7 @@
 #include <iostream>
 #include <stdexcept>
 
+#include "classfactory.h"
 #include "environment.h"
 #include "expressionfactory.h"
 #include "expressionsource.h"
@@ -42,7 +43,9 @@ int main(const int argc, const char ** argv) {
       logger);
     ExpressionSource * expressionSource = new Parser(logger,
       expressionFactory, tokenSource);
-    Interpreter * interpreter = new Interpreter(logger, expressionSource);
+    ClassFactory * classFactory = new ClassFactory(logger, logger);
+    Interpreter * interpreter = new Interpreter(logger, expressionSource,
+      classFactory);
     Script * script = new Script(logger, environment, runtime, interpreter);
 
     script->run();

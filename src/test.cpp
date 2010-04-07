@@ -2,6 +2,7 @@
 #include <stdexcept>
 #include <string>
 
+#include "classfactory.h"
 #include "environment.h"
 #include "expressionfactory.h"
 #include "expressionsource.h"
@@ -43,13 +44,16 @@ int main() {
     nullLogger);
   ExpressionSource * expressionSource = new Parser(nullLogger,
     expressionFactory, tokenSource);
-  Interpreter * interpreter = new Interpreter(debugLogger, expressionSource);
+  ClassFactory * classFactory = new ClassFactory(debugLogger, debugLogger);
+  Interpreter * interpreter = new Interpreter(debugLogger, expressionSource,
+    classFactory);
   Script * script = new Script(debugLogger, environment, runtime, interpreter);
 
   script->run();
 
   delete script;
   delete interpreter;
+  delete classFactory;
   delete expressionSource;
   delete expressionFactory;
   delete tokenSource;

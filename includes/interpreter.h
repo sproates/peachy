@@ -3,6 +3,7 @@
 
 namespace peachy {
 
+  class ClassFactory;
   class Expression;
   class ExpressionSource;
   class Log;
@@ -13,7 +14,8 @@ namespace peachy {
 
     public:
 
-      Interpreter(Log * logger, ExpressionSource * expressionSource);
+      Interpreter(Log * logger, ExpressionSource * expressionSource,
+        ClassFactory * classFactory);
       virtual ~Interpreter();
       void run();
 
@@ -21,6 +23,7 @@ namespace peachy {
 
       Log * logger;
       ExpressionSource * expressionSource;
+      ClassFactory * classFactory;
 
     private:
 

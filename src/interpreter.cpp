@@ -3,6 +3,8 @@
 #include <iostream>
 
 #include "assignmentexpression.h"
+#include "class.h"
+#include "classfactory.h"
 #include "expression.h"
 #include "expressionsource.h"
 #include "expressiontype.h"
@@ -15,10 +17,12 @@
 
 namespace peachy {
   
-  Interpreter::Interpreter(Log * logger, ExpressionSource * expressionSource) {
+  Interpreter::Interpreter(Log * logger, ExpressionSource * expressionSource,
+    ClassFactory * classFactory) {
     logger->debug("Interpreter constructor");
     this->logger = logger;
     this->expressionSource = expressionSource;
+    this->classFactory = classFactory;
   }
 
   Interpreter::~Interpreter() {
@@ -28,11 +32,14 @@ namespace peachy {
   void Interpreter::run() {
     logger->debug("Interpreter::run()");
     Scope * globalScope = new Scope(logger);
+    Class * stringClass = classFactory->getClass(std::string("String"));
+    globalScope->addClass(std::string("String"), stringClass);
     Object * finalValue = evaluate(expressionSource->nextExpression(), globalScope);
     logger->debug(globalScope->toString());
     if(finalValue != NULL) {
       delete finalValue;
     }
+    delete stringClass;
     delete globalScope;
     logger->debug("Interpreter complete");
   }
@@ -55,13 +62,13 @@ namespace peachy {
               case EXPRESSION_STRING_LITERAL:
               case EXPRESSION_ASSIGNMENT:
                 Object * o = evaluate(rValue, scope);
-                if(scope->has(var->getVariableName())) {
+                if(scope->hasVariable(var->getVariableName())) {
                   logger->debug("Variable is already in scope");
                   // need to do type checking here
-                  scope->replace(var->getVariableName(), o);
+                  scope->replaceVariable(var->getVariableName(), o);
                 } else {
                   logger->debug("Variable not in scope");
-                  scope->add(var->getVariableName(), o);
+                  scope->addVariable(var->getVariableName(), o);
                 }
                 return o;
               default:
@@ -80,7 +87,7 @@ namespace peachy {
       case EXPRESSION_STRING_LITERAL:
         logger->debug("Returning string literal object");
         delete expression;
-        return new Object(logger);
+        return new Object(logger, scope->getClass(std::string("String")));
       case EXPRESSION_UNKNOWN:
       default:
         logger->debug("Unknown expression type");

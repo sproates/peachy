@@ -18,11 +18,11 @@ FINAL_EXE = peachy.exe
 HEADERS = ./includes
 
 OBJECTS = assignmentexpression.o class.o environment.o expression.o \
-expressionfactory.o expressionsource.o filescriptsource.o interpreter.o \
-istreamscriptsource.o lexer.o log.o nullostream.o object.o peachy.o parser.o \
-quitexpression.o replscriptsource.o runtime.o scope.o script.o scriptsource.o \
-string.o stringliteralexpression.o stringscriptsource.o token.o tokenfactory.o \
-tokensource.o variableexpression.o
+expressionfactory.o expressionsource.o filescriptsource.o function.o \
+interpreter.o istreamscriptsource.o lexer.o log.o nullostream.o object.o \
+peachy.o parser.o quitexpression.o replscriptsource.o runtime.o scope.o \
+script.o scriptsource.o string.o stringliteralexpression.o \
+stringscriptsource.o token.o tokenfactory.o tokensource.o variableexpression.o
 
 SOURCE = ./src
 
@@ -98,6 +98,10 @@ $(HEADERS)/tokensource.h
 filescriptsource.o: $(SOURCE)/filescriptsource.cpp \
 $(HEADERS)/filescriptsource.h $(HEADERS)/istreamscriptsource.h $(HEADERS)/log.h
 	$(COMPILER) $(COMPILER_FLAGS) $(SOURCE)/filescriptsource.cpp
+
+function.o: $(SOURCE)/function.cpp $(HEADERS)/function.h \
+$(HEADERS)/log.h
+	$(COMPILER) $(COMPILER_FLAGS) $(SOURCE)/function.cpp
 
 interpreter.o: $(SOURCE)/interpreter.cpp $(HEADERS)/expressionsource.h \
 $(HEADERS)/expressiontype.h $(HEADERS)/interpreter.h \

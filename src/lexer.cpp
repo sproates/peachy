@@ -30,7 +30,6 @@ namespace peachy {
         case LEXER_COMPLETE:
           logger->debug("In state LEXER_COMPLETE");
           token = tokenFactory->createToken(TOKEN_EOF);
-          resetToken();
           gotToken = true;
           break;
         case LEXER_DEFAULT:

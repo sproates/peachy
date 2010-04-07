@@ -37,6 +37,7 @@ namespace peachy {
             state = PARSER_DEFAULT;
           } else {
             logger->debug("No more tokens");
+            logger->debug("Finished current expression");
             return expressionFactory->createQuitExpression();
           }
           break;
@@ -46,6 +47,7 @@ namespace peachy {
           switch(tokenBuffer.front()->getTokenType()) {
             case TOKEN_EOF:
               logger->debug("Current token is TOKEN_EOF");
+              logger->debug("Finished current expression");
               return expressionFactory->createQuitExpression();
             case TOKEN_IDENTIFIER:
               logger->debug("Current token is TOKEN_IDENTIFIER");
@@ -63,6 +65,7 @@ namespace peachy {
                     ae->setLValue(e);
                     tokenBuffer.pop_front();
                     tokenBuffer.pop_front();
+                    logger->debug("Parser recursing");
                     return nextExpression(PARSER_ASSIGNMENT, ae);
                   } else {
                     logger->debug("I don't know what to do with that operator");
@@ -117,6 +120,7 @@ namespace peachy {
                   s->setStringValue(tokenBuffer.front()->getData());
                   expression->setRValue(s);
                   tokenBuffer.pop_front();
+                  logger->debug("Finished current expression");
                   return expression;
                 default:
                   logger->debug("Ok I have no idea what's going on");

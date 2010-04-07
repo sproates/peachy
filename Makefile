@@ -19,7 +19,7 @@ HEADERS = ./includes
 
 OBJECTS = assignmentexpression.o environment.o expression.o \
 expressionfactory.o expressionsource.o filescriptsource.o interpreter.o \
-istreamscriptsource.o lexer.o log.o nullostream.o peachy.o parser.o \
+istreamscriptsource.o lexer.o log.o nullostream.o object.o peachy.o parser.o \
 quitexpression.o replscriptsource.o runtime.o scope.o script.o scriptsource.o \
 stringliteralexpression.o stringscriptsource.o token.o tokenfactory.o \
 tokensource.o variableexpression.o
@@ -116,6 +116,9 @@ log.o: $(SOURCE)/log.cpp $(HEADERS)/log.h
 
 nullostream.o: $(SOURCE)/nullostream.cpp $(HEADERS)/nullostream.h
 	$(COMPILER) $(COMPILER_FLAGS) $(SOURCE)/nullostream.cpp
+
+object.o: $(SOURCE)/object.cpp $(HEADERS)/log.h $(HEADERS)/object.h
+	$(COMPILER) $(COMPILER_FLAGS) $(SOURCE)/object.cpp
 
 parser.o: $(SOURCE)/parser.cpp $(HEADERS)/assignmentexpression.h \
 $(HEADERS)/expressionfactory.h $(HEADERS)/expressionsource.h \

@@ -16,6 +16,15 @@ namespace peachy {
         this->expressionType = EXPRESSION_ASSIGNMENT;
       }
       virtual ~AssignmentExpression();
+      Expression * getLValue();
+      Expression * getRValue();
+      void setLValue(Expression * e);
+      void setRValue(Expression * e);
+
+    protected:
+
+      Expression * lValue;
+      Expression * rValue;
   };
 }
 

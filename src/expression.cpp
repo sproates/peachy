@@ -22,16 +22,6 @@ namespace peachy {
     return expressionType;
   }
 
-  void Expression::setLValue(Expression * e) {
-    logger->debug("Expression::setLValue()");
-    lValue = e;
-  }
-
-  void Expression::setRValue(Expression * e) {
-    logger->debug("Expression::setRValue()");
-    rValue = e;
-  }
-
   std::string Expression::toString() {
     std::string s = std::string("Expression: \n");
     switch(expressionType) {
@@ -55,8 +45,6 @@ namespace peachy {
     e.logger->debug("Expression copy constructor");
     logger = e.logger;
     expressionType = e.expressionType;
-    lValue = e.lValue;
-    rValue = e.rValue;
   }
 
   Expression & Expression::operator = (const Expression & e) {
@@ -64,19 +52,7 @@ namespace peachy {
     if(this != &e) {
       logger = e.logger;
       expressionType = e.expressionType;
-      lValue = e.lValue;
-      rValue = e.rValue;
     }
     return *this;
-  }
-
-  Expression * Expression::getLValue() {
-    logger->debug("Expression::getLValue()");
-    return lValue;
-  }
-
-  Expression * Expression::getRValue() {
-    logger->debug("Expression::getRValue()");
-    return rValue;
   }
 }

@@ -9,7 +9,9 @@
 #include "interpreterexception.h"
 #include "log.h"
 #include "object.h"
+#include "scope.h"
 #include "stringliteralexpression.h"
+#include "variableexpression.h"
 
 namespace peachy {
   
@@ -25,14 +27,16 @@ namespace peachy {
 
   void Interpreter::run() {
     logger->debug("Interpreter::run()");
-    Object * finalValue = evaluate(expressionSource->nextExpression());
+    Scope * globalScope = new Scope(logger);
+    Object * finalValue = evaluate(expressionSource->nextExpression(), globalScope);
     if(finalValue != NULL) {
       delete finalValue;
     }
+    delete globalScope;
     logger->debug("Interpreter complete");
   }
 
-  Object * Interpreter::evaluate(Expression * expression) {
+  Object * Interpreter::evaluate(Expression * expression, Scope * scope) {
     logger->debug("Interpreter::evaluate()");
     switch(expression->getExpressionType()) {
       case EXPRESSION_ASSIGNMENT:
@@ -44,14 +48,23 @@ namespace peachy {
         switch(lValue->getExpressionType()) {
           case EXPRESSION_VARIABLE:
             logger->debug("Assigning to a variable");
+            VariableExpression * var =
+              static_cast<VariableExpression*>(lValue);
             switch(rValue->getExpressionType()) {
               case EXPRESSION_STRING_LITERAL:
                 logger->debug("It's a string literal, I know this");
-                delete lValue;
-                return evaluate(rValue);
+                Object * o = evaluate(rValue, scope);
+                if(scope->has(var->getVariableName())) {
+                  logger->debug("Variable is already in scope");
+                  scope->replace(var->getVariableName(), o);
+                } else {
+                  logger->debug("Variable not in scope");
+                  scope->add(var->getVariableName(), o);
+                }
+                return o;
               case EXPRESSION_ASSIGNMENT:
                 logger->debug("recursive assignment!");
-                return evaluate(rValue);
+                return evaluate(rValue, scope);
               default:
                 logger->debug("I don't know how to assign one of those");
                 throw InterpreterException("I don't know how to assign one of those");

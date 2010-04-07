@@ -102,7 +102,7 @@ $(HEADERS)/filescriptsource.h $(HEADERS)/istreamscriptsource.h $(HEADERS)/log.h
 interpreter.o: $(SOURCE)/interpreter.cpp $(HEADERS)/expressionsource.h \
 $(HEADERS)/expressiontype.h $(HEADERS)/interpreter.h \
 $(HEADERS)/interpreterexception.h $(HEADERS)/log.h $(HEADERS)/object.h \
-$(HEADERS)/stringliteralexpression.h
+$(HEADERS)/scope.h $(HEADERS)/stringliteralexpression.h
 	$(COMPILER) $(COMPILER_FLAGS) $(SOURCE)/interpreter.cpp
 
 istreamscriptsource.o: $(SOURCE)/istreamscriptsource.cpp \

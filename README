@@ -1,13 +1,24 @@
-This project is a programme language called Peachy, with an accompanying interpreter.
+This project is an interpreter for a programming language called Peachy.
 
-Software design goals:
+Design goals of the Peachy language:
 
-- Don't use any external dependencies
-- Have complete documentation
-- Have a complete test suite
-
-Language design goals:
-
+- Everything is an object (a la Ruby etc.)
 - Support XML as a language construct (a la Scala)
 - Support JSON as a language construct (a la JavaScript)
-- Everything is an object (a la Ruby)
+- First class functions
+- Strong typing
+- Type inference
+
+Features of the interpreter:
+
+- Single threaded
+- Stack based
+- No external dependencies
+- Lexer and parser written from scratch as a learning exercise (i.e. no lexx or yacc)
+- Test suite
+- Good (whatever that might mean) documentation
+
+Out of scope:
+
+- Performance
+

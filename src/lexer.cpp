@@ -135,7 +135,7 @@ namespace peachy {
             consume(true);
           } else {
             logger->debug("End of number");
-            Token * token = tokenFactory->createToken(TOKEN_NUMBER, currentSequence);
+            Token * token = tokenFactory->createToken(TOKEN_INTEGER, currentSequence);
             resetToken();
             return token;
           }

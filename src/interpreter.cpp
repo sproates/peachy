@@ -10,10 +10,12 @@
 #include "expressionsource.h"
 #include "expressiontype.h"
 #include "interpreterexception.h"
+#include "intliteralexpression.h"
 #include "log.h"
 #include "object.h"
 #include "scope.h"
 #include "stringliteralexpression.h"
+#include "types/int.h"
 #include "types/string.h"
 #include "variableexpression.h"
 
@@ -59,6 +61,7 @@ namespace peachy {
             VariableExpression * var =
               static_cast<VariableExpression*>(lValue);
             switch(rValue->getExpressionType()) {
+              case EXPRESSION_INT_LITERAL:
               case EXPRESSION_STRING_LITERAL:
               case EXPRESSION_ASSIGNMENT:
                 Object * o = evaluate(rValue, scope);
@@ -84,6 +87,13 @@ namespace peachy {
             throw InterpreterException("The target of an assignment should be a variable");
         }
         break;
+      case EXPRESSION_INT_LITERAL:
+        logger->debug("Returning int literal object");
+        IntLiteralExpression * ile =
+          static_cast<IntLiteralExpression*>(expression);
+        Int * i = new Int(logger, classFactory, ile->getValue());
+        std::cout << "Returning object of type: " << typeid(i).name() << std::endl;
+        return i;
       case EXPRESSION_QUIT:
         logger->debug("Quit expression found");
         return NULL;

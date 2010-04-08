@@ -5,6 +5,7 @@ namespace peachy {
 
   class AssignmentExpression;
   class Expression;
+  class IntLiteralExpression;
   class Log;
   class QuitExpression;
   class StringLiteralExpression;
@@ -19,6 +20,8 @@ namespace peachy {
 
       AssignmentExpression * createAssignmentExpression();
       AssignmentExpression * createAssignmentExpression(Log * logger);
+      IntLiteralExpression * createIntLiteralExpression();
+      IntLiteralExpression * createIntLiteralExpression(Log * logger);
       QuitExpression * createQuitExpression();
       QuitExpression * createQuitExpression(Log * logger);
       StringLiteralExpression * createStringLiteralExpression();

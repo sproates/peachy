@@ -1,3 +1,4 @@
+c <- 5
 a <- b <- "multi
 line
 string"

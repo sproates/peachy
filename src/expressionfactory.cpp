@@ -2,6 +2,7 @@
 
 #include "assignmentexpression.h"
 #include "expression.h"
+#include "intliteralexpression.h"
 #include "log.h"
 #include "quitexpression.h"
 #include "stringliteralexpression.h"
@@ -27,6 +28,17 @@ namespace peachy {
   AssignmentExpression * ExpressionFactory::createAssignmentExpression(Log * logger) {
     this->logger->debug("ExpressionFactory::createAssignmentExpression()");
     return new AssignmentExpression(logger);
+  }
+
+  IntLiteralExpression * ExpressionFactory::createIntLiteralExpression() {
+    logger->debug("ExpressionFactory::createIntLiteralExpression()");
+    return new IntLiteralExpression(expressionLogger);
+  }
+
+  IntLiteralExpression * ExpressionFactory::createIntLiteralExpression(
+    Log * logger) {
+    this->logger->debug("ExpressionFactory::createIntLiteralExpression()");
+    return new IntLiteralExpression(logger);
   }
 
   QuitExpression * ExpressionFactory::createQuitExpression() {

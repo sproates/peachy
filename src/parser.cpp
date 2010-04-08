@@ -1,8 +1,11 @@
 #include "parser.h"
 
+#include <cstdlib>
+
 #include "assignmentexpression.h"
 #include "expression.h"
 #include "expressionfactory.h"
+#include "intliteralexpression.h"
 #include "lexerexception.h"
 #include "log.h"
 #include "parserexception.h"
@@ -76,6 +79,30 @@ namespace peachy {
                 default:
                   logger->debug("I have no idea what to do with the next token");
                   errorMessage = std::string("I have no idea what to do with the next token");
+                  state = PARSER_ERROR;
+              }
+              break;
+            case TOKEN_INTEGER:
+              logger->debug("Current token is TOKEN_INTEGER");
+              switch(tokenBuffer[1]->getTokenType()) {
+                case TOKEN_EOF:
+                case TOKEN_IDENTIFIER:
+                case TOKEN_KEYWORD:
+                  logger->debug("Nothing more to do in current expression");
+                  logger->debug("Returning int literal expression");
+                  IntLiteralExpression * e =
+                    expressionFactory->createIntLiteralExpression();
+                  e->setValue(atoi(tokenBuffer.front()->getData().c_str()));
+                  tokenBuffer.pop_front();
+                  return e;
+                case TOKEN_OPERATOR:
+                  logger->debug("Token after int literal is operator");
+                  errorMessage = std::string("I don't know what to do when an operator follows a string literal");
+                  state = PARSER_ERROR;
+                  break;
+                default:
+                  logger->debug("Wtf...");
+                  errorMessage = std::string("I don't know what to do!!!!");
                   state = PARSER_ERROR;
               }
               break;

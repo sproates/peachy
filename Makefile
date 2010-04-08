@@ -91,8 +91,8 @@ $(HEADERS)/expressiontype.h $(HEADERS)/log.h
 
 expressionfactory.o: $(SOURCE)/expressionfactory.cpp \
 $(HEADERS)/assignmentexpression.h $(HEADERS)/expression.h \
-$(HEADERS)/expressionfactory.h $(HEADERS)/log.h $(HEADERS)/quitexpression.h \
-$(HEADERS)/variableexpression.h
+$(HEADERS)/expressionfactory.h $(HEADERS)/intliteralexpression.h \
+$(HEADERS)/log.h $(HEADERS)/quitexpression.h $(HEADERS)/variableexpression.h
 	$(COMPILER) $(COMPILER_FLAGS) $(SOURCE)/expressionfactory.cpp
 
 expressionsource.o: $(SOURCE)/expressionsource.cpp $(HEADERS)/expression.h \
@@ -145,10 +145,11 @@ $(HEADERS)/log.h $(HEADERS)/object.h
 
 parser.o: $(SOURCE)/parser.cpp $(HEADERS)/assignmentexpression.h \
 $(HEADERS)/expressionfactory.h $(HEADERS)/expressionsource.h \
-$(HEADERS)/lexerexception.h $(HEADERS)/log.h $(HEADERS)/parserexception.h \
-$(HEADERS)/parserstate.h $(HEADERS)/parser.h $(HEADERS)/quitexpression.h \
-$(HEADERS)/stringliteralexpression.h $(HEADERS)/token.h \
-$(HEADERS)/tokensource.h $(HEADERS)/tokentype.h $(HEADERS)/variableexpression.h
+$(HEADERS)/intliteralexpression.h $(HEADERS)/lexerexception.h $(HEADERS)/log.h \
+$(HEADERS)/parserexception.h $(HEADERS)/parserstate.h $(HEADERS)/parser.h \
+$(HEADERS)/quitexpression.h $(HEADERS)/stringliteralexpression.h \
+$(HEADERS)/token.h $(HEADERS)/tokensource.h $(HEADERS)/tokentype.h \
+$(HEADERS)/variableexpression.h
 	$(COMPILER) $(COMPILER_FLAGS) $(SOURCE)/parser.cpp
 
 peachy.o: $(SOURCE)/peachy.cpp $(HEADERS)/peachy.h

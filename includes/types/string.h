@@ -3,15 +3,23 @@
 
 #include <string>
 
+#include "class.h"
+#include "classfactory.h"
+#include "log.h"
+#include "object.h"
+
 namespace peachy {
 
-  class Log;
-
-  class String {
+  class String : public Object {
 
     public:
 
-      String(Log * logger, std::string value);
+      String(Log * logger, ClassFactory * classFactory, std::string value) :
+      Object(logger, classFactory) {
+        logger->debug("String constructor");
+        this->clazz = classFactory->getClass(std::string("String"));
+        this->value = value;
+      }
       virtual ~String();
       std::string getValue();
 

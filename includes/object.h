@@ -6,13 +6,14 @@
 namespace peachy {
 
   class Class;
+  class ClassFactory;
   class Log;
 
   class Object {
 
     public:
 
-      Object(Log * logger, Class * clazz);
+      Object(Log * logger, ClassFactory * classFactory);
       virtual ~Object();
       std::string getClassName();
       Class * getClass();
@@ -21,6 +22,7 @@ namespace peachy {
 
       Log * logger;
       Class * clazz;
+      ClassFactory * classFactory;
 
     private:
 

@@ -3,14 +3,16 @@
 #include <string>
 
 #include "class.h"
+#include "classfactory.h"
 #include "log.h"
 
 namespace peachy {
 
-  Object::Object(Log * logger, Class * clazz) {
+  Object::Object(Log * logger, ClassFactory * classFactory) {
     logger->debug("Object constructor");
     this->logger = logger;
-    this->clazz = clazz;
+    this->classFactory = classFactory;
+    this->clazz = classFactory->getClass(std::string("Unknown"));
   }
 
   Object::~Object() {

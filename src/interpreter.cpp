@@ -1,6 +1,7 @@
 #include "interpreter.h"
 
 #include <iostream>
+#include <typeinfo>
 
 #include "assignmentexpression.h"
 #include "class.h"
@@ -13,6 +14,7 @@
 #include "object.h"
 #include "scope.h"
 #include "stringliteralexpression.h"
+#include "types/string.h"
 #include "variableexpression.h"
 
 namespace peachy {
@@ -34,11 +36,9 @@ namespace peachy {
     Scope * globalScope = new Scope(logger);
     Class * stringClass = classFactory->getClass(std::string("String"));
     globalScope->addClass(std::string("String"), stringClass);
-    Object * finalValue = evaluate(expressionSource->nextExpression(), globalScope);
+    Object * o = evaluate(expressionSource->nextExpression(), globalScope);
+    std::cout << "Final object of type: " << typeid(o).name() << std::endl;
     logger->debug(globalScope->toString());
-    if(finalValue != NULL) {
-      delete finalValue;
-    }
     delete stringClass;
     delete globalScope;
     logger->debug("Interpreter complete");
@@ -72,6 +72,7 @@ namespace peachy {
                   logger->debug("Variable not in scope");
                   scope->addVariable(var->getVariableName(), o);
                 }
+                std::cout << "Returning object of type: " << typeid(o).name() << std::endl;
                 return o;
               default:
                 logger->debug("I don't know how to assign one of those");
@@ -88,8 +89,11 @@ namespace peachy {
         return NULL;
       case EXPRESSION_STRING_LITERAL:
         logger->debug("Returning string literal object");
-        delete expression;
-        return new Object(logger, scope->getClass(std::string("String")));
+        StringLiteralExpression * e =
+          static_cast<StringLiteralExpression*>(expression);
+        String * o = new String(logger, classFactory, e->getStringValue());
+        std::cout << "Returning object of type: " << typeid(o).name() << std::endl;
+        return o;
       case EXPRESSION_UNKNOWN:
       default:
         logger->debug("Unknown expression type");

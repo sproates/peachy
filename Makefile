@@ -111,7 +111,7 @@ interpreter.o: $(SOURCE)/interpreter.cpp $(HEADERS)/class.h \
 $(HEADERS)/classfactory.h $(HEADERS)/expressionsource.h \
 $(HEADERS)/expressiontype.h $(HEADERS)/interpreter.h \
 $(HEADERS)/interpreterexception.h $(HEADERS)/log.h $(HEADERS)/object.h \
-$(HEADERS)/scope.h $(HEADERS)/stringliteralexpression.h
+$(HEADERS)/scope.h $(HEADERS)/types/string.h $(HEADERS)/stringliteralexpression.h
 	$(COMPILER) $(COMPILER_FLAGS) $(SOURCE)/interpreter.cpp
 
 istreamscriptsource.o: $(SOURCE)/istreamscriptsource.cpp \
@@ -129,8 +129,8 @@ log.o: $(SOURCE)/log.cpp $(HEADERS)/log.h
 nullostream.o: $(SOURCE)/nullostream.cpp $(HEADERS)/nullostream.h
 	$(COMPILER) $(COMPILER_FLAGS) $(SOURCE)/nullostream.cpp
 
-object.o: $(SOURCE)/object.cpp $(HEADERS)/class.h $(HEADERS)/log.h \
-$(HEADERS)/object.h
+object.o: $(SOURCE)/object.cpp $(HEADERS)/class.h $(HEADERS)/classfactory.h \
+$(HEADERS)/log.h $(HEADERS)/object.h
 	$(COMPILER) $(COMPILER_FLAGS) $(SOURCE)/object.cpp
 
 parser.o: $(SOURCE)/parser.cpp $(HEADERS)/assignmentexpression.h \
@@ -166,7 +166,8 @@ $(HEADERS)/parserexception.h $(HEADERS)/runtime.h
 scriptsource.o: $(SOURCE)/scriptsource.cpp $(HEADERS)/scriptsource.h
 	$(COMPILER) $(COMPILER_FLAGS) $(SOURCE)/scriptsource.cpp
 
-string.o: $(SOURCE)/types/string.cpp $(HEADERS)/types/string.h
+string.o: $(SOURCE)/types/string.cpp $(HEADERS)/classfactory.h $(HEADERS)/object.h \
+$(HEADERS)/types/string.h
 	$(COMPILER) $(COMPILER_FLAGS) $(SOURCE)/types/string.cpp
 
 stringliteralexpression.o: $(SOURCE)/stringliteralexpression.cpp \

@@ -19,9 +19,9 @@ HEADERS = ./includes
 
 OBJECTS = assignmentexpression.o class.o classfactory.o environment.o \
 expression.o expressionfactory.o expressionsource.o filescriptsource.o \
-function.o interpreter.o istreamscriptsource.o lexer.o log.o nullostream.o \
-object.o peachy.o parser.o quitexpression.o replscriptsource.o runtime.o \
-scope.o script.o scriptsource.o string.o stringliteralexpression.o \
+function.o int.o interpreter.o istreamscriptsource.o lexer.o log.o \
+nullostream.o object.o peachy.o parser.o quitexpression.o replscriptsource.o \
+runtime.o scope.o script.o scriptsource.o string.o stringliteralexpression.o \
 stringscriptsource.o token.o tokenfactory.o tokensource.o variableexpression.o
 
 SOURCE = ./src
@@ -106,6 +106,10 @@ $(HEADERS)/filescriptsource.h $(HEADERS)/istreamscriptsource.h $(HEADERS)/log.h
 function.o: $(SOURCE)/function.cpp $(HEADERS)/function.h \
 $(HEADERS)/log.h
 	$(COMPILER) $(COMPILER_FLAGS) $(SOURCE)/function.cpp
+
+int.o: $(SOURCE)/types/int.cpp $(HEADERS)/classfactory.h $(HEADERS)/object.h \
+$(HEADERS)/types/int.h
+	$(COMPILER) $(COMPILER_FLAGS) $(SOURCE)/types/int.cpp
 
 interpreter.o: $(SOURCE)/interpreter.cpp $(HEADERS)/class.h \
 $(HEADERS)/classfactory.h $(HEADERS)/expressionsource.h \

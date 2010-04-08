@@ -19,10 +19,11 @@ HEADERS = ./includes
 
 OBJECTS = assignmentexpression.o class.o classfactory.o environment.o \
 expression.o expressionfactory.o expressionsource.o filescriptsource.o \
-function.o int.o interpreter.o istreamscriptsource.o lexer.o log.o \
-nullostream.o object.o peachy.o parser.o quitexpression.o replscriptsource.o \
-runtime.o scope.o script.o scriptsource.o string.o stringliteralexpression.o \
-stringscriptsource.o token.o tokenfactory.o tokensource.o variableexpression.o
+function.o int.o intliteralexpression.o interpreter.o istreamscriptsource.o \
+lexer.o log.o nullostream.o object.o peachy.o parser.o quitexpression.o \
+replscriptsource.o runtime.o scope.o script.o scriptsource.o string.o \
+stringliteralexpression.o stringscriptsource.o token.o tokenfactory.o \
+tokensource.o variableexpression.o
 
 SOURCE = ./src
 
@@ -118,6 +119,11 @@ $(HEADERS)/interpreterexception.h $(HEADERS)/log.h $(HEADERS)/object.h \
 $(HEADERS)/scope.h $(HEADERS)/types/string.h $(HEADERS)/stringliteralexpression.h
 	$(COMPILER) $(COMPILER_FLAGS) $(SOURCE)/interpreter.cpp
 
+intliteralexpression.o: $(SOURCE)/intliteralexpression.cpp \
+$(HEADERS)/expression.h $(HEADERS)/expressiontype.h \
+$(HEADERS)/intliteralexpression.h $(HEADERS)/log.h 
+	$(COMPILER) $(COMPILER_FLAGS) $(SOURCE)/intliteralexpression.cpp
+
 istreamscriptsource.o: $(SOURCE)/istreamscriptsource.cpp \
 $(HEADERS)/istreamscriptsource.h $(HEADERS)/log.h $(HEADERS)/scriptsource.h
 	$(COMPILER) $(COMPILER_FLAGS) $(SOURCE)/istreamscriptsource.cpp
@@ -142,7 +148,7 @@ $(HEADERS)/expressionfactory.h $(HEADERS)/expressionsource.h \
 $(HEADERS)/lexerexception.h $(HEADERS)/log.h $(HEADERS)/parserexception.h \
 $(HEADERS)/parserstate.h $(HEADERS)/parser.h $(HEADERS)/quitexpression.h \
 $(HEADERS)/stringliteralexpression.h $(HEADERS)/token.h \
-$(HEADERS)/tokensource.h $(HEADERS)/variableexpression.h
+$(HEADERS)/tokensource.h $(HEADERS)/tokentype.h $(HEADERS)/variableexpression.h
 	$(COMPILER) $(COMPILER_FLAGS) $(SOURCE)/parser.cpp
 
 peachy.o: $(SOURCE)/peachy.cpp $(HEADERS)/peachy.h

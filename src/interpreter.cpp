@@ -64,7 +64,9 @@ namespace peachy {
                 Object * o = evaluate(rValue, scope);
                 if(scope->hasVariable(var->getVariableName())) {
                   logger->debug("Variable is already in scope");
-                  // need to do type checking here
+                  if(scope->getVariable(var->getVariableName())->getClassName() != o->getClassName()) {
+                    throw new InterpreterException("Can't assign a different type to this variable");
+                  }
                   scope->replaceVariable(var->getVariableName(), o);
                 } else {
                   logger->debug("Variable not in scope");

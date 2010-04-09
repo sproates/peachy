@@ -64,41 +64,14 @@ namespace peachy {
             logger->debug("Adding to a variable");
             VariableExpression * varEx =
               static_cast<VariableExpression*>(lValue);
-            switch(rValue->getExpressionType()) {
-              case EXPRESSION_INT_LITERAL:
-              case EXPRESSION_VARIABLE:
-                logger->debug("Evaluating RHS of addition");
-                Object * rightObj = evaluate(rValue, scope);
-                logger->debug("RHS of addition evaluated");
-                Object * leftObj = scope->getVariable(varEx->getVariableName());
-                if(leftObj->getClassName().compare(rightObj->getClassName()) == 0) {
-                  logger->debug("Left and right are of the same type");
-                  logger->debug("flag 3");
-                  if(!scope->hasVariable(varEx->getVariableName())) {
-                    throw InterpreterException("variable is not in this scope");
-                  }
-                  Int * leftI = static_cast<Int*>(scope->getVariable(varEx->getVariableName()));
-                  logger->debug("flag 4");
-                  Int * rightI = static_cast<Int*>(rightObj);
-                  logger->debug("flag 5");
-                  std::cout << leftI->getValue() << std::endl;
-                  logger->debug("flag 6");
-                  std::cout << rightI->getValue() << std::endl;
-                  logger->debug("flag 7");
-                  leftI->add(rightI);
-                  logger->debug("flag 8");
-                  varEx->setValue(leftI);
-                  logger->debug("flag 9");
-                  return leftI;
-                } else {
-                  logger->debug("Objects are of different types");
-                  throw InterpreterException("Can't add objects of different types");
-                }
-              default:
-                logger->debug("I don't know how to add one of those");
-                throw InterpreterException("I don't know how to add one of those");
+            if(!scope->hasVariable(varEx->getVariableName())) {
+              throw InterpreterException("variable is not in this scope");
             }
-            break;
+            Object * leftObj = scope->getVariable(varEx->getVariableName());
+            logger->debug("Evaluating RHS of addition");
+            Object * rightObj = evaluate(rValue, scope);
+            leftObj->add(rightObj);
+            return leftObj;
           case EXPRESSION_INT_LITERAL:
             logger->debug("Adding to an int literal");
             IntLiteralExpression * intEx =

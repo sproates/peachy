@@ -28,4 +28,18 @@ namespace peachy {
     logger->debug("Object::getClassName()");
     return clazz->getName();
   }
+
+  bool Object::is(std::string className) {
+    logger->debug("Object::is()");
+    return (clazz->getName().compare(className) == 0);
+  }
+
+  bool Object::is(Class * clazz) {
+    logger->debug("Object::is()");
+    return (this->clazz == clazz);
+  }
+
+  bool Object::sameClass(Object * o) {
+    return (is(o->getClass()));
+  }
 }

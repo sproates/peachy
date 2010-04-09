@@ -1,2 +1,4 @@
 a <- 5 + 6
 b <- a + 2
+c <- "hello"
+d <- c + " world"

@@ -22,6 +22,7 @@ namespace peachy {
       }
       virtual ~String();
       std::string getValue();
+      void add(Object * o);
 
     protected:
 

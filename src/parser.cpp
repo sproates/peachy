@@ -111,9 +111,25 @@ namespace peachy {
                   tokenBuffer.pop_front();
                   return e;
                 case TOKEN_OPERATOR:
-                  logger->debug("I don't know what to do when an operator follows an integer");
-                  state = PARSER_ERROR;
-                  break;
+                  if(tokenBuffer[1]->getData().compare("+") == 0) {
+                    logger->debug("Integer addition");
+                    AdditionExpression * addEx =
+                      expressionFactory->createAdditionExpression();
+                    IntLiteralExpression * intEx =
+                      expressionFactory->createIntLiteralExpression();
+                    intEx->setValue(atoi(tokenBuffer[0]->getData().c_str()));
+                    addEx->setLValue(intEx);
+                    tokenBuffer.pop_front();
+                    tokenBuffer.pop_front();
+                    logger->debug("Parser recursing to find rvalue of current addition");
+                    addEx->setRValue(nextExpression(PARSER_DEFAULT));
+                    logger->debug("Got rvalue of current addition, addition expression is complete");
+                    return addEx;
+                  } else {
+                    logger->debug("I don't know what to do when that operator follows an integer");
+                    state = PARSER_ERROR;
+                    break;
+                  }
                 default:
                   logger->debug("Wtf...");
                   errorMessage = std::string("I don't know what to do!!!!");

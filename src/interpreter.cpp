@@ -1,5 +1,7 @@
 #include "interpreter.h"
 
+#include <iostream>
+
 #include "additionexpression.h"
 #include "assignmentexpression.h"
 #include "class.h"
@@ -68,7 +70,7 @@ namespace peachy {
                 Object * o = evaluate(rValue, scope);
                 if(scope->hasVariable(varEx->getVariableName())) {
                   logger->debug("Variable is already in scope");
-                  if(scope->getVariable(varEx->getVariableName())->getClassName() != o->getClassName()) {
+                  if(scope->getVariable(varEx->getVariableName())->getClassName().compare(o->getClassName()) != 0) {
                     throw new InterpreterException("Can't assign a different type to this variable");
                   }
                   scope->replaceVariable(varEx->getVariableName(), o);
@@ -77,6 +79,39 @@ namespace peachy {
                   scope->addVariable(varEx->getVariableName(), o);
                 }
                 return o;
+              default:
+                logger->debug("I don't know how to add one of those");
+                throw InterpreterException("I don't know how to add one of those");
+            }
+            break;
+          case EXPRESSION_INT_LITERAL:
+            logger->debug("Adding to an int literal");
+            IntLiteralExpression * intEx =
+              static_cast<IntLiteralExpression*>(lValue);
+            switch(rValue->getExpressionType()) {
+              case EXPRESSION_INT_LITERAL:
+                logger->debug("Adding int literals together");
+                IntLiteralExpression * rIntEx =
+                  static_cast<IntLiteralExpression*>(rValue);
+                intEx->setValue(intEx->getValue() + rIntEx->getValue());
+                return evaluate(intEx, scope);
+              case EXPRESSION_VARIABLE:
+                logger->debug("Adding a variable to an int");
+                VariableExpression * varEx =
+                  static_cast<VariableExpression*>(rValue);
+                if(!scope->hasVariable(varEx->getVariableName())) {
+                  logger->debug("Assigning an out of scope variable");
+                  throw InterpreterException("Assigning a variable that isn't in scope");
+                } else {
+                  if(scope->getVariable(varEx->getVariableName())->getClassName().compare(std::string("Int")) != 0) {
+                    logger->debug("Adding a non-int variable to an int literal...");
+                    throw InterpreterException("Adding a non-int variable to an int literal");
+                  } else {
+                    logger->debug("Adding int variable to int literal");
+                    logger->debug("Not implemented yet");
+                    throw InterpreterException("I don't know how to add an int literal and an int variable yet");
+                  }
+                }
               default:
                 logger->debug("I don't know how to add one of those");
                 throw InterpreterException("I don't know how to add one of those");
@@ -98,27 +133,18 @@ namespace peachy {
             logger->debug("Assigning to a variable");
             VariableExpression * var =
               static_cast<VariableExpression*>(lValue);
-            switch(rValue->getExpressionType()) {
-              case EXPRESSION_INT_LITERAL:
-              case EXPRESSION_STRING_LITERAL:
-              case EXPRESSION_ASSIGNMENT:
-                Object * o = evaluate(rValue, scope);
-                if(scope->hasVariable(var->getVariableName())) {
-                  logger->debug("Variable is already in scope");
-                  if(scope->getVariable(var->getVariableName())->getClassName() != o->getClassName()) {
-                    throw new InterpreterException("Can't assign a different type to this variable");
-                  }
-                  scope->replaceVariable(var->getVariableName(), o);
-                } else {
-                  logger->debug("Variable not in scope");
-                  scope->addVariable(var->getVariableName(), o);
-                }
-                return o;
-              default:
-                logger->debug("I don't know how to assign one of those");
-                throw InterpreterException("I don't know how to assign one of those");
+            Object * o = evaluate(rValue, scope);
+            if(scope->hasVariable(var->getVariableName())) {
+              logger->debug("Variable is already in scope");
+              if(scope->getVariable(var->getVariableName())->getClassName() != o->getClassName()) {
+                throw new InterpreterException("Can't assign a different type to this variable");
+              }
+              scope->replaceVariable(var->getVariableName(), o);
+            } else {
+              logger->debug("Variable not in scope");
+              scope->addVariable(var->getVariableName(), o);
             }
-            break;
+            return o;
           default:
             logger->debug("Assigning to what now?");
             throw InterpreterException("The target of an assignment should be a variable");
@@ -129,6 +155,7 @@ namespace peachy {
         IntLiteralExpression * ile =
           static_cast<IntLiteralExpression*>(expression);
         Int * i = new Int(logger, classFactory, ile->getValue());
+        std::cout << "Int literal with value: " << ile->getValue() << std::endl;
         return i;
       case EXPRESSION_QUIT:
         logger->debug("Quit expression found");

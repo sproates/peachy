@@ -42,7 +42,7 @@ int main() {
   TokenSource * tokenSource = new Lexer(nullLogger, tokenFactory, scriptSource);
   ExpressionFactory * expressionFactory = new ExpressionFactory(nullLogger,
     nullLogger);
-  ExpressionSource * expressionSource = new Parser(debugLogger,
+  ExpressionSource * expressionSource = new Parser(nullLogger,
     expressionFactory, tokenSource);
   ClassFactory * classFactory = new ClassFactory(nullLogger, nullLogger);
   Interpreter * interpreter = new Interpreter(debugLogger, expressionSource,

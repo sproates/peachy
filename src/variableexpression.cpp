@@ -2,6 +2,8 @@
 
 #include <string>
 
+#include "object.h"
+
 namespace peachy {
 
   VariableExpression::~VariableExpression() {
@@ -16,5 +18,14 @@ namespace peachy {
   std::string VariableExpression::getVariableName() {
     logger->debug("VariableExpression::getVariableName()");
     return variableName;
+  }
+
+  Object * VariableExpression::getValue() {
+    logger->debug("VariableExpression::getValue()");
+    return value;
+  }
+
+  void VariableExpression::setValue(Object * value){
+    this->value = value;
   }
 }

@@ -108,8 +108,9 @@ namespace peachy {
                     throw InterpreterException("Adding a non-int variable to an int literal");
                   } else {
                     logger->debug("Adding int variable to int literal");
-                    logger->debug("Not implemented yet");
-                    throw InterpreterException("I don't know how to add an int literal and an int variable yet");
+                    Int * i = static_cast<Int*>(varEx->getValue());
+                    intEx->setValue(intEx->getValue() + i->getValue());
+                    return evaluate(intEx, scope);
                   }
                 }
               default:
@@ -134,6 +135,7 @@ namespace peachy {
             VariableExpression * var =
               static_cast<VariableExpression*>(lValue);
             Object * o = evaluate(rValue, scope);
+            var->setValue(o);
             if(scope->hasVariable(var->getVariableName())) {
               logger->debug("Variable is already in scope");
               if(scope->getVariable(var->getVariableName())->getClassName() != o->getClassName()) {

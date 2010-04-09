@@ -9,6 +9,8 @@
 
 namespace peachy {
 
+  class Object;
+
   class VariableExpression : public Expression {
 
     public:
@@ -20,10 +22,13 @@ namespace peachy {
       virtual ~VariableExpression();
       void setVariableName(std::string variableName);
       std::string getVariableName();
+      Object * getValue();
+      void setValue(Object * value);
 
     protected:
 
       std::string variableName;
+      Object * value;
   };
 }
 

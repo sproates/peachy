@@ -122,8 +122,8 @@ interpreter.o: $(SOURCE)/interpreter.cpp $(HEADERS)/additionexpression.h \
 $(HEADERS)/assignmentexpression.h $(HEADERS)/class.h $(HEADERS)/classfactory.h \
 $(HEADERS)/expressionsource.h $(HEADERS)/expressiontype.h \
 $(HEADERS)/interpreter.h $(HEADERS)/interpreterexception.h $(HEADERS)/log.h \
-$(HEADERS)/object.h $(HEADERS)/scope.h $(HEADERS)/types/string.h \
-$(HEADERS)/stringliteralexpression.h
+$(HEADERS)/object.h $(HEADERS)/scope.h $(HEADERS)/stringliteralexpression.h \
+$(HEADERS)/types/int.h $(HEADERS)/types/string.h
 	$(COMPILER) $(COMPILER_FLAGS) $(SOURCE)/interpreter.cpp
 
 intliteralexpression.o: $(SOURCE)/intliteralexpression.cpp \

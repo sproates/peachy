@@ -22,6 +22,7 @@ namespace peachy {
       }
       virtual ~Int();
       int getValue();
+      void setValue(int value);
 
     protected:
 

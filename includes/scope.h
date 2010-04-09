@@ -21,7 +21,7 @@ namespace peachy {
       void addVariable(const std::string name, Object * value);
       void replaceVariable(const std::string name, Object * value);
       bool hasClass(const std::string name);
-      void addClass(const std::string name, Class * clazz);
+      void addClass(Class * clazz);
       Class * getClass(const std::string name);
       std::string toString();
 

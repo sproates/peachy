@@ -1,8 +1,5 @@
 #include "interpreter.h"
 
-#include <iostream>
-#include <typeinfo>
-
 #include "assignmentexpression.h"
 #include "class.h"
 #include "classfactory.h"
@@ -37,11 +34,14 @@ namespace peachy {
     logger->debug("Interpreter::run()");
     Scope * globalScope = new Scope(logger);
     Class * stringClass = classFactory->getClass(std::string("String"));
-    globalScope->addClass(std::string("String"), stringClass);
-    Object * o = evaluate(expressionSource->nextExpression(), globalScope);
-    std::cout << "Final object of type: " << typeid(o).name() << std::endl;
+    globalScope->addClass(stringClass);
+    Class * intClass = classFactory->getClass(std::string("Int"));
+    globalScope->addClass(intClass);
+    Object * o;
+    do {
+      o = evaluate(expressionSource->nextExpression(), globalScope);
+    } while(o != NULL);
     logger->debug(globalScope->toString());
-    delete stringClass;
     delete globalScope;
     logger->debug("Interpreter complete");
   }
@@ -75,7 +75,6 @@ namespace peachy {
                   logger->debug("Variable not in scope");
                   scope->addVariable(var->getVariableName(), o);
                 }
-                std::cout << "Returning object of type: " << typeid(o).name() << std::endl;
                 return o;
               default:
                 logger->debug("I don't know how to assign one of those");
@@ -92,7 +91,6 @@ namespace peachy {
         IntLiteralExpression * ile =
           static_cast<IntLiteralExpression*>(expression);
         Int * i = new Int(logger, classFactory, ile->getValue());
-        std::cout << "Returning object of type: " << typeid(i).name() << std::endl;
         return i;
       case EXPRESSION_QUIT:
         logger->debug("Quit expression found");
@@ -102,7 +100,6 @@ namespace peachy {
         StringLiteralExpression * e =
           static_cast<StringLiteralExpression*>(expression);
         String * o = new String(logger, classFactory, e->getStringValue());
-        std::cout << "Returning object of type: " << typeid(o).name() << std::endl;
         return o;
       case EXPRESSION_UNKNOWN:
       default:

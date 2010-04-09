@@ -1,3 +1,4 @@
+
 #include "scope.h"
 
 #include <map>
@@ -17,6 +18,16 @@ namespace peachy {
 
   Scope::~Scope() {
     logger->debug("Scope destructor");
+    std::map<std::string, Object*>::iterator it;
+    logger->debug("Deleting objects...");
+    for(it = variables.begin(); it != variables.end(); it++) {
+      logger->debug(
+        std::string("Deleting object: ").
+        append(it->first)
+      );
+      variables.erase(it);
+    }
+    logger->debug("Scope destruction complete");
   }
 
   bool Scope::hasVariable(const std::string name) {
@@ -48,23 +59,44 @@ namespace peachy {
     variables[name] = value;
   }
 
-  void Scope::addClass(const std::string name, Class * clazz) {
+  void Scope::addClass(Class * clazz) {
     logger->debug("Scope::addClass()");
-    classes[name] = clazz;
+    if(hasClass(clazz->getName())) {
+      throw std::runtime_error("Class already defined in this scope");
+    }
+    classes[clazz->getName()] = clazz;
   }
 
   void Scope::replaceVariable(const std::string name, Object * value) {
     logger->debug("Scope::replace()");
+    if(hasVariable(name)) {
+      if(variables[name]->getClassName().compare(value->getClassName()) != 0) {
+        throw std::runtime_error(
+          std::string("").
+          append(name).
+          append(std::string(" already defined with class ")).
+          append(variables[name]->getClassName()).
+          append(std::string(" in this scope"))
+        );
+      }
+    }
     variables[name] = value;
   }
 
   std::string Scope::toString() {
     std::string s = std::string("Scope: \n");
+    s.append("Objects:\n");
     std::map<std::string, Object*>::iterator it;
     for(it = variables.begin(); it != variables.end(); it++) {
       s.append(it->first);
       s.append(" : ");
       s.append(it->second->getClassName());
+      s.append("\n");
+    }
+    s.append("Classes\n");
+    std::map<std::string, Class*>::iterator it2;
+    for(it2 = classes.begin(); it2 != classes.end(); it2++) {
+      s.append(it2->first);
       s.append("\n");
     }
     return s;

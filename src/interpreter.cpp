@@ -1,5 +1,6 @@
 #include "interpreter.h"
 
+#include "additionexpression.h"
 #include "assignmentexpression.h"
 #include "class.h"
 #include "classfactory.h"
@@ -48,13 +49,50 @@ namespace peachy {
 
   Object * Interpreter::evaluate(Expression * expression, Scope * scope) {
     logger->debug("Interpreter::evaluate()");
+    Expression * lValue, * rValue;
     switch(expression->getExpressionType()) {
+      case EXPRESSION_ADDITION:
+        logger->debug("Addition expression found");
+        AdditionExpression * addEx =
+          static_cast<AdditionExpression*>(expression);
+        lValue = addEx->getLValue();
+        rValue = addEx->getRValue();
+        switch(lValue->getExpressionType()) {
+          case EXPRESSION_VARIABLE:
+            logger->debug("Adding to a variable");
+            VariableExpression * varEx =
+              static_cast<VariableExpression*>(lValue);
+            switch(rValue->getExpressionType()) {
+              case EXPRESSION_INT_LITERAL:
+              case EXPRESSION_VARIABLE:
+                Object * o = evaluate(rValue, scope);
+                if(scope->hasVariable(varEx->getVariableName())) {
+                  logger->debug("Variable is already in scope");
+                  if(scope->getVariable(varEx->getVariableName())->getClassName() != o->getClassName()) {
+                    throw new InterpreterException("Can't assign a different type to this variable");
+                  }
+                  scope->replaceVariable(varEx->getVariableName(), o);
+                } else {
+                  logger->debug("Variable is not in scope");
+                  scope->addVariable(varEx->getVariableName(), o);
+                }
+                return o;
+              default:
+                logger->debug("I don't know how to add one of those");
+                throw InterpreterException("I don't know how to add one of those");
+            }
+            break;
+          default:
+            logger->debug("Adding to what now?");
+            throw InterpreterException("The target of an addition can only be an Int variable or an Int literal");
+        }
+        break;
       case EXPRESSION_ASSIGNMENT:
         logger->debug("Assignment expression found");
         AssignmentExpression * ae =
           static_cast<AssignmentExpression*>(expression);
-        Expression * lValue = ae->getLValue();
-        Expression * rValue = ae->getRValue();
+        lValue = ae->getLValue();
+        rValue = ae->getRValue();
         switch(lValue->getExpressionType()) {
           case EXPRESSION_VARIABLE:
             logger->debug("Assigning to a variable");

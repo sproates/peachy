@@ -17,12 +17,12 @@ FINAL_EXE = peachy.exe
 
 HEADERS = ./includes
 
-OBJECTS = assignmentexpression.o class.o classfactory.o environment.o \
-expression.o expressionfactory.o expressionsource.o filescriptsource.o \
-function.o int.o intliteralexpression.o interpreter.o istreamscriptsource.o \
-lexer.o log.o nullostream.o object.o peachy.o parser.o quitexpression.o \
-replscriptsource.o runtime.o scope.o script.o scriptsource.o string.o \
-stringliteralexpression.o stringscriptsource.o token.o tokenfactory.o \
+OBJECTS = additionexpression.o assignmentexpression.o class.o classfactory.o \
+environment.o expression.o expressionfactory.o expressionsource.o \
+filescriptsource.o function.o int.o intliteralexpression.o interpreter.o \
+istreamscriptsource.o lexer.o log.o nullostream.o object.o peachy.o parser.o \
+quitexpression.o replscriptsource.o runtime.o scope.o script.o scriptsource.o \
+string.o stringliteralexpression.o stringscriptsource.o token.o tokenfactory.o \
 tokensource.o variableexpression.o
 
 SOURCE = ./src
@@ -69,6 +69,11 @@ $(HEADERS)/tokensource.h $(HEADERS)/tokentype.h
 
 # intermediary objects
 
+additionexpression.o: $(SOURCE)/additionexpression.cpp \
+$(HEADERS)/additionexpression.h $(HEADERS)/expression.h \
+$(HEADERS)/expressiontype.h $(HEADERS)/log.h
+	$(COMPILER) $(COMPILER_FLAGS) $(SOURCE)/additionexpression.cpp
+
 assignmentexpression.o: $(SOURCE)/assignmentexpression.cpp \
 $(HEADERS)/assignmentexpression.h $(HEADERS)/expression.h \
 $(HEADERS)/expressiontype.h $(HEADERS)/log.h
@@ -90,9 +95,10 @@ $(HEADERS)/expressiontype.h $(HEADERS)/log.h
 	$(COMPILER) $(COMPILER_FLAGS) $(SOURCE)/expression.cpp
 
 expressionfactory.o: $(SOURCE)/expressionfactory.cpp \
-$(HEADERS)/assignmentexpression.h $(HEADERS)/expression.h \
-$(HEADERS)/expressionfactory.h $(HEADERS)/intliteralexpression.h \
-$(HEADERS)/log.h $(HEADERS)/quitexpression.h $(HEADERS)/variableexpression.h
+$(HEADERS)/additionexpression.h $(HEADERS)/assignmentexpression.h \
+$(HEADERS)/expression.h $(HEADERS)/expressionfactory.h \
+$(HEADERS)/intliteralexpression.h $(HEADERS)/log.h $(HEADERS)/quitexpression.h \
+$(HEADERS)/variableexpression.h
 	$(COMPILER) $(COMPILER_FLAGS) $(SOURCE)/expressionfactory.cpp
 
 expressionsource.o: $(SOURCE)/expressionsource.cpp $(HEADERS)/expression.h \
@@ -112,11 +118,12 @@ int.o: $(SOURCE)/types/int.cpp $(HEADERS)/classfactory.h $(HEADERS)/object.h \
 $(HEADERS)/types/int.h
 	$(COMPILER) $(COMPILER_FLAGS) $(SOURCE)/types/int.cpp
 
-interpreter.o: $(SOURCE)/interpreter.cpp $(HEADERS)/class.h \
-$(HEADERS)/classfactory.h $(HEADERS)/expressionsource.h \
-$(HEADERS)/expressiontype.h $(HEADERS)/interpreter.h \
-$(HEADERS)/interpreterexception.h $(HEADERS)/log.h $(HEADERS)/object.h \
-$(HEADERS)/scope.h $(HEADERS)/types/string.h $(HEADERS)/stringliteralexpression.h
+interpreter.o: $(SOURCE)/interpreter.cpp $(HEADERS)/additionexpression.h \
+$(HEADERS)/assignmentexpression.h $(HEADERS)/class.h $(HEADERS)/classfactory.h \
+$(HEADERS)/expressionsource.h $(HEADERS)/expressiontype.h \
+$(HEADERS)/interpreter.h $(HEADERS)/interpreterexception.h $(HEADERS)/log.h \
+$(HEADERS)/object.h $(HEADERS)/scope.h $(HEADERS)/types/string.h \
+$(HEADERS)/stringliteralexpression.h
 	$(COMPILER) $(COMPILER_FLAGS) $(SOURCE)/interpreter.cpp
 
 intliteralexpression.o: $(SOURCE)/intliteralexpression.cpp \
@@ -143,13 +150,13 @@ object.o: $(SOURCE)/object.cpp $(HEADERS)/class.h $(HEADERS)/classfactory.h \
 $(HEADERS)/log.h $(HEADERS)/object.h
 	$(COMPILER) $(COMPILER_FLAGS) $(SOURCE)/object.cpp
 
-parser.o: $(SOURCE)/parser.cpp $(HEADERS)/assignmentexpression.h \
-$(HEADERS)/expressionfactory.h $(HEADERS)/expressionsource.h \
-$(HEADERS)/intliteralexpression.h $(HEADERS)/lexerexception.h $(HEADERS)/log.h \
-$(HEADERS)/parserexception.h $(HEADERS)/parserstate.h $(HEADERS)/parser.h \
-$(HEADERS)/quitexpression.h $(HEADERS)/stringliteralexpression.h \
-$(HEADERS)/token.h $(HEADERS)/tokensource.h $(HEADERS)/tokentype.h \
-$(HEADERS)/variableexpression.h
+parser.o: $(SOURCE)/parser.cpp $(HEADERS)/additionexpression.h \
+$(HEADERS)/assignmentexpression.h $(HEADERS)/expressionfactory.h \
+$(HEADERS)/expressionsource.h $(HEADERS)/intliteralexpression.h \
+$(HEADERS)/lexerexception.h $(HEADERS)/log.h $(HEADERS)/parserexception.h \
+$(HEADERS)/parserstate.h $(HEADERS)/parser.h $(HEADERS)/quitexpression.h \
+$(HEADERS)/stringliteralexpression.h $(HEADERS)/token.h \
+$(HEADERS)/tokensource.h $(HEADERS)/tokentype.h $(HEADERS)/variableexpression.h
 	$(COMPILER) $(COMPILER_FLAGS) $(SOURCE)/parser.cpp
 
 peachy.o: $(SOURCE)/peachy.cpp $(HEADERS)/peachy.h

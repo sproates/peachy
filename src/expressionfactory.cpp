@@ -1,5 +1,6 @@
 #include "expressionfactory.h"
 
+#include "additionexpression.h"
 #include "assignmentexpression.h"
 #include "expression.h"
 #include "intliteralexpression.h"
@@ -18,6 +19,16 @@ namespace peachy {
 
   ExpressionFactory::~ExpressionFactory() {
     logger->debug("ExpressionFactory destructor");
+  }
+
+  AdditionExpression * ExpressionFactory::createAdditionExpression() {
+    logger->debug("ExpressionFactory::createAdditionExpression()");
+    return new AdditionExpression(expressionLogger);
+  }
+
+  AdditionExpression * ExpressionFactory::createAdditionExpression(Log * logger) {
+    this->logger->debug("ExpressionFactory::createAdditionExpression()");
+    return new AdditionExpression(logger);
   }
 
   AssignmentExpression * ExpressionFactory::createAssignmentExpression() {

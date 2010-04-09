@@ -3,6 +3,7 @@
 
 namespace peachy {
 
+  class AdditionExpression;
   class AssignmentExpression;
   class Expression;
   class IntLiteralExpression;
@@ -18,6 +19,8 @@ namespace peachy {
       ExpressionFactory(Log * logger, Log * expressionLogger);
       virtual ~ExpressionFactory();
 
+      AdditionExpression * createAdditionExpression();
+      AdditionExpression * createAdditionExpression(Log * logger);
       AssignmentExpression * createAssignmentExpression();
       AssignmentExpression * createAssignmentExpression(Log * logger);
       IntLiteralExpression * createIntLiteralExpression();

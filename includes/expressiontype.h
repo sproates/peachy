@@ -4,6 +4,7 @@
 namespace peachy {
 
   enum ExpressionType {
+    EXPRESSION_ADDITION,
     EXPRESSION_ASSIGNMENT,
     EXPRESSION_INT_LITERAL,
     EXPRESSION_QUIT,

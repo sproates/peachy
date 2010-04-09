@@ -2,6 +2,7 @@
 
 #include <cstdlib>
 
+#include "additionexpression.h"
 #include "assignmentexpression.h"
 #include "expression.h"
 #include "expressionfactory.h"
@@ -69,6 +70,20 @@ namespace peachy {
                     ae->setRValue(nextExpression(PARSER_DEFAULT));
                     logger->debug("Got rvalue of current assignment, assignment expression is complete");
                     return ae;
+                  } else if(tokenBuffer[1]->getData().compare("+") == 0) {
+                    logger->debug("Looks like an addition");
+                    AdditionExpression * addEx =
+                      expressionFactory->createAdditionExpression();
+                    VariableExpression * varEx =
+                      expressionFactory->createVariableExpression();
+                    varEx->setVariableName(tokenBuffer[0]->getData());
+                    addEx->setLValue(varEx);
+                    tokenBuffer.pop_front();
+                    tokenBuffer.pop_front();
+                    logger->debug("Parser recursing to find rvalue of current addition");
+                    addEx->setRValue(nextExpression(PARSER_DEFAULT));
+                    logger->debug("Got rvalue of current addition, addition expression is complete");
+                    return addEx;
                   } else {
                     logger->debug("I don't know what to do with that operator");
                     errorMessage = std::string("I don't know what to do with that operator");
@@ -96,8 +111,7 @@ namespace peachy {
                   tokenBuffer.pop_front();
                   return e;
                 case TOKEN_OPERATOR:
-                  logger->debug("Token after int literal is operator");
-                  errorMessage = std::string("I don't know what to do when an operator follows a string literal");
+                  logger->debug("I don't know what to do when an operator follows an integer");
                   state = PARSER_ERROR;
                   break;
                 default:

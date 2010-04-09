@@ -30,6 +30,7 @@ namespace peachy {
 
       Object * evaluate(Expression * expression, Scope * scope);
       void dumpVar(VariableExpression * v);
+      void dumpObj(Object * o);
       Interpreter();
       Interpreter(const Interpreter & i);
       Interpreter & operator = (const Interpreter & i);

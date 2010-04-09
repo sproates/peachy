@@ -24,6 +24,7 @@ namespace peachy {
       int getValue();
       void setValue(int value);
       void add(Object * o);
+      Object * clone();
 
     protected:
 

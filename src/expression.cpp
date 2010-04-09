@@ -11,6 +11,7 @@ namespace peachy {
     logger->debug("Expression constructor");
     this->logger = logger;
     this->expressionType = EXPRESSION_UNKNOWN;
+    this->gotValue = false;
   }
 
   Expression::~Expression() {
@@ -54,5 +55,9 @@ namespace peachy {
       expressionType = e.expressionType;
     }
     return *this;
+  }
+
+  bool Expression::hasValue() {
+    return gotValue;
   }
 }

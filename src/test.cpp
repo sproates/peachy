@@ -41,10 +41,10 @@ int main() {
   TokenFactory * tokenFactory = new TokenFactory(nullLogger, nullLogger);
   TokenSource * tokenSource = new Lexer(nullLogger, tokenFactory, scriptSource);
   ExpressionFactory * expressionFactory = new ExpressionFactory(nullLogger,
-    nullLogger);
+    debugLogger);
   ExpressionSource * expressionSource = new Parser(nullLogger,
     expressionFactory, tokenSource);
-  ClassFactory * classFactory = new ClassFactory(nullLogger, debugLogger);
+  ClassFactory * classFactory = new ClassFactory(nullLogger, nullLogger);
   Interpreter * interpreter = new Interpreter(debugLogger, expressionSource,
     classFactory);
   Script * script = new Script(nullLogger, environment, runtime, interpreter);

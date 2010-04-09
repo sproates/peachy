@@ -42,4 +42,9 @@ namespace peachy {
   bool Object::sameClass(Object * o) {
     return (is(o->getClass()));
   }
+
+  Object * Object::clone() {
+    logger->debug("Object::clone()");
+    return this;
+  }
 }

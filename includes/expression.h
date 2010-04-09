@@ -18,12 +18,14 @@ namespace peachy {
       std::string toString();
       Expression(const Expression & e);
       Expression & operator = (const Expression & e);
+      bool hasValue();
 
     protected:
 
       Expression(Log * logger);
       Log * logger;
       ExpressionType expressionType;
+      bool gotValue;
 
     private:
 

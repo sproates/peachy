@@ -114,8 +114,8 @@ function.o: $(SOURCE)/function.cpp $(HEADERS)/function.h \
 $(HEADERS)/log.h
 	$(COMPILER) $(COMPILER_FLAGS) $(SOURCE)/function.cpp
 
-int.o: $(SOURCE)/types/int.cpp $(HEADERS)/classfactory.h $(HEADERS)/object.h \
-$(HEADERS)/types/int.h
+int.o: $(SOURCE)/types/int.cpp $(HEADERS)/class.h $(HEADERS)/classfactory.h \
+$(HEADERS)/object.h $(HEADERS)/types/int.h
 	$(COMPILER) $(COMPILER_FLAGS) $(SOURCE)/types/int.cpp
 
 interpreter.o: $(SOURCE)/interpreter.cpp $(HEADERS)/additionexpression.h \
@@ -185,8 +185,8 @@ $(HEADERS)/parserexception.h $(HEADERS)/runtime.h
 scriptsource.o: $(SOURCE)/scriptsource.cpp $(HEADERS)/scriptsource.h
 	$(COMPILER) $(COMPILER_FLAGS) $(SOURCE)/scriptsource.cpp
 
-string.o: $(SOURCE)/types/string.cpp $(HEADERS)/classfactory.h $(HEADERS)/object.h \
-$(HEADERS)/types/string.h
+string.o: $(SOURCE)/types/string.cpp $(HEADERS)/class.h \
+$(HEADERS)/classfactory.h $(HEADERS)/object.h $(HEADERS)/types/string.h
 	$(COMPILER) $(COMPILER_FLAGS) $(SOURCE)/types/string.cpp
 
 stringliteralexpression.o: $(SOURCE)/stringliteralexpression.cpp \

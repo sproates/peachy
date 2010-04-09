@@ -3,6 +3,8 @@
 #include <stdexcept>
 #include <string>
 
+#include "class.h"
+#include "classfactory.h"
 #include "log.h"
 #include "object.h"
 
@@ -30,5 +32,10 @@ namespace peachy {
     } else {
       throw std::runtime_error("Can only add an Int to an Int");
     }
+  }
+
+  Object * Int::clone() {
+    logger->debug("Int::clone()");
+    return new Int(logger, classFactory, value);
   }
 }

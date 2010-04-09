@@ -45,7 +45,6 @@ namespace peachy {
       o = evaluate(expressionSource->nextExpression(), globalScope);
     } while(o != NULL);
     logger->debug(globalScope->toString());
-    delete globalScope;
     logger->debug("Interpreter complete");
   }
 
@@ -122,20 +121,26 @@ namespace peachy {
             logger->debug("Assigning to a variable");
             VariableExpression * var =
               static_cast<VariableExpression*>(lValue);
-            Object * o = evaluate(rValue, scope);
-            var->setValue(o);
+            if(var == NULL) {
+              logger->debug("lValue of assignment had type EXPRESSION_VARIABLE but did not cast to VariableExpression");
+              throw InterpreterException("lValue of assignment had type EXPRESSION_VARIABLE but did not cast to VariableExpression");
+            }
+            logger->debug("Evaluating RHS of assignment");
+            Object * rightObj = evaluate(rValue, scope);
+            logger->debug("RHS of assignment evaluated");
+            var->setValue(rightObj);
+            logger->debug("flag 2");
+            dumpVar(var);
             if(scope->hasVariable(var->getVariableName())) {
               logger->debug("Variable is already in scope");
-              if(scope->getVariable(var->getVariableName())->getClassName() != o->getClassName()) {
-                throw new InterpreterException("Can't assign a different type to this variable");
-              }
-              scope->replaceVariable(var->getVariableName(), o);
+              scope->replaceVariable(var->getVariableName(), rightObj);
             } else {
-              logger->debug("Variable not in scope");
-              scope->addVariable(var->getVariableName(), o);
+              logger->debug("Variable not yet in scope");
+              scope->addVariable(var->getVariableName(), rightObj);
             }
+            logger->debug("Dumping the variable I just assigned to...");
             dumpVar(var);
-            return o;
+            return rightObj;
           default:
             logger->debug("Assigning to what now?");
             throw InterpreterException("The target of an assignment should be a variable");
@@ -156,8 +161,7 @@ namespace peachy {
         logger->debug("Returning string literal object");
         StringLiteralExpression * e =
           static_cast<StringLiteralExpression*>(expression);
-        String * o = new String(logger, classFactory, e->getStringValue());
-        return o;
+        return new String(logger, classFactory, e->getStringValue());
       case EXPRESSION_UNKNOWN:
       default:
         logger->debug("Unknown expression type");
@@ -166,17 +170,28 @@ namespace peachy {
   }
 
   void Interpreter::dumpVar(VariableExpression * v) {
-    std::string className = v->getValue()->getClassName();
-    if(className.compare("Int") == 0 ) {
-      Int * i = static_cast<Int*>(v->getValue());
-      std::cout << v->getVariableName() << " [Int] " << i->getValue() << std::endl;
-    } else if(className.compare("String") == 0) {
-      String * s = static_cast<String*>(v->getValue());
-      std::cout << v->getVariableName() << " [String] " << s->getValue() << std::endl;
-    } else if(className.compare("Object") == 0) {
-      std::cout << v->getVariableName() << " [Object]" << std::endl;
+    logger->debug("Interpreter::dumpVar()");
+    if(v->hasValue()) {
+      std::string className = v->getValue()->getClassName();
+      std::cout << v->getVariableName();
+      dumpObj(v->getValue());
     } else {
-      std::cout << v->getVariableName() << "[Unknown type]" << std::endl;
+      std::cout << " (no value)" << std::endl;
+    }
+  }
+
+  void Interpreter::dumpObj(Object * o) {
+    std::string className = o->getClassName();
+    if(className.compare("Int") == 0 ) {
+      Int * i = static_cast<Int*>(o);
+      std::cout << " [Int] " << i->getValue() << std::endl;
+    } else if(className.compare("String") == 0) {
+      String * s = static_cast<String*>(o);
+      std::cout << " [String] " << s->getValue() << std::endl;
+    } else if(className.compare("Object") == 0) {
+      std::cout << " [Object]" << std::endl;
+    } else {
+      std::cout << "[Unknown type]" << std::endl;
     }
   }
 }

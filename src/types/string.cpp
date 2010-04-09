@@ -3,6 +3,8 @@
 #include <stdexcept>
 #include <string>
 
+#include "class.h"
+#include "classfactory.h"
 #include "log.h"
 #include "object.h"
 
@@ -26,5 +28,10 @@ namespace peachy {
     } else {
       throw std::runtime_error("Can only add a String to a String");
     }
+  }
+
+  Object * String::clone() {
+    logger->debug("String::clone()");
+    return new String(logger, classFactory, value);
   }
 }

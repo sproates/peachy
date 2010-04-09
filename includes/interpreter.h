@@ -9,6 +9,7 @@ namespace peachy {
   class Log;
   class Object;
   class Scope;
+  class VariableExpression;
 
   class Interpreter {
 
@@ -28,6 +29,7 @@ namespace peachy {
     private:
 
       Object * evaluate(Expression * expression, Scope * scope);
+      void dumpVar(VariableExpression * v);
       Interpreter();
       Interpreter(const Interpreter & i);
       Interpreter & operator = (const Interpreter & i);

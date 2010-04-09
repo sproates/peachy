@@ -44,7 +44,7 @@ int main() {
     nullLogger);
   ExpressionSource * expressionSource = new Parser(nullLogger,
     expressionFactory, tokenSource);
-  ClassFactory * classFactory = new ClassFactory(nullLogger, nullLogger);
+  ClassFactory * classFactory = new ClassFactory(nullLogger, debugLogger);
   Interpreter * interpreter = new Interpreter(debugLogger, expressionSource,
     classFactory);
   Script * script = new Script(nullLogger, environment, runtime, interpreter);

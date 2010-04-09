@@ -20,10 +20,12 @@ namespace peachy {
   }
 
   Class * Object::getClass() {
+    logger->debug("Object::getClass()");
     return clazz;
   }
 
   std::string Object::getClassName() {
+    logger->debug("Object::getClassName()");
     return clazz->getName();
   }
 }

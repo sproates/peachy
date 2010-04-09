@@ -7,6 +7,7 @@
 namespace peachy {
 
   class Class;
+  class Function;
   class Log;
   class Object;
 
@@ -30,6 +31,7 @@ namespace peachy {
       Log * logger;
       std::map<std::string, Object*> variables;
       std::map<std::string, Class*> classes;
+      std::map<std::string, Function*> functions;
 
     private:
 

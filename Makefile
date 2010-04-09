@@ -173,7 +173,8 @@ $(HEADERS)/replscriptsource.h $(HEADERS)/scriptsource.h $(HEADERS)/log.h
 runtime.o: $(SOURCE)/runtime.cpp $(HEADERS)/log.h $(HEADERS)/runtime.h
 	$(COMPILER) $(COMPILER_FLAGS) $(SOURCE)/runtime.cpp
 
-scope.o: $(SOURCE)/scope.cpp $(HEADERS)/scope.h
+scope.o: $(SOURCE)/scope.cpp $(HEADERS)/class.h $(HEADERS)/function.h \
+$(HEADERS)/log.h $(HEADERS)/object.h $(HEADERS)/scope.h
 	$(COMPILER) $(COMPILER_FLAGS) $(SOURCE)/scope.cpp
 
 script.o: $(SOURCE)/script.cpp $(HEADERS)/environment.h \

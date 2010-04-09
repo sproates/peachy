@@ -67,18 +67,33 @@ namespace peachy {
             switch(rValue->getExpressionType()) {
               case EXPRESSION_INT_LITERAL:
               case EXPRESSION_VARIABLE:
-                Object * o = evaluate(rValue, scope);
-                if(scope->hasVariable(varEx->getVariableName())) {
-                  logger->debug("Variable is already in scope");
-                  if(scope->getVariable(varEx->getVariableName())->getClassName().compare(o->getClassName()) != 0) {
-                    throw new InterpreterException("Can't assign a different type to this variable");
+                logger->debug("Evaluating RHS of addition");
+                Object * rightObj = evaluate(rValue, scope);
+                logger->debug("RHS of addition evaluated");
+                Object * leftObj = scope->getVariable(varEx->getVariableName());
+                if(leftObj->getClassName().compare(rightObj->getClassName()) == 0) {
+                  logger->debug("Left and right are of the same type");
+                  logger->debug("flag 3");
+                  if(!scope->hasVariable(varEx->getVariableName())) {
+                    throw InterpreterException("variable is not in this scope");
                   }
-                  scope->replaceVariable(varEx->getVariableName(), o);
+                  Int * leftI = static_cast<Int*>(scope->getVariable(varEx->getVariableName()));
+                  logger->debug("flag 4");
+                  Int * rightI = static_cast<Int*>(rightObj);
+                  logger->debug("flag 5");
+                  std::cout << leftI->getValue() << std::endl;
+                  logger->debug("flag 6");
+                  std::cout << rightI->getValue() << std::endl;
+                  logger->debug("flag 7");
+                  leftI->setValue(leftI->getValue() + rightI->getValue());
+                  logger->debug("flag 8");
+                  varEx->setValue(leftI);
+                  logger->debug("flag 9");
+                  return leftI;
                 } else {
-                  logger->debug("Variable is not in scope");
-                  scope->addVariable(varEx->getVariableName(), o);
+                  logger->debug("Objects are of different types");
+                  throw InterpreterException("Can't add objects of different types");
                 }
-                return o;
               default:
                 logger->debug("I don't know how to add one of those");
                 throw InterpreterException("I don't know how to add one of those");
@@ -146,6 +161,7 @@ namespace peachy {
               logger->debug("Variable not in scope");
               scope->addVariable(var->getVariableName(), o);
             }
+            dumpVar(var);
             return o;
           default:
             logger->debug("Assigning to what now?");
@@ -157,7 +173,8 @@ namespace peachy {
         IntLiteralExpression * ile =
           static_cast<IntLiteralExpression*>(expression);
         Int * i = new Int(logger, classFactory, ile->getValue());
-        std::cout << "Int literal with value: " << ile->getValue() << std::endl;
+        std::cout << "Int literal with value: " << ile->getValue() << std::endl; 
+        std::cout << i->getClassName() << std::endl;
         return i;
       case EXPRESSION_QUIT:
         logger->debug("Quit expression found");
@@ -172,6 +189,21 @@ namespace peachy {
       default:
         logger->debug("Unknown expression type");
         throw InterpreterException("I don't know what to do with that expression type");
+    }
+  }
+
+  void Interpreter::dumpVar(VariableExpression * v) {
+    std::string className = v->getValue()->getClassName();
+    if(className.compare("Int") == 0 ) {
+      Int * i = static_cast<Int*>(v->getValue());
+      std::cout << v->getVariableName() << " [Int] " << i->getValue() << std::endl;
+    } else if(className.compare("String") == 0) {
+      String * s = static_cast<String*>(v->getValue());
+      std::cout << v->getVariableName() << " [String] " << s->getValue() << std::endl;
+    } else if(className.compare("Object") == 0) {
+      std::cout << v->getVariableName() << " [Object]" << std::endl;
+    } else {
+      std::cout << v->getVariableName() << "[Unknown type]" << std::endl;
     }
   }
 }

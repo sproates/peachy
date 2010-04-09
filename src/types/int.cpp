@@ -1,5 +1,7 @@
 #include "types/int.h"
 
+#include <string>
+
 #include "log.h"
 #include "object.h"
 

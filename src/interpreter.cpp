@@ -85,7 +85,7 @@ namespace peachy {
                   logger->debug("flag 6");
                   std::cout << rightI->getValue() << std::endl;
                   logger->debug("flag 7");
-                  leftI->setValue(leftI->getValue() + rightI->getValue());
+                  leftI->add(rightI);
                   logger->debug("flag 8");
                   varEx->setValue(leftI);
                   logger->debug("flag 9");

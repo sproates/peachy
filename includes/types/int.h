@@ -23,6 +23,7 @@ namespace peachy {
       virtual ~Int();
       int getValue();
       void setValue(int value);
+      void add(Int * i);
 
     protected:
 

@@ -18,4 +18,8 @@ namespace peachy {
   void Int::setValue(int value) {
     this->value = value;
   }
+
+  void Int::add(Int * i) {
+    this->value += i->getValue();
+  }
 }

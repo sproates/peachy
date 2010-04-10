@@ -156,9 +156,25 @@ namespace peachy {
                   return e;
                 case TOKEN_OPERATOR:
                   logger->debug("Token after string literal is operator");
-                  errorMessage = std::string("I don't know what to do when an operator follows a string literal");
-                  state = PARSER_ERROR;
-                  break;
+                  if(tokenBuffer[1]->getData().compare("+") == 0) {
+                    logger->debug("Looks like an addition");
+                    AdditionExpression * addEx =
+                      expressionFactory->createAdditionExpression();
+                    StringLiteralExpression * stringEx =
+                      expressionFactory->createStringLiteralExpression();
+                    stringEx->setStringValue(tokenBuffer[0]->getData());
+                    addEx->setLValue(stringEx);
+                    tokenBuffer.pop_front();
+                    tokenBuffer.pop_front();
+                    logger->debug("Parser recursing to find rvalue of current addition");
+                    addEx->setRValue(nextExpression(PARSER_DEFAULT));
+                    logger->debug("Got rvalue of current addition, addition expression is complete");
+                    return addEx;
+                  } else {
+                    errorMessage = std::string("I don't know what to do when that operator follows a string literal");
+                    state = PARSER_ERROR;
+                    break;
+                  }
                 default:
                   logger->debug("Wtf...");
                   errorMessage = std::string("I don't know what to do!!!!");

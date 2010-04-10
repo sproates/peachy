@@ -42,12 +42,12 @@ int main() {
   TokenSource * tokenSource = new Lexer(nullLogger, tokenFactory, scriptSource);
   ExpressionFactory * expressionFactory = new ExpressionFactory(nullLogger,
     debugLogger);
-  ExpressionSource * expressionSource = new Parser(nullLogger,
+  ExpressionSource * expressionSource = new Parser(debugLogger,
     expressionFactory, tokenSource);
   ClassFactory * classFactory = new ClassFactory(nullLogger, nullLogger);
   Interpreter * interpreter = new Interpreter(debugLogger, expressionSource,
     classFactory);
-  Script * script = new Script(nullLogger, environment, runtime, interpreter);
+  Script * script = new Script(debugLogger, environment, runtime, interpreter);
 
   script->run();
 

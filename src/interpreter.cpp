@@ -45,6 +45,7 @@ namespace peachy {
       o = evaluate(expressionSource->nextExpression(), globalScope);
     } while(o != NULL);
     logger->debug(globalScope->toString());
+    delete globalScope;
     logger->debug("Interpreter complete");
   }
 
@@ -101,8 +102,42 @@ namespace peachy {
                   }
                 }
               default:
-                logger->debug("I don't know how to add one of those");
-                throw InterpreterException("I don't know how to add one of those");
+                logger->debug("I don't know how to add one of those to an int literal");
+                throw InterpreterException("I don't know how to add one of those to an int literal");
+            }
+            break;
+          case EXPRESSION_STRING_LITERAL:
+            logger->debug("Adding to a String literal");
+            StringLiteralExpression * stringEx =
+              static_cast<StringLiteralExpression*>(lValue);
+            switch(rValue->getExpressionType()) {
+              case EXPRESSION_STRING_LITERAL:
+                logger->debug("Adding String literals together");
+                StringLiteralExpression * rStringEx =
+                  static_cast<StringLiteralExpression*>(rValue);
+                stringEx->setStringValue(stringEx->getStringValue().append(rStringEx->getStringValue()));
+                return evaluate(stringEx, scope);
+              case EXPRESSION_VARIABLE:
+                logger->debug("Adding a variable to a String");
+                VariableExpression * varEx =
+                  static_cast<VariableExpression*>(rValue);
+                if(!scope->hasVariable(varEx->getVariableName())) {
+                  logger->debug("Assigning an out of scope variable");
+                  throw InterpreterException("Assigning a variable that isn't in scope");
+                } else {
+                  if(scope->getVariable(varEx->getVariableName())->getClassName().compare(std::string("String")) != 0) {
+                    logger->debug("Adding a non-string variable to a string literal...");
+                    throw InterpreterException("Adding a non-string variable to a string literal");
+                  } else {
+                    logger->debug("Adding string variable to string literal");
+                    String * s = static_cast<String*>(varEx->getValue());
+                    stringEx->setStringValue(stringEx->getStringValue().append(s->getValue()));
+                    return evaluate(stringEx, scope);
+                  }
+                }
+              default:
+                logger->debug("I don't know how to add one of those to a string literal");
+                throw InterpreterException("I don't know how to add one of those to a string literal");
             }
             break;
           default:

@@ -45,7 +45,6 @@ namespace peachy {
       o = evaluate(expressionSource->nextExpression(), globalScope);
     } while(o != NULL);
     logger->debug(globalScope->toString());
-    delete globalScope;
     logger->debug("Interpreter complete");
   }
 
@@ -70,8 +69,28 @@ namespace peachy {
             Object * leftObj = scope->getVariable(varEx->getVariableName());
             logger->debug("Evaluating RHS of addition");
             Object * rightObj = evaluate(rValue, scope);
-            leftObj->add(rightObj);
-            return leftObj;
+            logger->debug("Evaluated RHS of addition");
+            if(leftObj->getClassName().compare("Int") == 0) {
+              logger->debug("lvalue is an Int");
+              Int * leftObjInt = static_cast<Int*>(leftObj);
+              dumpObj(leftObjInt);
+              dumpObj(rightObj);
+              Object * newInt = leftObjInt->add(rightObj);   
+              return newInt;
+            } else if(leftObj->getClassName().compare("String") == 0) {
+              logger->debug("lvalue is a string");
+              String * leftObjString = static_cast<String*>(leftObj);
+              logger->debug("Ok, got string object");
+              dumpObj(leftObjString);
+              dumpObj(rightObj);
+              logger->debug("Ready to add to a String");
+              Object * newString = leftObjString->add(rightObj);
+              logger->debug("Ok done that");
+              return newString;
+            } else {
+              logger->debug("I don't know how to add to a variable of that type");
+              throw InterpreterException("I don't know how to add to a variable of that type");
+            }
           case EXPRESSION_INT_LITERAL:
             logger->debug("Adding to an int literal");
             IntLiteralExpression * intEx =
@@ -197,6 +216,19 @@ namespace peachy {
         StringLiteralExpression * e =
           static_cast<StringLiteralExpression*>(expression);
         return new String(logger, classFactory, e->getStringValue());
+      case EXPRESSION_VARIABLE:
+        logger->debug("Returning variable");
+        VariableExpression * varEx =
+          static_cast<VariableExpression*>(expression);
+        logger->debug(varEx->getVariableName());
+        if(!scope->hasVariable(varEx->getVariableName())) {
+          throw InterpreterException("variable is not in this scope");
+        }
+        Object * varObj = scope->getVariable(varEx->getVariableName());
+        varEx->setValue(varObj);
+        dumpVar(varEx);
+        logger->debug("Variable reference ready to go");
+        return varEx->getValue();
       case EXPRESSION_UNKNOWN:
       default:
         logger->debug("Unknown expression type");

@@ -1,5 +1,6 @@
 #include "object.h"
 
+#include <stdexcept>
 #include <string>
 
 #include "class.h"
@@ -26,6 +27,10 @@ namespace peachy {
 
   std::string Object::getClassName() {
     logger->debug("Object::getClassName()");
+    if(clazz == NULL) {
+      throw std::runtime_error("Class not initialised");
+    }
+    logger->debug(clazz->getName());
     return clazz->getName();
   }
 
@@ -46,5 +51,11 @@ namespace peachy {
   Object * Object::clone() {
     logger->debug("Object::clone()");
     return this;
+  }
+
+  Object * Object::add(Object * o) {
+    logger->debug("Object::add()");
+    (void) o;
+    throw std::runtime_error("Object does not support add(), it must be cast to a subclass that implements add()");
   }
 }

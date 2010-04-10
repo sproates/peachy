@@ -1,5 +1,6 @@
 #include "types/int.h"
 
+#include <iostream>
 #include <stdexcept>
 #include <string>
 
@@ -22,13 +23,15 @@ namespace peachy {
     this->value = value;
   }
 
-  void Int::add(Object * o) {
+  Object * Int::add(Object * o) {
+    logger->debug("Int::add()");
     if(o->getClassName().compare("Int") == 0) {
       Int * i = static_cast<Int*>(o);
       if(i == NULL) {
         throw std::runtime_error("An object had a class of Int but could not be cast to Int");
       }
-      this->value += i->getValue();
+      int newValue = this->value + i->getValue();
+      return new Int(logger, classFactory, newValue);
     } else {
       throw std::runtime_error("Can only add an Int to an Int");
     }

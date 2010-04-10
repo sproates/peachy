@@ -19,10 +19,11 @@ namespace peachy {
         logger->debug("String constructor");
         this->clazz = classFactory->getClass(std::string("String"));
         this->value = value;
+        this->logger = logger;
       }
       virtual ~String();
       std::string getValue();
-      void add(Object * o);
+      Object * add(Object * o);
       Object * clone();
 
     protected:

@@ -17,7 +17,7 @@ namespace peachy {
       virtual ~Object();
       std::string getClassName();
       Class * getClass();
-      virtual void add(Object * o) = 0;
+      Object * add(Object * o);
       Object * clone();
       bool is(std::string className);
       bool is(Class * clazz);

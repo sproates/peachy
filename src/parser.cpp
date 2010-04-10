@@ -54,6 +54,15 @@ namespace peachy {
             case TOKEN_IDENTIFIER:
               logger->debug("Current token is TOKEN_IDENTIFIER");
               switch(tokenBuffer[1]->getTokenType()) {
+                case TOKEN_EOF:
+                  logger->debug("Next token is TOKEN_EOF");
+                  logger->debug("Ok, so we just return the current identifier, which is...");
+                  VariableExpression * varEx =
+                    expressionFactory->createVariableExpression();
+                  varEx->setVariableName(tokenBuffer[0]->getData());
+                  logger->debug(varEx->getVariableName());
+                  tokenBuffer.pop_front();
+                  return varEx;
                 case TOKEN_OPERATOR:
                   logger->debug("Next token is TOKEN_OPERATOR");
                   if(tokenBuffer[1]->getData().compare("<-") == 0) {
@@ -93,6 +102,7 @@ namespace peachy {
                   break;
                 default:
                   logger->debug("I have no idea what to do with the next token");
+                  logger->debug(tokenBuffer[1]->getData());
                   errorMessage = std::string("I have no idea what to do with the next token");
                   state = PARSER_ERROR;
               }

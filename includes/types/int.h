@@ -19,11 +19,12 @@ namespace peachy {
         logger->debug("Int constructor");
         this->clazz = classFactory->getClass(std::string("Int"));
         this->value = value;
+        this->logger = logger;
       }
       virtual ~Int();
       int getValue();
       void setValue(int value);
-      void add(Object * o);
+      Object * add(Object * o);
       Object * clone();
 
     protected:

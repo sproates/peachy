@@ -191,6 +191,66 @@ namespace peachy {
       ASSERT_EQUALS(token->getTokenType() == TOKEN_COMMENT_LINE, "First token is TOKEN_COMMENT_LINE");
       ASSERT_EQUALS(token->getData().compare(std::string("comment")) == 0, "First token is 'comment'");
 
+      scriptSource = new StringScriptSource(logger, std::string("^"));
+      lexer = new Lexer(logger, tokenFactory, scriptSource);
+      ASSERT_THROWS(token = lexer->nextToken(), LexerException, "^ is an invalid token");
+
+      scriptSource = new StringScriptSource(logger, std::string("@"));
+      lexer = new Lexer(logger, tokenFactory, scriptSource);
+      ASSERT_THROWS(token = lexer->nextToken(), LexerException, "@ is an invalid token");
+
+      scriptSource = new StringScriptSource(logger, std::string("£"));
+      lexer = new Lexer(logger, tokenFactory, scriptSource);
+      ASSERT_THROWS(token = lexer->nextToken(), LexerException, "£ is an invalid token");
+
+      scriptSource = new StringScriptSource(logger, std::string("?"));
+      lexer = new Lexer(logger, tokenFactory, scriptSource);
+      ASSERT_THROWS(token = lexer->nextToken(), LexerException, "? is an invalid token");
+
+      scriptSource = new StringScriptSource(logger, std::string("€"));
+      lexer = new Lexer(logger, tokenFactory, scriptSource);
+      ASSERT_THROWS(token = lexer->nextToken(), LexerException, "€ is an invalid token");
+
+      scriptSource = new StringScriptSource(logger, std::string("*"));
+      lexer = new Lexer(logger, tokenFactory, scriptSource);
+      ASSERT_THROWS(token = lexer->nextToken(), LexerException, "* is an invalid token");
+
+      scriptSource = new StringScriptSource(logger, std::string("~"));
+      lexer = new Lexer(logger, tokenFactory, scriptSource);
+      ASSERT_THROWS(token = lexer->nextToken(), LexerException, "~ is an invalid token");
+
+      scriptSource = new StringScriptSource(logger, std::string(";"));
+      lexer = new Lexer(logger, tokenFactory, scriptSource);
+      ASSERT_THROWS(token = lexer->nextToken(), LexerException, "; is an invalid token");
+
+      scriptSource = new StringScriptSource(logger, std::string("\\"));
+      lexer = new Lexer(logger, tokenFactory, scriptSource);
+      ASSERT_THROWS(token = lexer->nextToken(), LexerException, "\\ is an invalid token");
+
+      scriptSource = new StringScriptSource(logger, std::string("%"));
+      lexer = new Lexer(logger, tokenFactory, scriptSource);
+      ASSERT_THROWS(token = lexer->nextToken(), LexerException, "% is an invalid token");
+
+      scriptSource = new StringScriptSource(logger, std::string("'"));
+      lexer = new Lexer(logger, tokenFactory, scriptSource);
+      ASSERT_THROWS(token = lexer->nextToken(), LexerException, "' is an invalid token");
+
+      scriptSource = new StringScriptSource(logger, std::string(","));
+      lexer = new Lexer(logger, tokenFactory, scriptSource);
+      ASSERT_THROWS(token = lexer->nextToken(), LexerException, ", is an invalid token");
+
+      scriptSource = new StringScriptSource(logger, std::string("<<"));
+      lexer = new Lexer(logger, tokenFactory, scriptSource);
+      ASSERT_THROWS(token = lexer->nextToken(), LexerException, "<< is an invalid token");
+
+      scriptSource = new StringScriptSource(logger, std::string(">>"));
+      lexer = new Lexer(logger, tokenFactory, scriptSource);
+      ASSERT_THROWS(token = lexer->nextToken(), LexerException, ">> is an invalid token");
+
+      scriptSource = new StringScriptSource(logger, std::string("><"));
+      lexer = new Lexer(logger, tokenFactory, scriptSource);
+      ASSERT_THROWS(token = lexer->nextToken(), LexerException, ">< is an invalid token");
+
       scriptSource = new StringScriptSource(logger, std::string("a <- 673 + 5"));
       lexer = new Lexer(logger, tokenFactory, scriptSource);
       token = lexer->nextToken();
@@ -209,17 +269,98 @@ namespace peachy {
       ASSERT_EQUALS(token->getTokenType() == TOKEN_INTEGER, "Next token is TOKEN_INTEGER");
       ASSERT_EQUALS(token->getData().compare(std::string("5")) == 0, "Next token is 5");
 
-      scriptSource = new StringScriptSource(logger, std::string("^"));
+      scriptSource = new StringScriptSource(logger, std::string("a <- 5"));
       lexer = new Lexer(logger, tokenFactory, scriptSource);
-      ASSERT_THROWS(token = lexer->nextToken(), LexerException, "^ is an invalid token");
+      token = lexer->nextToken();
+      ASSERT_EQUALS(token->getTokenType() == TOKEN_IDENTIFIER, "First token is TOKEN_IDENTIFIER");
+      ASSERT_EQUALS(token->getData().compare(std::string("a")) == 0, "First token is 'a'");
+      token = lexer->nextToken();
+      ASSERT_EQUALS(token->getTokenType() == TOKEN_OPERATOR, "Next token is TOKEN_OPERATOR");
+      ASSERT_EQUALS(token->getData().compare(std::string("<-")) == 0, "Next token is <-");
+      token = lexer->nextToken();
+      ASSERT_EQUALS(token->getTokenType() == TOKEN_INTEGER, "Next token is TOKEN_INTEGER");
+      ASSERT_EQUALS(token->getData().compare(std::string("5")) == 0, "Next token is 5");
 
-      scriptSource = new StringScriptSource(logger, std::string("@"));
+      scriptSource = new StringScriptSource(logger, std::string("a <- 5 + 6 - 2"));
       lexer = new Lexer(logger, tokenFactory, scriptSource);
-      ASSERT_THROWS(token = lexer->nextToken(), LexerException, "@ is an invalid token");
+      token = lexer->nextToken();
+      ASSERT_EQUALS(token->getTokenType() == TOKEN_IDENTIFIER, "First token is TOKEN_IDENTIFIER");
+      ASSERT_EQUALS(token->getData().compare(std::string("a")) == 0, "First token is 'a'");
+      token = lexer->nextToken();
+      ASSERT_EQUALS(token->getTokenType() == TOKEN_OPERATOR, "Next token is TOKEN_OPERATOR");
+      ASSERT_EQUALS(token->getData().compare(std::string("<-")) == 0, "Next token is <-");
+      token = lexer->nextToken();
+      ASSERT_EQUALS(token->getTokenType() == TOKEN_INTEGER, "Next token is TOKEN_INTEGER");
+      ASSERT_EQUALS(token->getData().compare(std::string("5")) == 0, "Next token is 5");
+      token = lexer->nextToken();
+      ASSERT_EQUALS(token->getTokenType() == TOKEN_OPERATOR, "Next token is TOKEN_OPERATOR");
+      ASSERT_EQUALS(token->getData().compare(std::string("+")) == 0, "Next token is +");
+      token = lexer->nextToken();
+      ASSERT_EQUALS(token->getTokenType() == TOKEN_INTEGER, "Next token is TOKEN_INTEGER");
+      ASSERT_EQUALS(token->getData().compare(std::string("6")) == 0, "Next token is 6");
+      token = lexer->nextToken();
+      ASSERT_EQUALS(token->getTokenType() == TOKEN_OPERATOR, "Next token is TOKEN_OPERATOR");
+      ASSERT_EQUALS(token->getData().compare(std::string("-")) == 0, "Next token is -");
+      token = lexer->nextToken();
+      ASSERT_EQUALS(token->getTokenType() == TOKEN_INTEGER, "Next token is TOKEN_INTEGER");
+      ASSERT_EQUALS(token->getData().compare(std::string("2")) == 0, "Next token is 2");
 
-      scriptSource = new StringScriptSource(logger, std::string("£"));
+      scriptSource = new StringScriptSource(logger, std::string("\"hello\""));
       lexer = new Lexer(logger, tokenFactory, scriptSource);
-      ASSERT_THROWS(token = lexer->nextToken(), LexerException, "£ is an invalid token");
+      token = lexer->nextToken();
+      ASSERT_EQUALS(token->getTokenType() == TOKEN_STRING, "First token is TOKEN_STRING");
+      ASSERT_EQUALS(token->getData().compare(std::string("hello")) == 0, "First token is 'hello'");
+
+      scriptSource = new StringScriptSource(logger, std::string("\"hello\" + \" world\""));
+      lexer = new Lexer(logger, tokenFactory, scriptSource);
+      token = lexer->nextToken();
+      ASSERT_EQUALS(token->getTokenType() == TOKEN_STRING, "First token is TOKEN_STRING");
+      ASSERT_EQUALS(token->getData().compare(std::string("hello")) == 0, "First token is 'hello'");
+      token = lexer->nextToken();
+      ASSERT_EQUALS(token->getTokenType() == TOKEN_OPERATOR, "Next token is TOKEN_OPERATOR");
+      ASSERT_EQUALS(token->getData().compare(std::string("+")) == 0, "Next token is +");
+      token = lexer->nextToken();
+      ASSERT_EQUALS(token->getTokenType() == TOKEN_STRING, "Next token is TOKEN_STRING");
+      ASSERT_EQUALS(token->getData().compare(std::string(" world")) == 0, "First token is ' world'");
+
+      scriptSource = new StringScriptSource(logger, std::string("a <- \"hello\" + \" world\""));
+      lexer = new Lexer(logger, tokenFactory, scriptSource);
+      token = lexer->nextToken();
+      ASSERT_EQUALS(token->getTokenType() == TOKEN_IDENTIFIER, "First token is TOKEN_IDENTIFIER");
+      ASSERT_EQUALS(token->getData().compare(std::string("a")) == 0, "First token is 'a'");
+      token = lexer->nextToken();
+      ASSERT_EQUALS(token->getTokenType() == TOKEN_OPERATOR, "Next token is TOKEN_OPERATOR");
+      ASSERT_EQUALS(token->getData().compare(std::string("<-")) == 0, "Next token is <-");
+      token = lexer->nextToken();
+      ASSERT_EQUALS(token->getTokenType() == TOKEN_STRING, "Next token is TOKEN_STRING");
+      ASSERT_EQUALS(token->getData().compare(std::string("hello")) == 0, "Next token is 'hello'");
+      token = lexer->nextToken();
+      ASSERT_EQUALS(token->getTokenType() == TOKEN_OPERATOR, "Next token is TOKEN_OPERATOR");
+      ASSERT_EQUALS(token->getData().compare(std::string("+")) == 0, "Next token is +");
+      token = lexer->nextToken();
+      ASSERT_EQUALS(token->getTokenType() == TOKEN_STRING, "Next token is TOKEN_STRING");
+      ASSERT_EQUALS(token->getData().compare(std::string(" world")) == 0, "First token is ' world'");
+
+      scriptSource = new StringScriptSource(logger, std::string("apple <- \"apple\"\nfive <- 5"));
+      lexer = new Lexer(logger, tokenFactory, scriptSource);
+      token = lexer->nextToken();
+      ASSERT_EQUALS(token->getTokenType() == TOKEN_IDENTIFIER, "First token is TOKEN_IDENTIFIER");
+      ASSERT_EQUALS(token->getData().compare(std::string("apple")) == 0, "First token is 'apple'");
+      token = lexer->nextToken();
+      ASSERT_EQUALS(token->getTokenType() == TOKEN_OPERATOR, "Next token is TOKEN_OPERATOR");
+      ASSERT_EQUALS(token->getData().compare(std::string("<-")) == 0, "Next token is <-");
+      token = lexer->nextToken();
+      ASSERT_EQUALS(token->getTokenType() == TOKEN_STRING, "Next token is TOKEN_STRING");
+      ASSERT_EQUALS(token->getData().compare(std::string("apple")) == 0, "Next token is 'apple'");
+      token = lexer->nextToken();
+      ASSERT_EQUALS(token->getTokenType() == TOKEN_IDENTIFIER, "Next token is TOKEN_IDENTIFIER");
+      ASSERT_EQUALS(token->getData().compare(std::string("five")) == 0, "First token is 'five'");
+      token = lexer->nextToken();
+      ASSERT_EQUALS(token->getTokenType() == TOKEN_OPERATOR, "Next token is TOKEN_OPERATOR");
+      ASSERT_EQUALS(token->getData().compare(std::string("<-")) == 0, "Next token is <-");
+      token = lexer->nextToken();
+      ASSERT_EQUALS(token->getTokenType() == TOKEN_INTEGER, "Next token is TOKEN_INTEGER");
+      ASSERT_EQUALS(token->getData().compare(std::string("5")) == 0, "Next token is 5");
     }
   }
 }

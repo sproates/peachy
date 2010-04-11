@@ -4,6 +4,7 @@
 
 #include "log.h"
 #include "token.h"
+#include "tokentype.h"
 
 namespace peachy {
 

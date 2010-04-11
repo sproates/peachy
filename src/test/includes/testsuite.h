@@ -1,6 +1,8 @@
 #ifndef PEACHY_TEST_TESTSUITE_H
 #define PEACHY_TEST_TESTSUITE_H
 
+#include <iostream>
+
 #define ASSERT_THROWS(expression, exceptionType, message) {   \
   bool thrown = false;                                        \
   try {                                                       \

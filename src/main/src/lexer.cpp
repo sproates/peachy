@@ -18,10 +18,6 @@ namespace peachy {
     logger->debug("Lexer::nextToken()");
 
     while(true) {
-      if(atEndOfLine()) {
-        logger->debug("Overflowed input buffer");
-        throw LexerException("Overflowed input buffer");
-      }
       currentChar = currentLine[currentPos];
       switch(state) {
         case LEXER_COMPLETE:
@@ -182,11 +178,18 @@ namespace peachy {
           break;
         case LEXER_IN_COMMENT_LINE:
           logger->debug("In state LEXER_IN_COMMENT_LINE");
-          if(isLineEnding(currentChar)) {
-            logger->debug("End of comment");
+          if(currentChar == 0) {
+            logger->debug("End of comment line");
             Token * token = tokenFactory->createToken(TOKEN_COMMENT_LINE,
               currentSequence);
             resetToken();
+            if(scriptSource->hasMoreLines()) {
+              logger->debug("Getting a new line from script source");
+              setCurrentLine(scriptSource->getLine());
+              currentPos = 0;
+            } else {
+              logger->debug("No more lines in script");
+            }
             return token;
           } else {
             logger->debug("Another character of the current comment");
@@ -276,7 +279,8 @@ namespace peachy {
       c == '+' ||
       c == '>' ||
       c == '<' ||
-      c == '|'
+      c == '|' ||
+      c == '&'
     );
   }
 

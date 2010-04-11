@@ -27,24 +27,40 @@ tokensource.o variableexpression.o
 
 SOURCE = ./src
 
+TEST_COMPILER_FLAGS = -c -Wall -Wextra -Werror -Wunreachable-code \
+-Wredundant-decls -Wwrite-strings -Wundef -Wendif-labels -Wcast-qual -pedantic \
+-I$(HEADERS) -I$(TEST_HEADERS) $(DEFINES)
+
 TEST_EXE = testpeachy.exe
+
+TEST_HEADERS = ./tests/includes
+
+TEST_OBJECTS = $(TESTS)/lexersuite.o $(TESTS)/testsuite.o
+
+TEST_SOURCE = ./tests/src
+
+TESTS = ./tests
 
 # main targets
 
 all: $(FINAL_EXE) $(TEST_EXE) test
 
 $(FINAL_EXE): main.o $(OBJECTS)
+	@echo Linking $(FINAL_EXE)
 	$(COMPILER) -o $(FINAL_EXE) main.o $(OBJECTS)
 
-$(TEST_EXE): test.o $(OBJECTS)
-	$(COMPILER) -o $(TEST_EXE) test.o $(OBJECTS)
+$(TEST_EXE): $(TESTS)/testmain.o $(TEST_OBJECTS)
+	@echo Linking $(TEST_EXE)
+	$(COMPILER) -o $(TEST_EXE) $(TESTS)/testmain.o $(TEST_OBJECTS)
 
 clean:
-	$(DELETE) *.exe *.o
+	@echo "Cleaning"
+	$(DELETE) *.exe *.o $(TESTS)/*.o
 
 rebuild: clean all
 
 test: $(TEST_EXE)
+	@echo "Testing"
 	$(TEST_EXE)
 
 # objects with entry points
@@ -58,16 +74,23 @@ $(HEADERS)/runtime.h $(HEADERS)/script.h $(HEADERS)/scriptsource.h \
 $(HEADERS)/tokenfactory.h $(HEADERS)/tokensource.h
 	$(COMPILER) $(COMPILER_FLAGS) $(SOURCE)/main.cpp
 
-test.o: $(SOURCE)/test.cpp $(HEADERS)/classfactory.h $(HEADERS)/environment.h \
-$(HEADERS)/expression.h $(HEADERS)/expressionfactory.h \
-$(HEADERS)/expressionsource.h $(HEADERS)/interpreter.h $(HEADERS)/lexer.h \
-$(HEADERS)/log.h $(HEADERS)/nullostream.h $(HEADERS)/parser.h \
-$(HEADERS)/runtime.h $(HEADERS)/script.h $(HEADERS)/scriptsource.h \
-$(HEADERS)/stringscriptsource.h $(HEADERS)/token.h $(HEADERS)/tokenfactory.h \
-$(HEADERS)/tokensource.h $(HEADERS)/tokentype.h
-	$(COMPILER) $(COMPILER_FLAGS) $(SOURCE)/test.cpp
+$(TESTS)/testmain.o: $(TEST_SOURCE)/testmain.cpp $(TEST_HEADERS)/lexersuite.h \
+$(TEST_HEADERS)/testsuite.h
+	$(COMPILER) $(TEST_COMPILER_FLAGS) -o $(TESTS)/testmain.o \
+$(TEST_SOURCE)/testmain.cpp
 
-# intermediary objects
+# test intermediary objects
+
+$(TESTS)/lexersuite.o: $(TEST_SOURCE)/lexersuite.cpp \
+$(TEST_HEADERS)/lexersuite.h $(TEST_HEADERS)/testsuite.h
+	$(COMPILER) $(TEST_COMPILER_FLAGS) -o $(TESTS)/lexersuite.o \
+$(TEST_SOURCE)/lexersuite.cpp
+
+$(TESTS)/testsuite.o: $(TEST_SOURCE)/testsuite.cpp $(TEST_HEADERS)/testsuite.h
+	$(COMPILER) $(TEST_COMPILER_FLAGS) -o $(TESTS)/testsuite.o \
+$(TEST_SOURCE)/testsuite.cpp
+
+# main intermediary objects
 
 additionexpression.o: $(SOURCE)/additionexpression.cpp \
 $(HEADERS)/additionexpression.h $(HEADERS)/expression.h \

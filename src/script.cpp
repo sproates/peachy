@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include <memory>
+#include <stdexcept>
 
 #include "environment.h"
 #include "interpreter.h"
@@ -37,6 +38,9 @@ namespace peachy {
       logger->info("InterpreterException thrown");
       logger->info(ie.what());
       return;
+    } catch(std::runtime_error re) {
+      logger->info("Runtime error thrown");
+      logger->info(re.what());
     } catch(...) {
       logger->debug("Something bad happened");
       return;

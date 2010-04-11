@@ -15,7 +15,7 @@ DELETE = rm -f -v
 
 FINAL_EXE = peachy.exe
 
-HEADERS = ./includes
+HEADERS = ./src/main/includes
 
 OBJECTS = additionexpression.o assignmentexpression.o class.o classfactory.o \
 environment.o expression.o expressionfactory.o expressionsource.o \
@@ -25,7 +25,7 @@ quitexpression.o replscriptsource.o runtime.o scope.o script.o scriptsource.o \
 string.o stringliteralexpression.o stringscriptsource.o token.o tokenfactory.o \
 tokensource.o variableexpression.o
 
-SOURCE = ./src
+SOURCE = ./src/main/src
 
 TEST_COMPILER_FLAGS = -c -Wall -Wextra -Werror -Wunreachable-code \
 -Wredundant-decls -Wwrite-strings -Wundef -Wendif-labels -Wcast-qual -pedantic \
@@ -33,13 +33,13 @@ TEST_COMPILER_FLAGS = -c -Wall -Wextra -Werror -Wunreachable-code \
 
 TEST_EXE = testpeachy.exe
 
-TEST_HEADERS = ./tests/includes
+TEST_HEADERS = ./src/test/includes
 
 TEST_OBJECTS = $(TESTS)/lexersuite.o $(TESTS)/testsuite.o
 
-TEST_SOURCE = ./tests/src
+TEST_SOURCE = ./src/test/src
 
-TESTS = ./tests
+TESTS = ./src/test
 
 # main targets
 

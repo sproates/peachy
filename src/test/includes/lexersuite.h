@@ -3,7 +3,13 @@
 
 #include <iostream>
 
+#include "lexer.h"
+#include "log.h"
+#include "nullostream.h"
+#include "scriptsource.h"
 #include "testsuite.h"
+#include "token.h"
+#include "tokenfactory.h"
 
 namespace peachy {
 
@@ -14,7 +20,6 @@ namespace peachy {
       public:
 
         LexerSuite() : TestSuite() {
-          std::cout << "LexerSuite constructor" << std::endl;
           startup();
         }
 
@@ -23,6 +28,15 @@ namespace peachy {
         void startup();
         void teardown();
         void run();
+
+      protected:
+
+        Lexer * lexer;
+        Log * logger;
+        NullOStream * ostream;
+        ScriptSource * scriptSource;
+        Token * token;
+        TokenFactory * tokenFactory;
     };
   }
 }

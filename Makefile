@@ -51,7 +51,7 @@ $(FINAL_EXE): main.o $(OBJECTS)
 
 $(TEST_EXE): $(TESTS)/testmain.o $(TEST_OBJECTS)
 	@echo Linking $(TEST_EXE)
-	$(COMPILER) -o $(TEST_EXE) $(TESTS)/testmain.o $(TEST_OBJECTS)
+	$(COMPILER) -o $(TEST_EXE) $(TESTS)/testmain.o $(TEST_OBJECTS) $(OBJECTS)
 
 clean:
 	@echo "Cleaning"

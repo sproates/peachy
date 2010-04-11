@@ -7,7 +7,7 @@ namespace peachy {
 
   class Log;
 
-  class StringScriptSource : private IStreamScriptSource {
+  class StringScriptSource : public IStreamScriptSource {
 
     public:
 

@@ -49,7 +49,5 @@ namespace peachy {
         std::cout << "In " << file << " at line " << line << std::endl;
       }
     }
-
-    
   }
 }

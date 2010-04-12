@@ -1,6 +1,8 @@
 #ifndef PEACHY_TEST_EXPRESSIONFACTORYSUITE_H
 #define PEACHY_TEST_EXPRESSIONFACTORYSUITE_H
 
+#include "additionexpression.h"
+#include "assignmentexpression.h"
 #include "expression.h"
 #include "expressionfactory.h"
 #include "log.h"
@@ -27,6 +29,8 @@ namespace peachy {
 
       protected:
 
+        AdditionExpression * additionExpression;
+        AssignmentExpression * assignmentExpression;
         Expression * expression;
         ExpressionFactory * expressionFactory;
         Log * logger;

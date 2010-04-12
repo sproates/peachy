@@ -49,12 +49,13 @@ namespace peachy {
           const char * file, int line);
         void __assertEquals(bool condition, const char * message,
           const char * file, int line);
-        // template function needs to be inline
-        template <typename L, typename R> inline void __assertInstance(
-          const L & expression, const R & expectedType, const char * message,
-          const char * file, int line) {
+        template <class T, class U>
+        inline void __assertInstance(T expression, U expectedType,
+          const char * message, const char * file, int line) {
+          (void) expectedType;
           testCount++;
-          if(expression == expectedType) {
+          U u = dynamic_cast<U>(expression);
+          if(u != NULL) {
             passCount++;
           } else {
             failCount++;

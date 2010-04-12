@@ -86,10 +86,11 @@ $(TEST_SOURCE)/testmain.cpp
 # test intermediary objects
 
 $(TESTS)/expressionfactorysuite.o: $(TEST_SOURCE)/expressionfactorysuite.cpp \
-$(TEST_HEADERS)/testsuite.h $(TEST_HEADERS)/expressionfactorysuite.h \
-$(HEADERS)/expressionfactory.h $(HEADERS)/log.h $(HEADERS)/nullostream.h  \
-$(HEADERS)/expressiontype.h $(SOURCE)/expressionfactory.cpp $(SOURCE)/log.cpp \
-$(SOURCE)/nullostream.cpp
+$(TEST_SOURCE)/testsuite.cpp $(TEST_HEADERS)/testsuite.h \
+$(TEST_HEADERS)/expressionfactorysuite.h $(HEADERS)/additionexpression.h \
+$(HEADERS)/expressionfactory.h $(HEADERS)/log.h $(HEADERS)/nullostream.h \
+$(HEADERS)/expressiontype.h $(SOURCE)/additionexpression.cpp \
+$(SOURCE)/expressionfactory.cpp $(SOURCE)/log.cpp $(SOURCE)/nullostream.cpp
 	$(COMPILER) $(TEST_COMPILER_FLAGS) -o $(TESTS)/expressionfactorysuite.o \
 $(TEST_SOURCE)/expressionfactorysuite.cpp
 

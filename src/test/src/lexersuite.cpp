@@ -33,6 +33,7 @@ namespace peachy {
       delete scriptSource;
       delete tokenFactory;
       delete logger;
+      delete ostream;
     }
 
     void LexerSuite::run() {

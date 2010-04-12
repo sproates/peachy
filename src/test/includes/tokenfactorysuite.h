@@ -1,8 +1,6 @@
 #ifndef PEACHY_TEST_TOKENFACTORYSUITE_H
 #define PEACHY_TEST_TOKENFACTORYSUITE_H
 
-#include <iostream>
-
 #include "log.h"
 #include "nullostream.h"
 #include "testsuite.h"

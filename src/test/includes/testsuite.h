@@ -17,6 +17,11 @@
   __assertEquals(expression, message, __FILE__, __LINE__);    \
 }
 
+#define ASSERT_INSTANCE(expression, expectedType, message) {  \
+  __assertInstance(expression, expectedType, message,         \
+    __FILE__, __LINE__);                                      \
+}
+
 namespace peachy {
 
   namespace test {
@@ -44,6 +49,19 @@ namespace peachy {
           const char * file, int line);
         void __assertEquals(bool condition, const char * message,
           const char * file, int line);
+        // template function needs to be inline
+        template <typename L, typename R> inline void __assertInstance(
+          const L & expression, const R & expectedType, const char * message,
+          const char * file, int line) {
+          testCount++;
+          if(expression == expectedType) {
+            passCount++;
+          } else {
+            failCount++;
+            std::cout << "FAIL: " << message << std::endl;
+            std::cout << "In " << file << " at line " << line << std::endl;
+          }
+        }
     };
   }
 }

@@ -43,12 +43,13 @@ namespace peachy {
       testCount++;
       if(expression) {
         passCount++;
-        return;
       } else {
         failCount++;
         std::cout << "FAIL: " << message << std::endl;
         std::cout << "In " << file << " at line " << line << std::endl;
       }
     }
+
+    
   }
 }

@@ -1,5 +1,6 @@
 #include <iostream>
 
+#include "expressionfactorysuite.h"
 #include "testsuite.h"
 #include "lexersuite.h"
 #include "tokenfactorysuite.h"
@@ -13,6 +14,12 @@ int main() {
   int failCount = 0;
   
   peachy::test::TestSuite * suite;
+
+  suite = new peachy::test::ExpressionFactorySuite();
+  suite->run();
+  testCount += suite->getTestCount();
+  passCount += suite->getPassCount();
+  failCount += suite->getFailCount();
 
   suite = new peachy::test::TokenFactorySuite();
   suite->run();

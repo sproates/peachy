@@ -35,7 +35,8 @@ TEST_EXE = testpeachy.exe
 
 TEST_HEADERS = ./src/test/includes
 
-TEST_OBJECTS = $(TESTS)/lexersuite.o $(TESTS)/testsuite.o
+TEST_OBJECTS = $(TESTS)/lexersuite.o $(TESTS)/testsuite.o \
+$(TESTS)/tokenfactorysuite.o
 
 TEST_SOURCE = ./src/test/src
 
@@ -74,21 +75,34 @@ $(HEADERS)/runtime.h $(HEADERS)/script.h $(HEADERS)/scriptsource.h \
 $(HEADERS)/tokenfactory.h $(HEADERS)/tokensource.h
 	$(COMPILER) $(COMPILER_FLAGS) $(SOURCE)/main.cpp
 
-$(TESTS)/testmain.o: $(TEST_SOURCE)/testmain.cpp $(TEST_HEADERS)/lexersuite.h \
-$(TEST_HEADERS)/testsuite.h
+$(TESTS)/testmain.o: $(TEST_SOURCE)/lexersuite.cpp $(TEST_SOURCE)/testmain.cpp \
+$(TEST_SOURCE)/tokenfactorysuite.cpp $(TEST_HEADERS)/lexersuite.h \
+$(TEST_HEADERS)/testsuite.h $(TEST_HEADERS)/tokenfactorysuite.h
 	$(COMPILER) $(TEST_COMPILER_FLAGS) -o $(TESTS)/testmain.o \
 $(TEST_SOURCE)/testmain.cpp
 
 # test intermediary objects
 
 $(TESTS)/lexersuite.o: $(TEST_SOURCE)/lexersuite.cpp \
-$(TEST_HEADERS)/lexersuite.h $(TEST_HEADERS)/testsuite.h
+$(TEST_SOURCE)/testsuite.cpp $(TEST_HEADERS)/lexersuite.h \
+$(TEST_HEADERS)/testsuite.h $(SOURCE)/lexer.cpp $(SOURCE)/log.cpp \
+$(SOURCE)/nullostream.cpp $(HEADERS)/lexer.h $(HEADERS)/log.h \
+$(HEADERS)/nullostream.h $(HEADERS)/tokensource.h $(SOURCE)/tokensource.cpp \
+$(HEADERS)/tokentype.h 
 	$(COMPILER) $(TEST_COMPILER_FLAGS) -o $(TESTS)/lexersuite.o \
 $(TEST_SOURCE)/lexersuite.cpp
 
 $(TESTS)/testsuite.o: $(TEST_SOURCE)/testsuite.cpp $(TEST_HEADERS)/testsuite.h
 	$(COMPILER) $(TEST_COMPILER_FLAGS) -o $(TESTS)/testsuite.o \
 $(TEST_SOURCE)/testsuite.cpp
+
+$(TESTS)/tokenfactorysuite.o: $(TEST_SOURCE)/tokenfactorysuite.cpp \
+$(TEST_HEADERS)/testsuite.h $(TEST_HEADERS)/tokenfactorysuite.h \
+$(HEADERS)/log.h $(HEADERS)/nullostream.h  $(HEADERS)/tokenfactory.h  \
+$(HEADERS)/tokentype.h $(SOURCE)/log.cpp $(SOURCE)/nullostream.cpp \
+$(SOURCE)/tokenfactory.cpp
+	$(COMPILER) $(TEST_COMPILER_FLAGS) -o $(TESTS)/tokenfactorysuite.o \
+$(TEST_SOURCE)/tokenfactorysuite.cpp
 
 # main intermediary objects
 

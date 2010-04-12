@@ -2,6 +2,7 @@
 
 #include "testsuite.h"
 #include "lexersuite.h"
+#include "tokenfactorysuite.h"
 
 int main() {
 
@@ -11,12 +12,21 @@ int main() {
   int passCount = 0;
   int failCount = 0;
   
-  peachy::test::TestSuite * lexerSuite = new peachy::test::LexerSuite();
-  lexerSuite->run();
-  testCount += lexerSuite->getTestCount();
-  passCount += lexerSuite->getPassCount();
-  failCount += lexerSuite->getFailCount();
-  delete lexerSuite;
+  peachy::test::TestSuite * suite;
+
+  suite = new peachy::test::TokenFactorySuite();
+  suite->run();
+  testCount += suite->getTestCount();
+  passCount += suite->getPassCount();
+  failCount += suite->getFailCount();
+
+  suite = new peachy::test::LexerSuite();
+  suite->run();
+  testCount += suite->getTestCount();
+  passCount += suite->getPassCount();
+  failCount += suite->getFailCount();
+
+  delete suite;
 
   std::cout << "Test suite complete" << std::endl;
 

@@ -1,6 +1,5 @@
 #include "lexersuite.h"
 
-#include <iostream>
 #include <string>
 
 #include "lexer.h"

@@ -1,8 +1,6 @@
 #ifndef PEACHY_TEST_LEXERSUITE_H
 #define PEACHY_TEST_LEXERSUITE_H
 
-#include <iostream>
-
 #include "lexer.h"
 #include "log.h"
 #include "nullostream.h"
@@ -25,11 +23,11 @@ namespace peachy {
 
         ~LexerSuite();
 
+      private:
+
         void startup();
         void teardown();
         void run();
-
-      protected:
 
         Lexer * lexer;
         Log * logger;

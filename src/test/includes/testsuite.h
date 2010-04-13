@@ -32,14 +32,15 @@ namespace peachy {
 
         TestSuite();
         virtual ~TestSuite();
-        virtual void startup() = 0;
-        virtual void teardown() = 0;
         virtual void run() = 0;
         int getTestCount();
         int getFailCount();
         int getPassCount();
 
       protected:
+
+        virtual void startup() = 0;
+        virtual void teardown() = 0;
 
         int testCount;
         int failCount;

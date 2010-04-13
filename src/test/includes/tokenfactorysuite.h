@@ -21,11 +21,11 @@ namespace peachy {
 
         ~TokenFactorySuite();
 
+      private:
+
         void startup();
         void teardown();
         void run();
-
-      protected:
 
         Log * logger;
         NullOStream * ostream;

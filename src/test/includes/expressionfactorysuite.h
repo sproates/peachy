@@ -23,11 +23,11 @@ namespace peachy {
 
         ~ExpressionFactorySuite();
 
+      private:
+
         void startup();
         void teardown();
         void run();
-
-      protected:
 
         AdditionExpression * additionExpression;
         AssignmentExpression * assignmentExpression;

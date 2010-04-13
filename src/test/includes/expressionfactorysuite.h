@@ -5,9 +5,13 @@
 #include "assignmentexpression.h"
 #include "expression.h"
 #include "expressionfactory.h"
+#include "intliteralexpression.h"
 #include "log.h"
 #include "nullostream.h"
+#include "quitexpression.h"
+#include "stringliteralexpression.h"
 #include "testsuite.h"
+#include "variableexpression.h"
 
 namespace peachy {
 
@@ -29,12 +33,18 @@ namespace peachy {
         void teardown();
         void run();
 
-        AdditionExpression * additionExpression;
-        AssignmentExpression * assignmentExpression;
+        AdditionExpression * addition;
+        AssignmentExpression * assignment;
+        QuitExpression * quit;
+        IntLiteralExpression * intLiteral;
+        StringLiteralExpression * stringLiteral;
+        VariableExpression * variable;
+        
         Expression * expression;
         ExpressionFactory * expressionFactory;
         Log * logger;
         NullOStream * ostream;
+        
     };
   }
 }

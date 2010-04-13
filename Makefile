@@ -88,9 +88,14 @@ $(TEST_SOURCE)/testmain.cpp
 $(TESTS)/expressionfactorysuite.o: $(TEST_SOURCE)/expressionfactorysuite.cpp \
 $(TEST_SOURCE)/testsuite.cpp $(TEST_HEADERS)/testsuite.h \
 $(TEST_HEADERS)/expressionfactorysuite.h $(HEADERS)/additionexpression.h \
-$(HEADERS)/expressionfactory.h $(HEADERS)/log.h $(HEADERS)/nullostream.h \
-$(HEADERS)/expressiontype.h $(SOURCE)/additionexpression.cpp \
-$(SOURCE)/expressionfactory.cpp $(SOURCE)/log.cpp $(SOURCE)/nullostream.cpp
+$(HEADERS)/assignmentexpression.h $(HEADERS)/expressionfactory.h \
+$(HEADERS)/expressiontype.h $(HEADERS)/intliteralexpression.h $(HEADERS)/log.h \
+$(HEADERS)/nullostream.h $(HEADERS)/quitexpression.h \
+$(HEADERS)/stringliteralexpression.h $(HEADERS)/variableexpression.h \
+$(SOURCE)/additionexpression.cpp $(SOURCE)/assignmentexpression.cpp \
+$(SOURCE)/expressionfactory.cpp $(SOURCE)/intliteralexpression.cpp \
+$(SOURCE)/log.cpp $(SOURCE)/nullostream.cpp $(SOURCE)/quitexpression.cpp \
+$(SOURCE)/stringliteralexpression.cpp $(SOURCE)/variableexpression.cpp
 	$(COMPILER) $(TEST_COMPILER_FLAGS) -o $(TESTS)/expressionfactorysuite.o \
 $(TEST_SOURCE)/expressionfactorysuite.cpp
 

@@ -40,34 +40,26 @@ namespace peachy {
             case TOKEN_EOF:
               return expressionFactory->createQuitExpression();
             case TOKEN_IDENTIFIER:
-              switch(tokenBuffer[1]->getTokenType()) {
+              VariableExpression * ve =
+                expressionFactory->createVariableExpression();
+              ve->setVariableName(tokenBuffer[0]->getData());
+              tokenBuffer.pop_front();
+              switch(tokenBuffer[0]->getTokenType()) {
                 case TOKEN_EOF:
                 case TOKEN_IDENTIFIER:
-                  VariableExpression * varEx =
-                    expressionFactory->createVariableExpression();
-                  varEx->setVariableName(tokenBuffer[0]->getData());
-                  tokenBuffer.pop_front();
-                  return varEx;
+                  return ve;
                 case TOKEN_OPERATOR:
-                  if(tokenBuffer[1]->getData().compare("<-") == 0) {
+                  if(tokenBuffer[0]->getData().compare("<-") == 0) {
                     AssignmentExpression * ae =
                       expressionFactory->createAssignmentExpression();
-                    VariableExpression * e =
-                      expressionFactory->createVariableExpression();
-                    e->setVariableName(tokenBuffer[0]->getData());
-                    ae->setLValue(e);
-                    tokenBuffer.pop_front();
+                    ae->setLValue(ve);
                     tokenBuffer.pop_front();
                     ae->setRValue(nextExpression(PARSER_DEFAULT));
                     return ae;
-                  } else if(tokenBuffer[1]->getData().compare("+") == 0) {
+                  } else if(tokenBuffer[0]->getData().compare("+") == 0) {
                     AdditionExpression * addEx =
                       expressionFactory->createAdditionExpression();
-                    VariableExpression * varEx =
-                      expressionFactory->createVariableExpression();
-                    varEx->setVariableName(tokenBuffer[0]->getData());
-                    addEx->setLValue(varEx);
-                    tokenBuffer.pop_front();
+                    addEx->setLValue(ve);
                     tokenBuffer.pop_front();
                     addEx->setRValue(nextExpression(PARSER_DEFAULT));
                     return addEx;
@@ -83,36 +75,31 @@ namespace peachy {
               }
               break;
             case TOKEN_INTEGER:
-              IntLiteralExpression * e =
+              IntLiteralExpression * ile =
                 expressionFactory->createIntLiteralExpression();
-              e->setValue(atoi(tokenBuffer.front()->getData().c_str()));
-              switch(tokenBuffer[1]->getTokenType()) {
+              ile->setValue(atoi(tokenBuffer.front()->getData().c_str()));
+              tokenBuffer.pop_front();
+              switch(tokenBuffer[0]->getTokenType()) {
                 case TOKEN_EOF:
                 case TOKEN_IDENTIFIER:
                 case TOKEN_KEYWORD:
-                  tokenBuffer.pop_front();
-                  return e;
+                  return ile;
                 case TOKEN_OPERATOR:
-                  if(tokenBuffer[1]->getData().compare("+") == 0) {
+                  if(tokenBuffer[0]->getData().compare("+") == 0) {
                     AdditionExpression * addEx =
                       expressionFactory->createAdditionExpression();
-                    IntLiteralExpression * intEx =
-                      expressionFactory->createIntLiteralExpression();
-                    intEx->setValue(atoi(tokenBuffer[0]->getData().c_str()));
-                    addEx->setLValue(intEx);
-                    tokenBuffer.pop_front();
+                    addEx->setLValue(ile);
                     tokenBuffer.pop_front();
                     addEx->setRValue(nextExpression(PARSER_DEFAULT));
                     return addEx;
-                  } else if(tokenBuffer[1]->getData().compare("<-") == 0 ) {
+                  } else if(tokenBuffer[0]->getData().compare("<-") == 0 ) {
                     errorMessage = std::string("Invalid assignment");
                     state = PARSER_ERROR;
                     break;
-                  } else if(tokenBuffer[1]->getData().compare("->") == 0 ) {
+                  } else if(tokenBuffer[0]->getData().compare("->") == 0 ) {
                     AssignmentExpression * ae =
                       expressionFactory->createAssignmentExpression();
-                    ae->setRValue(e);
-                    tokenBuffer.pop_front();
+                    ae->setRValue(ile);
                     tokenBuffer.pop_front();
                     Expression * lValue = nextExpression(PARSER_DEFAULT);
                     ae->setLValue(lValue);
@@ -128,28 +115,24 @@ namespace peachy {
               }
               break;
             case TOKEN_OPERATOR:
-              tokenBuffer.pop_front();
-              state = PARSER_NEED_TOKEN;
+              errorMessage = std::string("Unexpected operator");
+              state = PARSER_ERROR;
               break;
             case TOKEN_STRING:
-              switch(tokenBuffer[1]->getTokenType()) {
+              StringLiteralExpression * sle =
+                expressionFactory->createStringLiteralExpression();
+              sle->setStringValue(tokenBuffer.front()->getData());
+              tokenBuffer.pop_front();
+              switch(tokenBuffer[0]->getTokenType()) {
                 case TOKEN_EOF:
                 case TOKEN_IDENTIFIER:
                 case TOKEN_KEYWORD:
-                  StringLiteralExpression * e =
-                    expressionFactory->createStringLiteralExpression();
-                  e->setStringValue(tokenBuffer.front()->getData());
-                  tokenBuffer.pop_front();
-                  return e;
+                  return sle;
                 case TOKEN_OPERATOR:
-                  if(tokenBuffer[1]->getData().compare("+") == 0) {
+                  if(tokenBuffer[0]->getData().compare("+") == 0) {
                     AdditionExpression * addEx =
                       expressionFactory->createAdditionExpression();
-                    StringLiteralExpression * stringEx =
-                      expressionFactory->createStringLiteralExpression();
-                    stringEx->setStringValue(tokenBuffer[0]->getData());
-                    addEx->setLValue(stringEx);
-                    tokenBuffer.pop_front();
+                    addEx->setLValue(sle);
                     tokenBuffer.pop_front();
                     addEx->setRValue(nextExpression(PARSER_DEFAULT));
                     return addEx;

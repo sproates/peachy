@@ -12,6 +12,7 @@
 #include "interpreter.h"
 #include "lexer.h"
 #include "log.h"
+#include "nullostream.h"
 #include "peachy.h"
 #include "parser.h"
 #include "replscriptsource.h"
@@ -30,20 +31,22 @@ ScriptSource * handle_args(Log * logger, const int argc, const char ** argv);
 int main(const int argc, const char ** argv) {
 
   Log * logger = new Log(&(std::cout));
+  NullOStream * ostream = new NullOStream();
+  Log * nullLogger = new Log(ostream);
   int returnCode = 0;
 
   try {
 
-    ScriptSource * scriptSource = handle_args(logger, argc, argv);
-    Environment * environment = new Environment(logger);
-    Runtime * runtime = new Runtime(logger);
-    TokenFactory * tokenFactory = new TokenFactory(logger, logger);
-    TokenSource * tokenSource = new Lexer(logger, tokenFactory, scriptSource);
-    ExpressionFactory * expressionFactory = new ExpressionFactory(logger,
-      logger);
+    ScriptSource * scriptSource = handle_args(nullLogger, argc, argv);
+    Environment * environment = new Environment(nullLogger);
+    Runtime * runtime = new Runtime(nullLogger);
+    TokenFactory * tokenFactory = new TokenFactory(nullLogger, nullLogger);
+    TokenSource * tokenSource = new Lexer(nullLogger, tokenFactory, scriptSource);
+    ExpressionFactory * expressionFactory = new ExpressionFactory(nullLogger,
+      nullLogger);
     ExpressionSource * expressionSource = new Parser(logger,
       expressionFactory, tokenSource);
-    ClassFactory * classFactory = new ClassFactory(logger, logger);
+    ClassFactory * classFactory = new ClassFactory(nullLogger, logger);
     Interpreter * interpreter = new Interpreter(logger, expressionSource,
       classFactory);
     Script * script = new Script(logger, environment, runtime, interpreter);

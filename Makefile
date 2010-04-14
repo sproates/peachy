@@ -71,9 +71,9 @@ main.o: $(SOURCE)/main.cpp $(HEADERS)/classfactory.h $(HEADERS)/environment.h \
 $(HEADERS)/expression.h $(HEADERS)/expressionfactory.h \
 $(HEADERS)/expressionsource.h $(HEADERS)/filescriptsource.h \
 $(HEADERS)/interpreter.h $(HEADERS)/lexer.h $(HEADERS)/log.h \
-$(HEADERS)/peachy.h $(HEADERS)/parser.h $(HEADERS)/replscriptsource.h \
-$(HEADERS)/runtime.h $(HEADERS)/script.h $(HEADERS)/scriptsource.h \
-$(HEADERS)/tokenfactory.h $(HEADERS)/tokensource.h
+$(HEADERS)/nullostream.h $(HEADERS)/peachy.h $(HEADERS)/parser.h \
+$(HEADERS)/replscriptsource.h $(HEADERS)/runtime.h $(HEADERS)/script.h \
+$(HEADERS)/scriptsource.h $(HEADERS)/tokenfactory.h $(HEADERS)/tokensource.h
 	$(COMPILER) $(COMPILER_FLAGS) $(SOURCE)/main.cpp
 
 $(TESTS)/testmain.o: $(TEST_SOURCE)/expressionfactorysuite.cpp \

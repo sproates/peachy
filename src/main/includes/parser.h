@@ -35,7 +35,6 @@ namespace peachy {
       std::deque< Token * > tokenBuffer;
 
       void fillTokenBuffer();
-      void logTokenBuffer();
 
       Parser();
       Parser(const Parser & p);

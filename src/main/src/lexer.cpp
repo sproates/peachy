@@ -287,6 +287,7 @@ namespace peachy {
   bool Lexer::isOperator(std::string s) {
     return (
       s.compare("<-") == 0 ||
+      s.compare("->") == 0 ||
       s.compare("=") == 0 ||
       s.compare(">=") == 0 ||
       s.compare("<=") == 0 ||

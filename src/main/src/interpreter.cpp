@@ -183,7 +183,6 @@ namespace peachy {
             Object * rightObj = evaluate(rValue, scope);
             logger->debug("RHS of assignment evaluated");
             var->setValue(rightObj);
-            logger->debug("flag 2");
             dumpVar(var);
             if(scope->hasVariable(var->getVariableName())) {
               logger->debug("Variable is already in scope");

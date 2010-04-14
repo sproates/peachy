@@ -1,29 +1,29 @@
 #ifndef PEACHY_FUNCTION_H
 #define PEACHY_FUNCTION_H
 
-#include <deque>
 #include <string>
 
 namespace peachy {
 
-  class Expression;
-  class Log;
+  class Block;
+  class ParameterList;
 
   class Function {
 
     public:
 
-      Function(Log * logger, std::string name,
-        std::deque<Expression*> expressions);
+      Function(std::string name, ParameterList * parameterList, Block * block);
       virtual ~Function();
+
+      Block * getBlock();
       std::string getName();
-      std::deque<Expression*> getExpressions();
+      ParameterList * getParameterList();
 
     protected:
 
-      Log * logger;
+      Block * block;
       std::string name;
-      std::deque<Expression*> expressions;
+      ParameterList * parameterList;
   };
 }
 

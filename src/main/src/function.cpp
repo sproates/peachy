@@ -1,32 +1,30 @@
 #include "function.h"
 
-#include <deque>
 #include <string>
 
-#include "expression.h"
-#include "log.h"
+#include "block.h"
+#include "parameterlist.h"
 
 namespace peachy {
 
-  Function::Function(Log * logger, std::string name,
-    std::deque<Expression*> expressions) {
-    logger->debug("Function constructor");
-    this->logger = logger;
+  Function::Function(std::string name, ParameterList * parameterList, 
+    Block * block) {
     this->name = name;
-    this->expressions = expressions;
+    this->parameterList = parameterList;
+    this->block = block;
   }
 
-  Function::~Function() {
-    logger->debug("Function destructor");
-  }
+  Function::~Function() {}
 
   std::string Function::getName() {
-    logger->debug("Function::getName()");
     return name;
   }
 
-  std::deque<Expression*> Function::getExpressions() {
-    logger->debug("Function::getExpressions()");
-    return expressions;
+  ParameterList * Function::getParameterList() {
+    return parameterList;
+  }
+
+  Block * Function::getBlock() {
+    return block;
   }
 }

@@ -1,6 +1,7 @@
 #include <iostream>
 
 #include "expressionfactorysuite.h"
+#include "filescriptsourcesuite.h"
 #include "testsuite.h"
 #include "lexersuite.h"
 #include "tokenfactorysuite.h"
@@ -16,6 +17,12 @@ int main() {
   peachy::test::TestSuite * suite;
 
   suite = new peachy::test::ExpressionFactorySuite();
+  suite->run();
+  testCount += suite->getTestCount();
+  passCount += suite->getPassCount();
+  failCount += suite->getFailCount();
+
+  suite = new peachy::test::FileScriptSourceSuite();
   suite->run();
   testCount += suite->getTestCount();
   passCount += suite->getPassCount();

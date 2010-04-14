@@ -35,8 +35,9 @@ TEST_EXE = testpeachy.exe
 
 TEST_HEADERS = ./src/test/includes
 
-TEST_OBJECTS = $(TESTS)/expressionfactorysuite.o $(TESTS)/lexersuite.o \
-$(TESTS)/testsuite.o $(TESTS)/tokenfactorysuite.o
+TEST_OBJECTS = $(TESTS)/expressionfactorysuite.o \
+$(TESTS)/filescriptsourcesuite.o $(TESTS)/lexersuite.o $(TESTS)/testsuite.o \
+$(TESTS)/tokenfactorysuite.o
 
 TEST_SOURCE = ./src/test/src
 
@@ -76,10 +77,11 @@ $(HEADERS)/tokenfactory.h $(HEADERS)/tokensource.h
 	$(COMPILER) $(COMPILER_FLAGS) $(SOURCE)/main.cpp
 
 $(TESTS)/testmain.o: $(TEST_SOURCE)/expressionfactorysuite.cpp \
-$(TEST_SOURCE)/lexersuite.cpp $(TEST_SOURCE)/testmain.cpp \
-$(TEST_SOURCE)/tokenfactorysuite.cpp $(TEST_HEADERS)/expressionfactorysuite.h \
-$(TEST_HEADERS)/lexersuite.h $(TEST_HEADERS)/testsuite.h \
-$(TEST_HEADERS)/tokenfactorysuite.h
+$(TEST_SOURCE)/filescriptsourcesuite.cpp $(TEST_SOURCE)/lexersuite.cpp \
+$(TEST_SOURCE)/testmain.cpp $(TEST_SOURCE)/tokenfactorysuite.cpp \
+$(TEST_HEADERS)/expressionfactorysuite.h \
+$(TEST_HEADERS)/filescriptsourcesuite.h $(TEST_HEADERS)/lexersuite.h \
+$(TEST_HEADERS)/testsuite.h $(TEST_HEADERS)/tokenfactorysuite.h
 	$(COMPILER) $(TEST_COMPILER_FLAGS) -o $(TESTS)/testmain.o \
 $(TEST_SOURCE)/testmain.cpp
 
@@ -98,6 +100,14 @@ $(SOURCE)/log.cpp $(SOURCE)/nullostream.cpp $(SOURCE)/quitexpression.cpp \
 $(SOURCE)/stringliteralexpression.cpp $(SOURCE)/variableexpression.cpp
 	$(COMPILER) $(TEST_COMPILER_FLAGS) -o $(TESTS)/expressionfactorysuite.o \
 $(TEST_SOURCE)/expressionfactorysuite.cpp
+
+$(TESTS)/filescriptsourcesuite.o: $(TEST_SOURCE)/filescriptsourcesuite.cpp \
+$(TEST_SOURCE)/testsuite.cpp $(TEST_HEADERS)/filescriptsourcesuite.h \
+$(TEST_HEADERS)/testsuite.h $(SOURCE)/filescriptsource.cpp $(SOURCE)/log.cpp \
+$(SOURCE)/nullostream.cpp $(HEADERS)/filescriptsource.h $(HEADERS)/log.h \
+$(HEADERS)/nullostream.h
+	$(COMPILER) $(TEST_COMPILER_FLAGS) -o $(TESTS)/filescriptsourcesuite.o \
+$(TEST_SOURCE)/filescriptsourcesuite.cpp
 
 $(TESTS)/lexersuite.o: $(TEST_SOURCE)/lexersuite.cpp \
 $(TEST_SOURCE)/testsuite.cpp $(TEST_HEADERS)/lexersuite.h \

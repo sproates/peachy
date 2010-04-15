@@ -17,6 +17,7 @@
 #include "stringliteralexpression.h"
 #include "types/int.h"
 #include "types/string.h"
+#include "valueexpression.h"
 #include "variableexpression.h"
 
 namespace peachy {
@@ -36,18 +37,21 @@ namespace peachy {
     globalScope->addClass(stringClass);
     Class * intClass = classFactory->getClass(std::string("Int"));
     globalScope->addClass(intClass);
-    Object * o;
+    Expression * e;
     do {
-      o = evaluate(expressionSource->nextExpression(), globalScope);
-    } while(o != NULL);
+      e = evaluate(expressionSource->nextExpression(), globalScope);
+    } while(e != NULL);
   }
 
-  Object * Interpreter::evaluate(Expression * expression, Scope * scope) {
+  Expression * Interpreter::evaluate(Expression * expression, Scope * scope) {
     Expression * lValue, * rValue;
     switch(expression->getExpressionType()) {
       case EXPRESSION_ADDITION:
         AdditionExpression * addEx =
           static_cast<AdditionExpression*>(expression);
+        if(addEx == NULL) {
+          throw InterpreterException("Invalid expression");
+        }
         lValue = addEx->getLValue();
         rValue = addEx->getRValue();
         switch(lValue->getExpressionType()) {
@@ -58,21 +62,29 @@ namespace peachy {
               throw InterpreterException("variable is not in this scope");
             }
             Object * leftObj = scope->getVariable(varEx->getVariableName());
-            Object * rightObj = evaluate(rValue, scope);
-            if(leftObj->getClassName().compare("Int") == 0) {
-              Int * leftObjInt = static_cast<Int*>(leftObj);
-              dumpObj(leftObjInt);
-              dumpObj(rightObj);
-              Object * newInt = leftObjInt->add(rightObj);   
-              return newInt;
-            } else if(leftObj->getClassName().compare("String") == 0) {
-              String * leftObjString = static_cast<String*>(leftObj);
-              dumpObj(leftObjString);
-              dumpObj(rightObj);
-              Object * newString = leftObjString->add(rightObj);
-              return newString;
-            } else {
-              throw InterpreterException("Unsupported operation");
+            Expression * rightEx = evaluate(rValue, scope);
+            switch(rightEx->getExpressionType()) {
+              case EXPRESSION_VALUE:
+                ValueExpression * valEx =
+                  static_cast<ValueExpression*>(rightEx);
+                if(valEx == NULL) {
+                  throw InterpreterException("Invalid expression");
+                }
+                Object * rightObj = valEx->getValue();
+                Object * newValue;
+                if(leftObj->getClassName().compare("Int") == 0) {
+                  Int * leftObjInt = static_cast<Int*>(leftObj);
+                  newValue = leftObjInt->add(rightObj);   
+                } else if(leftObj->getClassName().compare("String") == 0) {
+                  String * leftObjString = static_cast<String*>(leftObj);
+                  newValue = leftObjString->add(rightObj);
+                } else {
+                  throw InterpreterException("Unsupported operation");
+                }
+                valEx->setValue(newValue);
+                return valEx;
+              default:
+                throw InterpreterException("Invalid expression");
             }
           case EXPRESSION_INT_LITERAL:
             IntLiteralExpression * intEx =
@@ -87,37 +99,30 @@ namespace peachy {
                 VariableExpression * varEx =
                   static_cast<VariableExpression*>(rValue);
                 if(!scope->hasVariable(varEx->getVariableName())) {
-                  logger->debug("Assigning an out of scope variable");
                   throw InterpreterException("Assigning a variable that isn't in scope");
                 } else {
                   if(scope->getVariable(varEx->getVariableName())->getClassName().compare(std::string("Int")) != 0) {
-                    logger->debug("Adding a non-int variable to an int literal...");
                     throw InterpreterException("Adding a non-int variable to an int literal");
                   } else {
-                    logger->debug("Adding int variable to int literal");
                     Int * i = static_cast<Int*>(varEx->getValue());
                     intEx->setValue(intEx->getValue() + i->getValue());
                     return evaluate(intEx, scope);
                   }
                 }
               default:
-                logger->debug("I don't know how to add one of those to an int literal");
                 throw InterpreterException("I don't know how to add one of those to an int literal");
             }
             break;
           case EXPRESSION_STRING_LITERAL:
-            logger->debug("Adding to a String literal");
             StringLiteralExpression * stringEx =
               static_cast<StringLiteralExpression*>(lValue);
             switch(rValue->getExpressionType()) {
               case EXPRESSION_STRING_LITERAL:
-                logger->debug("Adding String literals together");
                 StringLiteralExpression * rStringEx =
                   static_cast<StringLiteralExpression*>(rValue);
                 stringEx->setStringValue(stringEx->getStringValue().append(rStringEx->getStringValue()));
                 return evaluate(stringEx, scope);
               case EXPRESSION_VARIABLE:
-                logger->debug("Adding a variable to a String");
                 VariableExpression * varEx =
                   static_cast<VariableExpression*>(rValue);
                 if(!scope->hasVariable(varEx->getVariableName())) {
@@ -140,12 +145,11 @@ namespace peachy {
         }
         break;
       case EXPRESSION_ASSIGNMENT:
-        logger->debug("Assignment");
         AssignmentExpression * ae =
           static_cast<AssignmentExpression*>(expression);
-        logger->debug(ae->toString());
         lValue = ae->getLValue();
         rValue = ae->getRValue();
+        ValueExpression * rVal;
         switch(lValue->getExpressionType()) {
           case EXPRESSION_VARIABLE:
             VariableExpression * var =
@@ -153,20 +157,26 @@ namespace peachy {
             if(var == NULL) {
               throw InterpreterException("Invalid lValue");
             }
-            Object * rightObj = evaluate(rValue, scope);
-            var->setValue(rightObj);
+            rVal = static_cast<ValueExpression*>(evaluate(rValue, scope));
+            var->setValue(rVal->getValue());
             if(scope->hasVariable(var->getVariableName())) {
-              scope->replaceVariable(var->getVariableName(), rightObj);
+              scope->replaceVariable(var->getVariableName(), rVal->getValue());
             } else {
-              scope->addVariable(var->getVariableName(), rightObj);
+              scope->addVariable(var->getVariableName(), rVal->getValue());
             }
-            return rightObj;
+            return rVal;
           case EXPRESSION_ASSIGNMENT:
-            Object * leftObj = evaluate(lValue, scope);
-            rightObj = evaluate(rValue, scope);
-            leftObj = rightObj;
-            (void) ae;
-            return rightObj;
+            ValueExpression * lVal =
+              static_cast<ValueExpression*>(evaluate(lValue, scope));
+            if(lVal == NULL) {
+              throw InterpreterException("Invalid expression");
+            }
+            rVal = static_cast<ValueExpression*>(evaluate(rValue, scope));
+            if(rVal == NULL) {
+              throw InterpreterException("Invalid expression");
+            }
+            lVal->setValue(rVal->getValue());
+            return lVal;
           default:
             throw InterpreterException("Invalid assignment");
         }
@@ -174,24 +184,26 @@ namespace peachy {
       case EXPRESSION_INT_LITERAL:
         IntLiteralExpression * ile =
           static_cast<IntLiteralExpression*>(expression);
-        Int * i = new Int(logger, classFactory, ile->getValue());
-        return i;
+        return new ValueExpression(logger, 
+          new Int(logger, classFactory, ile->getValue()));
       case EXPRESSION_QUIT:
         return NULL;
       case EXPRESSION_STRING_LITERAL:
         StringLiteralExpression * e =
           static_cast<StringLiteralExpression*>(expression);
-        return new String(logger, classFactory, e->getStringValue());
+        return new ValueExpression(logger,
+          new String(logger, classFactory, e->getStringValue()));
       case EXPRESSION_VARIABLE:
         VariableExpression * varEx =
           static_cast<VariableExpression*>(expression);
-        logger->debug(varEx->getVariableName());
         if(!scope->hasVariable(varEx->getVariableName())) {
           throw InterpreterException("variable is not in this scope");
         }
         Object * varObj = scope->getVariable(varEx->getVariableName());
         varEx->setValue(varObj);
-        return varEx->getValue();
+        return varEx;
+      case EXPRESSION_VALUE:
+        return expression;
       case EXPRESSION_UNKNOWN:
       default:
         throw InterpreterException("Unknown expression");

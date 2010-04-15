@@ -23,7 +23,7 @@ filescriptsource.o function.o int.o intliteralexpression.o interpreter.o \
 istreamscriptsource.o lexer.o log.o nullostream.o object.o peachy.o parser.o \
 quitexpression.o replscriptsource.o runtime.o scope.o script.o scriptsource.o \
 string.o stringliteralexpression.o stringscriptsource.o token.o tokenfactory.o \
-tokensource.o variableexpression.o
+tokensource.o valueexpression.o variableexpression.o
 
 SOURCE = ./src/main/src
 
@@ -186,6 +186,7 @@ $(HEADERS)/assignmentexpression.h $(HEADERS)/class.h $(HEADERS)/classfactory.h \
 $(HEADERS)/expressionsource.h $(HEADERS)/expressiontype.h \
 $(HEADERS)/interpreter.h $(HEADERS)/interpreterexception.h $(HEADERS)/log.h \
 $(HEADERS)/object.h $(HEADERS)/scope.h $(HEADERS)/stringliteralexpression.h \
+$(HEADERS)/valueexpression.h $(HEADERS)/variableexpression.h \
 $(HEADERS)/types/int.h $(HEADERS)/types/string.h
 	$(COMPILER) $(COMPILER_FLAGS) $(SOURCE)/interpreter.cpp
 
@@ -275,6 +276,11 @@ tokensource.o: $(SOURCE)/tokensource.cpp $(HEADERS)/log.h \
 $(HEADERS)/scriptsource.h $(HEADERS)/token.h $(HEADERS)/tokenfactory.h \
 $(HEADERS)/tokensource.h
 	$(COMPILER) $(COMPILER_FLAGS) $(SOURCE)/tokensource.cpp
+
+valueexpression.o: $(SOURCE)/valueexpression.cpp \
+$(HEADERS)/expression.h $(HEADERS)/expressiontype.h $(HEADERS)/log.h \
+$(HEADERS)/valueexpression.h
+	$(COMPILER) $(COMPILER_FLAGS) $(SOURCE)/valueexpression.cpp
 
 variableexpression.o: $(SOURCE)/variableexpression.cpp \
 $(HEADERS)/expression.h $(HEADERS)/expressiontype.h $(HEADERS)/log.h \

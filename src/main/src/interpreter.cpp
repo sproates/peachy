@@ -140,8 +140,10 @@ namespace peachy {
         }
         break;
       case EXPRESSION_ASSIGNMENT:
+        logger->debug("Assignment");
         AssignmentExpression * ae =
           static_cast<AssignmentExpression*>(expression);
+        logger->debug(ae->toString());
         lValue = ae->getLValue();
         rValue = ae->getRValue();
         switch(lValue->getExpressionType()) {
@@ -159,8 +161,14 @@ namespace peachy {
               scope->addVariable(var->getVariableName(), rightObj);
             }
             return rightObj;
+          case EXPRESSION_ASSIGNMENT:
+            Object * leftObj = evaluate(lValue, scope);
+            rightObj = evaluate(rValue, scope);
+            leftObj = rightObj;
+            (void) ae;
+            return rightObj;
           default:
-            throw InterpreterException("The target of an assignment should be a variable");
+            throw InterpreterException("Invalid assignment");
         }
         break;
       case EXPRESSION_INT_LITERAL:

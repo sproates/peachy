@@ -57,6 +57,15 @@ namespace peachy {
                     ae->setLValue(ve);
                     tokenBuffer.pop_front();
                     ae->setRValue(nextExpression(PARSER_DEFAULT));
+                    logger->debug(ae->toString());
+                    return ae;
+                  } else if(tokenBuffer[0]->getData().compare("->") == 0) {
+                    AssignmentExpression * ae =
+                      expressionFactory->createAssignmentExpression();
+                    ae->setRValue(ve);
+                    tokenBuffer.pop_front();
+                    ae->setLValue(nextExpression(PARSER_DEFAULT));
+                    logger->debug(ae->toString());
                     return ae;
                   } else if(tokenBuffer[0]->getData().compare("+") == 0) {
                     AdditionExpression * addEx =
@@ -67,7 +76,7 @@ namespace peachy {
                     logger->debug(addEx->toString());
                     return addEx;
                   } else {
-                    errorMessage = std::string("Unexpected operator");
+                    errorMessage = std::string("Unexpected operator following variable ").append(ve->getVariableName());
                     state = PARSER_ERROR;
                     break;
                   }
@@ -85,6 +94,7 @@ namespace peachy {
               switch(tokenBuffer[0]->getTokenType()) {
                 case TOKEN_EOF:
                 case TOKEN_IDENTIFIER:
+                case TOKEN_INTEGER:
                 case TOKEN_KEYWORD:
                   return ile;
                 case TOKEN_OPERATOR:

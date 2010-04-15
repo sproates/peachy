@@ -47,6 +47,8 @@ namespace peachy {
               switch(tokenBuffer[0]->getTokenType()) {
                 case TOKEN_EOF:
                 case TOKEN_IDENTIFIER:
+                case TOKEN_INTEGER:
+                case TOKEN_STRING:
                   return ve;
                 case TOKEN_OPERATOR:
                   if(tokenBuffer[0]->getData().compare("<-") == 0) {
@@ -62,6 +64,7 @@ namespace peachy {
                     addEx->setLValue(ve);
                     tokenBuffer.pop_front();
                     addEx->setRValue(nextExpression(PARSER_DEFAULT));
+                    logger->debug(addEx->toString());
                     return addEx;
                   } else {
                     errorMessage = std::string("Unexpected operator");
@@ -91,6 +94,7 @@ namespace peachy {
                     addEx->setLValue(ile);
                     tokenBuffer.pop_front();
                     addEx->setRValue(nextExpression(PARSER_DEFAULT));
+                    logger->debug(addEx->toString());
                     return addEx;
                   } else if(tokenBuffer[0]->getData().compare("<-") == 0 ) {
                     errorMessage = std::string("Invalid assignment");
@@ -103,6 +107,7 @@ namespace peachy {
                     tokenBuffer.pop_front();
                     Expression * lValue = nextExpression(PARSER_DEFAULT);
                     ae->setLValue(lValue);
+                    logger->debug(ae->toString());
                     return ae;
                   } else {
                     errorMessage = std::string("Unexpected operator");
@@ -135,6 +140,7 @@ namespace peachy {
                     addEx->setLValue(sle);
                     tokenBuffer.pop_front();
                     addEx->setRValue(nextExpression(PARSER_DEFAULT));
+                    logger->debug(addEx->toString());
                     return addEx;
                   } else {
                     errorMessage = std::string("Unexpected operator");

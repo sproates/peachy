@@ -16,7 +16,6 @@ namespace peachy {
 
       String(Log * logger, ClassFactory * classFactory, std::string value) :
       Object(logger, classFactory) {
-        logger->debug("String constructor");
         this->clazz = classFactory->getClass(std::string("String"));
         this->value = value;
         this->logger = logger;

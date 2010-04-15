@@ -1,6 +1,8 @@
 #ifndef PEACHY_QUITEXPRESSION_H
 #define PEACHY_QUITEXPRESSION_H
 
+#include <string>
+
 #include "expression.h"
 #include "expressiontype.h"
 #include "log.h"
@@ -12,10 +14,10 @@ namespace peachy {
     public:
 
       QuitExpression(Log * logger) : Expression(logger) {
-        logger->debug("QuitExpression constructor");
         this->expressionType = EXPRESSION_QUIT;
       }
       ~QuitExpression();
+      std::string toString();
   };
 }
 

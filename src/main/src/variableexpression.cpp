@@ -7,36 +7,35 @@
 
 namespace peachy {
 
-  VariableExpression::~VariableExpression() {
-    logger->debug("VariableExpression destructor");
-  }
+  VariableExpression::~VariableExpression() {}
 
   void VariableExpression::setVariableName(std::string variableName) {
-    logger->debug("VariableExpression::setVariableName()");
     this->variableName = variableName;
   }
 
   std::string VariableExpression::getVariableName() {
-    logger->debug("VariableExpression::getVariableName()");
     return variableName;
   }
 
   Object * VariableExpression::getValue() {
-    logger->debug("VariableExpression::getValue()");
     return value;
   }
 
   void VariableExpression::setValue(Object * value) {
-    logger->debug("VariableExpression::setValue()");
     if(this->gotValue) {
-      logger->debug("Current value is set, must be a reassignment");
       if(!this->value->sameClass(value)) {
         throw std::runtime_error("Reassignment with different type");
       }
-    } else {
-      logger->debug("Current value not set, most be a new assignment");
     }
     this->value = value;
     gotValue = true;
+  }
+
+  std::string VariableExpression::toString() {
+    if(variableName.size() > 0) {
+      return variableName;
+    } else {
+      return std::string("[undefined]");
+    }
   }
 }

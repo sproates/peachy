@@ -1,8 +1,12 @@
 #include "quitexpression.h"
 
+#include <string>
+
 namespace peachy {
 
-  QuitExpression::~QuitExpression() {
-    logger->debug("QuitExpression destructor");
+  QuitExpression::~QuitExpression() {}
+
+  std::string QuitExpression::toString() {
+    return std::string("[QUIT]");
   }
 }

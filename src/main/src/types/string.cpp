@@ -10,16 +10,13 @@
 
 namespace peachy {
 
-  String::~String() {
-    logger->debug("String destructor");
-  }
+  String::~String() {}
 
   std::string String::getValue() {
     return value;
   }
 
   Object * String::add(Object * o) {
-    logger->debug("String::add()");
     if(o->getClassName().compare("String") == 0) {
       String * s = static_cast<String*>(o);
       if(s == NULL) {
@@ -34,7 +31,6 @@ namespace peachy {
   }
 
   Object * String::clone() {
-    logger->debug("String::clone()");
     return new String(logger, classFactory, value);
   }
 }

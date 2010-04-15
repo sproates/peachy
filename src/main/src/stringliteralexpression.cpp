@@ -4,17 +4,20 @@
 
 namespace peachy {
 
-  StringLiteralExpression::~StringLiteralExpression() {
-    logger->debug("StringLiteralExpression destructor");
-  }
+  StringLiteralExpression::~StringLiteralExpression() {}
 
   void StringLiteralExpression::setStringValue(std::string stringValue) {
-    logger->debug("StringLiteralExpression::setStringValue()");
     this->stringValue = stringValue;
   }
 
   std::string StringLiteralExpression::getStringValue() {
-    logger->debug("StringLiteralExpression::getStringValue()");
     return stringValue;
+  }
+
+  std::string StringLiteralExpression::toString() {
+    std::string s = std::string("\"");
+    s.append(stringValue);
+    s.append("\"");
+    return s;
   }
 }

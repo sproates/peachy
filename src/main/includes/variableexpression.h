@@ -16,7 +16,6 @@ namespace peachy {
     public:
 
       VariableExpression(Log * logger) : Expression(logger) {
-        logger->debug("VariableExpression constructor");
         this->expressionType = EXPRESSION_VARIABLE;
       }
       virtual ~VariableExpression();
@@ -24,6 +23,7 @@ namespace peachy {
       std::string getVariableName();
       Object * getValue();
       void setValue(Object * value);
+      std::string toString();
 
     protected:
 

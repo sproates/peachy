@@ -7,17 +7,13 @@
 namespace peachy {
 
   Class::Class(Log * logger, std::string name) {
-    logger->debug("Class constructor");
     this->logger = logger;
     this->name = name;
   }
 
-  Class::~Class() {
-    logger->debug("Class destructor");
-  }
+  Class::~Class() {}
 
   std::string Class::getName() {
-    logger->debug("Class::getName()");
     return name;
   }
 }

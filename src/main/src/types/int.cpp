@@ -11,9 +11,7 @@
 
 namespace peachy {
 
-  Int::~Int() {
-    logger->debug("Int destructor");
-  }
+  Int::~Int() {}
 
   int Int::getValue() {
     return value;
@@ -24,7 +22,6 @@ namespace peachy {
   }
 
   Object * Int::add(Object * o) {
-    logger->debug("Int::add()");
     if(o->getClassName().compare("Int") == 0) {
       Int * i = static_cast<Int*>(o);
       if(i == NULL) {
@@ -38,7 +35,6 @@ namespace peachy {
   }
 
   Object * Int::clone() {
-    logger->debug("Int::clone()");
     return new Int(logger, classFactory, value);
   }
 }

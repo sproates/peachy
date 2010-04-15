@@ -1,28 +1,40 @@
 #include "assignmentexpression.h"
 
+#include <string>
+
 namespace peachy {
 
-  AssignmentExpression::~AssignmentExpression() {
-    logger->debug("AssignmentExpression destructor");
-  }
+  AssignmentExpression::~AssignmentExpression() {}
 
   void AssignmentExpression::setLValue(Expression * e) {
-    logger->debug("AssignmentExpression::setLValue()");
     lValue = e;
   }
 
   void AssignmentExpression::setRValue(Expression * e) {
-    logger->debug("AssignmentExpression::setRValue()");
     rValue = e;
   }
 
   Expression * AssignmentExpression::getLValue() {
-    logger->debug("AssignmentExpression::getLValue()");
     return lValue;
   }
 
   Expression * AssignmentExpression::getRValue() {
-    logger->debug("AssignmentExpression::getRValue()");
     return rValue;
+  }
+
+  std::string AssignmentExpression::toString() {
+    std::string s = "";
+    if(lValue != NULL) {
+      s.append(lValue->toString());
+    } else {
+      s.append("[undefined]");
+    }
+    s.append(" <- ");
+    if(rValue != NULL) {
+      s.append(rValue->toString());
+    } else {
+      s.append("[undefined]");
+    }
+    return s;
   }
 }

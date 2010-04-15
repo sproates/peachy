@@ -9,13 +9,10 @@ namespace peachy {
 
   ExpressionSource::ExpressionSource(Log * logger,
     ExpressionFactory * expressionFactory, TokenSource * tokenSource) {
-    logger->debug("ExpressionSource constructor");
     this->logger = logger;
     this->expressionFactory = expressionFactory;
     this->tokenSource = tokenSource;
   }
 
-  ExpressionSource::~ExpressionSource() {
-    logger->debug("ExpressionSource destructor");
-  }
+  ExpressionSource::~ExpressionSource() {}
 }

@@ -1,6 +1,8 @@
 #ifndef PEACHY_ASSINGMENTEXPRESSION_H
 #define PEACHY_ASSINGMENTEXPRESSION_H
 
+#include <string>
+
 #include "expression.h"
 #include "expressiontype.h"
 #include "log.h"
@@ -20,6 +22,7 @@ namespace peachy {
       Expression * getRValue();
       void setLValue(Expression * e);
       void setRValue(Expression * e);
+      std::string toString();
 
     protected:
 

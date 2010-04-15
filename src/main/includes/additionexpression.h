@@ -1,6 +1,8 @@
 #ifndef PEACHY_ADDITIONEXPRESSION_H
 #define PEACHY_ADDITIONEXPRESSION_H
 
+#include <string>
+
 #include "expression.h"
 #include "expressiontype.h"
 #include "log.h"
@@ -12,7 +14,6 @@ namespace peachy {
     public:
 
       AdditionExpression(Log * logger) : Expression(logger) {
-        logger->debug("AdditionExpression constructor");
         this->expressionType = EXPRESSION_ADDITION;
       }
       virtual ~AdditionExpression();
@@ -20,6 +21,7 @@ namespace peachy {
       Expression * getRValue();
       void setLValue(Expression * e);
       void setRValue(Expression * e);
+      std::string toString();
 
     protected:
 

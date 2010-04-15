@@ -20,9 +20,7 @@ namespace peachy {
 
       Parser(Log * logger, ExpressionFactory * expressionFactory,
         TokenSource * tokenSource)
-        : ExpressionSource(logger, expressionFactory, tokenSource) {
-        logger->debug("Parser constuctor");
-      }
+        : ExpressionSource(logger, expressionFactory, tokenSource) {}
 
       ~Parser();
 

@@ -241,8 +241,9 @@ $(HEADERS)/log.h $(HEADERS)/object.h $(HEADERS)/scope.h
 	$(COMPILER) $(COMPILER_FLAGS) $(SOURCE)/scope.cpp
 
 script.o: $(SOURCE)/script.cpp $(HEADERS)/environment.h \
-$(HEADERS)/interpreter.h $(HEADERS)/interpreterexception.h $(HEADERS)/log.h \
-$(HEADERS)/parserexception.h $(HEADERS)/runtime.h
+$(HEADERS)/interpreter.h $(HEADERS)/interpreterexception.h \
+$(HEADERS)/lexerexception.h $(HEADERS)/log.h $(HEADERS)/parserexception.h \
+$(HEADERS)/runtime.h
 	$(COMPILER) $(COMPILER_FLAGS) $(SOURCE)/script.cpp
 
 scriptsource.o: $(SOURCE)/scriptsource.cpp $(HEADERS)/scriptsource.h

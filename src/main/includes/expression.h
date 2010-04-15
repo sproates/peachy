@@ -15,7 +15,7 @@ namespace peachy {
 
       virtual ~Expression();
       ExpressionType getExpressionType();
-      std::string toString();
+      virtual std::string toString() = 0;
       Expression(const Expression & e);
       Expression & operator = (const Expression & e);
       bool hasValue();

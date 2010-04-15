@@ -1,6 +1,7 @@
 #include "types/int.h"
 
 #include <iostream>
+#include <sstream>
 #include <stdexcept>
 #include <string>
 
@@ -36,5 +37,11 @@ namespace peachy {
 
   Object * Int::clone() {
     return new Int(logger, classFactory, value);
+  }
+
+  std::string Int::toString() {
+    std::ostringstream ss;
+    ss << value;
+    return ss.str();
   }
 }

@@ -33,4 +33,8 @@ namespace peachy {
   Object * String::clone() {
     return new String(logger, classFactory, value);
   }
+
+  std::string String::toString() {
+    return value;
+  }
 }

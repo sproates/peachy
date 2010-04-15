@@ -25,6 +25,7 @@ namespace peachy {
       void setValue(int value);
       Object * add(Object * o);
       Object * clone();
+      std::string toString();
 
     protected:
 

@@ -20,10 +20,11 @@ HEADERS = ./src/main/includes
 OBJECTS = additionexpression.o assignmentexpression.o class.o classfactory.o \
 environment.o expression.o expressionfactory.o expressionsource.o \
 filescriptsource.o function.o int.o intliteralexpression.o interpreter.o \
-istreamscriptsource.o lexer.o log.o nullostream.o object.o peachy.o parser.o \
-quitexpression.o replscriptsource.o runtime.o scope.o script.o scriptsource.o \
-string.o stringliteralexpression.o stringscriptsource.o token.o tokenfactory.o \
-tokensource.o valueexpression.o variableexpression.o
+istreamscriptsource.o lexer.o log.o nativefunction.o nullostream.o object.o \
+peachy.o parser.o  print.o quitexpression.o replscriptsource.o runtime.o \
+scope.o script.o scriptsource.o string.o stringliteralexpression.o \
+stringscriptsource.o token.o tokenfactory.o tokensource.o valueexpression.o \
+variableexpression.o
 
 SOURCE = ./src/main/src
 
@@ -207,6 +208,10 @@ $(HEADERS)/token.h $(HEADERS)/tokenfactory.h $(HEADERS)/tokensource.h
 log.o: $(SOURCE)/log.cpp $(HEADERS)/log.h
 	$(COMPILER) $(COMPILER_FLAGS) $(SOURCE)/log.cpp
 
+nativefunction.o: $(SOURCE)/nativefunction.cpp $(HEADERS)/nativefunction.h \
+$(HEADERS)/object.h
+	$(COMPILER) $(COMPILER_FLAGS) $(SOURCE)/nativefunction.cpp
+
 nullostream.o: $(SOURCE)/nullostream.cpp $(HEADERS)/nullostream.h
 	$(COMPILER) $(COMPILER_FLAGS) $(SOURCE)/nullostream.cpp
 
@@ -225,6 +230,10 @@ $(HEADERS)/tokensource.h $(HEADERS)/tokentype.h $(HEADERS)/variableexpression.h
 
 peachy.o: $(SOURCE)/peachy.cpp $(HEADERS)/peachy.h
 	$(COMPILER) $(COMPILER_FLAGS) $(SOURCE)/peachy.cpp
+
+print.o: $(SOURCE)/functions/print.cpp $(HEADERS)/object.h \
+$(HEADERS)/functions/print.h
+	$(COMPILER) $(COMPILER_FLAGS) $(SOURCE)/functions/print.cpp
 
 quitexpression.o: $(SOURCE)/quitexpression.cpp $(HEADERS)/expression.h \
 $(HEADERS)/expressiontype.h $(HEADERS)/log.h $(HEADERS)/quitexpression.h

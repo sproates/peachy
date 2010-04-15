@@ -22,6 +22,7 @@ namespace peachy {
       bool is(std::string className);
       bool is(Class * clazz);
       bool sameClass(Object * o);
+      virtual std::string toString() = 0;
 
     protected:
 

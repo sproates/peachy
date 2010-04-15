@@ -24,6 +24,7 @@ namespace peachy {
       std::string getValue();
       Object * add(Object * o);
       Object * clone();
+      std::string toString();
 
     protected:
 

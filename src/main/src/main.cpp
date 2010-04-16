@@ -44,7 +44,7 @@ int main(const int argc, const char ** argv) {
     TokenSource * tokenSource = new Lexer(nullLogger, tokenFactory, scriptSource);
     ExpressionFactory * expressionFactory = new ExpressionFactory(nullLogger,
       nullLogger);
-    ExpressionSource * expressionSource = new Parser(nullLogger,
+    ExpressionSource * expressionSource = new Parser(logger,
       expressionFactory, tokenSource);
     ClassFactory * classFactory = new ClassFactory(nullLogger, nullLogger);
     Interpreter * interpreter = new Interpreter(logger, expressionSource,

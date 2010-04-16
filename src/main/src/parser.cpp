@@ -125,7 +125,7 @@ namespace peachy {
                     break;
                   }
                 default:
-                  errorMessage = std::string("Unexpected token");
+                  errorMessage = std::string("Unexpected token: ").append(tokenBuffer[0]->toString());
                   state = PARSER_ERROR;
               }
               break;
@@ -141,7 +141,9 @@ namespace peachy {
               switch(tokenBuffer[0]->getTokenType()) {
                 case TOKEN_EOF:
                 case TOKEN_IDENTIFIER:
+                case TOKEN_INTEGER:
                 case TOKEN_KEYWORD:
+                case TOKEN_STRING:
                   return sle;
                 case TOKEN_OPERATOR:
                   if(tokenBuffer[0]->getData().compare("+") == 0) {
@@ -158,7 +160,7 @@ namespace peachy {
                     break;
                   }
                 default:
-                  errorMessage = std::string("Unexpected token");
+                  errorMessage = std::string("Unexpected token: ").append(tokenBuffer[0]->toString());
                   state = PARSER_ERROR;
               }
               break;
@@ -177,6 +179,7 @@ namespace peachy {
   }
 
   void Parser::fillTokenBuffer() {
+    logger->debug("Parser::fillTokenBuffer()");
     while(tokenBuffer.size() < 3) {
       Token * token = tokenSource->nextToken();
       tokenBuffer.push_back(token);

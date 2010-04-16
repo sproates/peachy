@@ -311,7 +311,9 @@ namespace peachy {
   bool Lexer::isKeyword(std::string s) {
     return (
       s.compare("while") == 0 ||
-      s.compare("for") == 0
+      s.compare("for") == 0 ||
+      s.compare("true") == 0 ||
+      s.compare("false") == 0
     );
   }
 

@@ -154,6 +154,13 @@ namespace peachy {
                     addEx->setRValue(nextExpression(PARSER_DEFAULT));
                     logger->debug(addEx->toString());
                     return addEx;
+                  } else if(tokenBuffer[0]->getData().compare("->") == 0) {
+                    tokenBuffer.pop_front();
+                    AssignmentExpression * ae =
+                      expressionFactory->createAssignmentExpression();
+                    ae->setRValue(sle);
+                    ae->setLValue(nextExpression(PARSER_DEFAULT));
+                    return ae;
                   } else {
                     errorMessage = std::string("Unexpected operator");
                     state = PARSER_ERROR;
@@ -179,7 +186,6 @@ namespace peachy {
   }
 
   void Parser::fillTokenBuffer() {
-    logger->debug("Parser::fillTokenBuffer()");
     while(tokenBuffer.size() < 3) {
       Token * token = tokenSource->nextToken();
       tokenBuffer.push_back(token);

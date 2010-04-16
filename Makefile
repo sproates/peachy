@@ -17,14 +17,14 @@ FINAL_EXE = peachy.exe
 
 HEADERS = ./src/main/includes
 
-OBJECTS = additionexpression.o assignmentexpression.o class.o classfactory.o \
-environment.o expression.o expressionfactory.o expressionsource.o \
-filescriptsource.o function.o int.o intliteralexpression.o interpreter.o \
-istreamscriptsource.o lexer.o log.o nativefunction.o nullostream.o object.o \
-peachy.o parser.o  print.o quitexpression.o replscriptsource.o runtime.o \
-scope.o script.o scriptsource.o string.o stringliteralexpression.o \
-stringscriptsource.o token.o tokenfactory.o tokensource.o valueexpression.o \
-variableexpression.o
+OBJECTS = additionexpression.o assignmentexpression.o \
+booleanliteralexpression.o class.o classfactory.o environment.o expression.o \
+expressionfactory.o expressionsource.o filescriptsource.o function.o int.o \
+intliteralexpression.o interpreter.o istreamscriptsource.o lexer.o log.o \
+nativefunction.o nullostream.o object.o peachy.o parser.o print.o \
+quitexpression.o replscriptsource.o runtime.o scope.o script.o scriptsource.o \
+string.o stringliteralexpression.o stringscriptsource.o token.o tokenfactory.o \
+tokensource.o valueexpression.o variableexpression.o
 
 SOURCE = ./src/main/src
 
@@ -143,6 +143,11 @@ $(HEADERS)/assignmentexpression.h $(HEADERS)/expression.h \
 $(HEADERS)/expressiontype.h $(HEADERS)/log.h
 	$(COMPILER) $(COMPILER_FLAGS) $(SOURCE)/assignmentexpression.cpp
 
+booleanliteralexpression.o: $(SOURCE)/booleanliteralexpression.cpp \
+$(HEADERS)/booleanliteralexpression.h $(HEADERS)/expression.h \
+$(HEADERS)/expressiontype.h $(HEADERS)/log.h 
+	$(COMPILER) $(COMPILER_FLAGS) $(SOURCE)/booleanliteralexpression.cpp
+
 class.o: $(SOURCE)/class.cpp $(HEADERS)/class.h $(HEADERS)/log.h
 	$(COMPILER) $(COMPILER_FLAGS) $(SOURCE)/class.cpp
 
@@ -183,12 +188,13 @@ $(HEADERS)/object.h $(HEADERS)/types/int.h
 	$(COMPILER) $(COMPILER_FLAGS) $(SOURCE)/types/int.cpp
 
 interpreter.o: $(SOURCE)/interpreter.cpp $(HEADERS)/additionexpression.h \
-$(HEADERS)/assignmentexpression.h $(HEADERS)/class.h $(HEADERS)/classfactory.h \
-$(HEADERS)/expressionsource.h $(HEADERS)/expressiontype.h \
-$(HEADERS)/interpreter.h $(HEADERS)/interpreterexception.h $(HEADERS)/log.h \
-$(HEADERS)/nativefunction.h $(HEADERS)/object.h $(HEADERS)/scope.h \
-$(HEADERS)/stringliteralexpression.h $(HEADERS)/valueexpression.h \
-$(HEADERS)/variableexpression.h $(HEADERS)/types/int.h $(HEADERS)/types/string.h
+$(HEADERS)/assignmentexpression.h $(HEADERS)/booleanliteralexpression.h \
+$(HEADERS)/class.h $(HEADERS)/classfactory.h $(HEADERS)/expressionsource.h \
+$(HEADERS)/expressiontype.h $(HEADERS)/interpreter.h \
+$(HEADERS)/interpreterexception.h $(HEADERS)/log.h $(HEADERS)/nativefunction.h \
+$(HEADERS)/object.h $(HEADERS)/scope.h $(HEADERS)/stringliteralexpression.h \
+$(HEADERS)/valueexpression.h $(HEADERS)/variableexpression.h \
+$(HEADERS)/types/int.h $(HEADERS)/types/string.h
 	$(COMPILER) $(COMPILER_FLAGS) $(SOURCE)/interpreter.cpp
 
 intliteralexpression.o: $(SOURCE)/intliteralexpression.cpp \
@@ -220,12 +226,13 @@ $(HEADERS)/log.h $(HEADERS)/object.h
 	$(COMPILER) $(COMPILER_FLAGS) $(SOURCE)/object.cpp
 
 parser.o: $(SOURCE)/parser.cpp $(HEADERS)/additionexpression.h \
-$(HEADERS)/assignmentexpression.h $(HEADERS)/expressionfactory.h \
-$(HEADERS)/expressionsource.h $(HEADERS)/intliteralexpression.h \
-$(HEADERS)/lexerexception.h $(HEADERS)/log.h $(HEADERS)/parserexception.h \
-$(HEADERS)/parserstate.h $(HEADERS)/parser.h $(HEADERS)/quitexpression.h \
-$(HEADERS)/stringliteralexpression.h $(HEADERS)/token.h \
-$(HEADERS)/tokensource.h $(HEADERS)/tokentype.h $(HEADERS)/variableexpression.h
+$(HEADERS)/assignmentexpression.h $(HEADERS)/booleanliteralexpression.h \
+$(HEADERS)/expressionfactory.h $(HEADERS)/expressionsource.h \
+$(HEADERS)/intliteralexpression.h $(HEADERS)/lexerexception.h $(HEADERS)/log.h \
+$(HEADERS)/parserexception.h $(HEADERS)/parserstate.h $(HEADERS)/parser.h \
+$(HEADERS)/quitexpression.h $(HEADERS)/stringliteralexpression.h \
+$(HEADERS)/token.h $(HEADERS)/tokensource.h $(HEADERS)/tokentype.h \
+$(HEADERS)/variableexpression.h
 	$(COMPILER) $(COMPILER_FLAGS) $(SOURCE)/parser.cpp
 
 peachy.o: $(SOURCE)/peachy.cpp $(HEADERS)/peachy.h

@@ -155,8 +155,16 @@ namespace peachy {
         lValue = ae->getLValue();
         rValue = ae->getRValue();
         ValueExpression * rVal;
+        logger->debug("flag");
+        logger->debug(ae->toString());
         switch(lValue->getExpressionType()) {
+          case EXPRESSION_VALUE:
+            logger->debug("value");
+            ValueExpression * val =
+              static_cast<ValueExpression*>(lValue);
+            
           case EXPRESSION_VARIABLE:
+            logger->debug("variable");
             VariableExpression * var =
               static_cast<VariableExpression*>(lValue);
             if(var == NULL) {
@@ -180,6 +188,7 @@ namespace peachy {
             }
             return rVal;
           case EXPRESSION_ASSIGNMENT:
+            logger->debug("assignment");
             ValueExpression * lVal =
               static_cast<ValueExpression*>(evaluate(lValue, scope));
             if(lVal == NULL) {
@@ -192,6 +201,7 @@ namespace peachy {
             lVal->setValue(rVal->getValue());
             return lVal;
           default:
+            logger->debug("something else");
             throw InterpreterException("Invalid assignment");
         }
         break;

@@ -1,4 +1,3 @@
-
 #include "scope.h"
 
 #include <map>
@@ -6,7 +5,9 @@
 #include <string>
 
 #include "class.h"
+#include "function.h"
 #include "log.h"
+#include "nativefunction.h"
 #include "object.h"
 
 namespace peachy {
@@ -44,6 +45,22 @@ namespace peachy {
 
   void Scope::addVariable(const std::string name, Object * value) {
     variables[name] = value;
+  }
+
+  void Scope::addNativeFunction(const std::string name, NativeFunction * f) {
+    nativeFunctions[name] = f;
+  }
+
+  bool Scope::hasNativeFunction(const std::string name) {
+    return (nativeFunctions.find(name) != nativeFunctions.end());
+  }
+
+  NativeFunction * Scope::getNativeFunction(const std::string name) {
+    if(hasNativeFunction(name)) {
+      return nativeFunctions[name];
+    } else {
+      throw std::runtime_error("Native function not found");
+    }
   }
 
   void Scope::addClass(Class * clazz) {

@@ -120,12 +120,6 @@ namespace peachy {
       ASSERT_EQUALS(token->getTokenType() == TOKEN_KEYWORD, "First token is TOKEN_KEYWORD");
       ASSERT_EQUALS(token->getData().compare(std::string("for")) == 0, "First token is for");
 
-      scriptSource = new StringScriptSource(logger, std::string("return"));
-      lexer = new Lexer(logger, tokenFactory, scriptSource);
-      token = lexer->nextToken();
-      ASSERT_EQUALS(token->getTokenType() == TOKEN_KEYWORD, "First token is TOKEN_KEYWORD");
-      ASSERT_EQUALS(token->getData().compare(std::string("return")) == 0, "First token is return");
-
       scriptSource = new StringScriptSource(logger, std::string("673"));
       lexer = new Lexer(logger, tokenFactory, scriptSource);
       token = lexer->nextToken();

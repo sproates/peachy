@@ -186,9 +186,9 @@ interpreter.o: $(SOURCE)/interpreter.cpp $(HEADERS)/additionexpression.h \
 $(HEADERS)/assignmentexpression.h $(HEADERS)/class.h $(HEADERS)/classfactory.h \
 $(HEADERS)/expressionsource.h $(HEADERS)/expressiontype.h \
 $(HEADERS)/interpreter.h $(HEADERS)/interpreterexception.h $(HEADERS)/log.h \
-$(HEADERS)/object.h $(HEADERS)/scope.h $(HEADERS)/stringliteralexpression.h \
-$(HEADERS)/valueexpression.h $(HEADERS)/variableexpression.h \
-$(HEADERS)/types/int.h $(HEADERS)/types/string.h
+$(HEADERS)/nativefunction.h $(HEADERS)/object.h $(HEADERS)/scope.h \
+$(HEADERS)/stringliteralexpression.h $(HEADERS)/valueexpression.h \
+$(HEADERS)/variableexpression.h $(HEADERS)/types/int.h $(HEADERS)/types/string.h
 	$(COMPILER) $(COMPILER_FLAGS) $(SOURCE)/interpreter.cpp
 
 intliteralexpression.o: $(SOURCE)/intliteralexpression.cpp \
@@ -247,7 +247,8 @@ runtime.o: $(SOURCE)/runtime.cpp $(HEADERS)/log.h $(HEADERS)/runtime.h
 	$(COMPILER) $(COMPILER_FLAGS) $(SOURCE)/runtime.cpp
 
 scope.o: $(SOURCE)/scope.cpp $(HEADERS)/class.h $(HEADERS)/function.h \
-$(HEADERS)/log.h $(HEADERS)/object.h $(HEADERS)/scope.h
+$(HEADERS)/log.h $(HEADERS)/nativefunction.h $(HEADERS)/object.h \
+$(HEADERS)/scope.h
 	$(COMPILER) $(COMPILER_FLAGS) $(SOURCE)/scope.cpp
 
 script.o: $(SOURCE)/script.cpp $(HEADERS)/environment.h \

@@ -3,6 +3,7 @@
 #include <iostream>
 #include <list>
 #include <string>
+#include <typeinfo>
 
 #include "object.h"
 
@@ -12,9 +13,11 @@ namespace peachy {
 
   Object * Print::call(std::list<Object*> parameters) {
     Object * o;
-    for(std::list<Object*>::iterator it = parameters.begin(); it != parameters.end(); it++) {
+    std::list<Object*>::iterator it = parameters.begin();
+    while(it != parameters.end()) {
       o = *it;
-      std::cout << o->toString();
+      std::cout << o->toString() << std::endl;
+      ++it;
     }
     return o;
   }

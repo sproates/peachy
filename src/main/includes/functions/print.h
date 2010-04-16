@@ -14,7 +14,7 @@ namespace peachy {
 
     public:
 
-      Print() : NativeFunction(std::string("print")) {}
+      Print() : NativeFunction() {}
       ~Print();
       Object * call(std::list<Object *> parameters);
 

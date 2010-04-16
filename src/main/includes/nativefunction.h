@@ -12,17 +12,12 @@ namespace peachy {
 
     public:
 
-      NativeFunction(std::string name);
+      NativeFunction();
       virtual ~NativeFunction();
       virtual Object * call(std::list<Object *> parameters) = 0;
 
-    protected:
-
-      std::string name;
-
     private:
 
-      NativeFunction();
       NativeFunction(const NativeFunction & n);
       NativeFunction & operator = (const NativeFunction & n);
   };

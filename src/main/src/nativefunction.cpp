@@ -7,9 +7,7 @@
 
 namespace peachy {
 
-  NativeFunction::NativeFunction(std::string name) {
-    this->name = name;
-  }
+  NativeFunction::NativeFunction() {}
 
   NativeFunction::~NativeFunction() {}
 }

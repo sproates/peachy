@@ -1,5 +1,6 @@
 #include "interpreter.h"
 
+#include <list>
 #include <iostream>
 
 #include "additionexpression.h"
@@ -9,9 +10,12 @@
 #include "expression.h"
 #include "expressionsource.h"
 #include "expressiontype.h"
+#include "function.h"
+#include "functions/print.h"
 #include "interpreterexception.h"
 #include "intliteralexpression.h"
 #include "log.h"
+#include "nativefunction.h"
 #include "object.h"
 #include "scope.h"
 #include "stringliteralexpression.h"
@@ -37,6 +41,7 @@ namespace peachy {
     globalScope->addClass(stringClass);
     Class * intClass = classFactory->getClass(std::string("Int"));
     globalScope->addClass(intClass);
+    globalScope->addNativeFunction(std::string("print"), new Print());
     Expression * e;
     do {
       e = evaluate(expressionSource->nextExpression(), globalScope);
@@ -158,11 +163,20 @@ namespace peachy {
               throw InterpreterException("Invalid lValue");
             }
             rVal = static_cast<ValueExpression*>(evaluate(rValue, scope));
-            var->setValue(rVal->getValue());
-            if(scope->hasVariable(var->getVariableName())) {
-              scope->replaceVariable(var->getVariableName(), rVal->getValue());
+            if(scope->hasNativeFunction(var->getVariableName())) {
+              NativeFunction * f =
+                scope->getNativeFunction(var->getVariableName());
+              std::list<Object*> params;
+              params.push_front(rVal->getValue());
+              Object * result = f->call(params);
+              return new ValueExpression(logger, result);
             } else {
-              scope->addVariable(var->getVariableName(), rVal->getValue());
+              var->setValue(rVal->getValue());
+              if(scope->hasVariable(var->getVariableName())) {
+                scope->replaceVariable(var->getVariableName(), rVal->getValue());
+              } else {
+                scope->addVariable(var->getVariableName(), rVal->getValue());
+              }
             }
             return rVal;
           case EXPRESSION_ASSIGNMENT:
@@ -197,7 +211,7 @@ namespace peachy {
         VariableExpression * varEx =
           static_cast<VariableExpression*>(expression);
         if(!scope->hasVariable(varEx->getVariableName())) {
-          throw InterpreterException("variable is not in this scope");
+          scope->addVariable(varEx->getVariableName(), varEx->getValue());
         }
         Object * varObj = scope->getVariable(varEx->getVariableName());
         varEx->setValue(varObj);

@@ -9,6 +9,7 @@ namespace peachy {
   class Class;
   class Function;
   class Log;
+  class NativeFunction;
   class Object;
 
   class Scope {
@@ -21,6 +22,9 @@ namespace peachy {
       Object * getVariable(const std::string name);
       void addVariable(const std::string name, Object * value);
       void replaceVariable(const std::string name, Object * value);
+      void addNativeFunction(const std::string name, NativeFunction * f);
+      bool hasNativeFunction(const std::string name);
+      NativeFunction * getNativeFunction(const std::string name);
       bool hasClass(const std::string name);
       void addClass(Class * clazz);
       Class * getClass(const std::string name);
@@ -32,6 +36,7 @@ namespace peachy {
       std::map<std::string, Object*> variables;
       std::map<std::string, Class*> classes;
       std::map<std::string, Function*> functions;
+      std::map<std::string, NativeFunction*> nativeFunctions;
 
     private:
 

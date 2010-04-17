@@ -158,11 +158,6 @@ namespace peachy {
         logger->debug("flag");
         logger->debug(ae->toString());
         switch(lValue->getExpressionType()) {
-          case EXPRESSION_VALUE:
-            logger->debug("value");
-            ValueExpression * val =
-              static_cast<ValueExpression*>(lValue);
-            
           case EXPRESSION_VARIABLE:
             logger->debug("variable");
             VariableExpression * var =

@@ -154,46 +154,66 @@ namespace peachy {
           static_cast<AssignmentExpression*>(expression);
         lValue = ae->getLValue();
         rValue = ae->getRValue();
-        ValueExpression * rVal;
-        logger->debug("flag");
-        logger->debug(ae->toString());
         switch(lValue->getExpressionType()) {
+          case EXPRESSION_VALUE:
+            throw InterpreterException("lvalue of assignment is a value");
           case EXPRESSION_VARIABLE:
-            logger->debug("variable");
+            logger->debug("lvalue of assignment is a variable");
             VariableExpression * var =
               static_cast<VariableExpression*>(lValue);
             if(var == NULL) {
               throw InterpreterException("Invalid lValue");
             }
-            rVal = static_cast<ValueExpression*>(evaluate(rValue, scope));
-            if(scope->hasNativeFunction(var->getVariableName())) {
-              NativeFunction * f =
-                scope->getNativeFunction(var->getVariableName());
-              std::list<Object*> params;
-              params.push_front(rVal->getValue());
-              Object * result = f->call(params);
-              return new ValueExpression(logger, result);
-            } else {
-              var->setValue(rVal->getValue());
-              if(scope->hasVariable(var->getVariableName())) {
-                scope->replaceVariable(var->getVariableName(), rVal->getValue());
-              } else {
-                scope->addVariable(var->getVariableName(), rVal->getValue());
-              }
+            Expression * rVal = evaluate(rValue, scope);
+            switch(rVal->getExpressionType()) {
+              case EXPRESSION_VALUE:
+                ValueExpression * rValue =
+                  static_cast<ValueExpression*>(rVal);
+                Object * rObj = rValue->getValue();
+                var->setValue(rObj);
+                return var;
+              case EXPRESSION_VARIABLE:
+                VariableExpression * rVar =
+                  static_cast<VariableExpression*>(rVal);
+                if(rVar == NULL) {
+                  throw InterpreterException("Invalid variable");
+                }
+                if(scope->hasNativeFunction(var->getVariableName())) {
+                  logger->debug("rvalue is a native function");
+                  NativeFunction * f =
+                    scope->getNativeFunction(var->getVariableName());
+                  logger->debug("got function from scope");
+                  logger->debug(rVal->toString());
+                  std::list<Object*> params;
+                  params.push_front(rVar->getValue());
+                  logger->debug("calling function");
+                  Object * result = f->call(params);
+                  logger->debug("Returning result of function call:");
+                  logger->debug(result->toString());
+                  return new ValueExpression(logger, result);
+                } else {
+                  logger->debug("rvalue is a variable");
+                  Object * rObj = rValue->getValue();
+                  var->setValue(rObj);
+                  return var;
+                }
+                break;
+              default:
+                throw InterpreterException("Unexpected rvalue");
             }
-            return rVal;
           case EXPRESSION_ASSIGNMENT:
-            logger->debug("assignment");
+            logger->debug("lvalue of assignment is assignment");
             ValueExpression * lVal =
               static_cast<ValueExpression*>(evaluate(lValue, scope));
             if(lVal == NULL) {
               throw InterpreterException("Invalid expression");
             }
-            rVal = static_cast<ValueExpression*>(evaluate(rValue, scope));
+            ValueExpression * rValue =
+              static_cast<ValueExpression*>(evaluate(rValue, scope));
             if(rVal == NULL) {
               throw InterpreterException("Invalid expression");
             }
-            lVal->setValue(rVal->getValue());
+            lVal->setValue(rValue->getValue());
             return lVal;
           default:
             logger->debug("something else");
@@ -220,8 +240,12 @@ namespace peachy {
         }
         Object * varObj = scope->getVariable(varEx->getVariableName());
         varEx->setValue(varObj);
+        logger->debug("returning variable:");
+        logger->debug(varEx->toString());
         return varEx;
       case EXPRESSION_VALUE:
+        logger->debug("returning value:");
+        logger->debug(expression->toString());
         return expression;
       case EXPRESSION_UNKNOWN:
       default:

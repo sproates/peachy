@@ -12,6 +12,7 @@ namespace peachy {
   Print::~Print() {}
 
   Object * Print::call(std::list<Object*> parameters) {
+    std::cout << "print::call()" << std::endl;
     Object * o;
     std::list<Object*>::iterator it = parameters.begin();
     while(it != parameters.end()) {

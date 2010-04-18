@@ -1,0 +1,8 @@
+# function calls
+
+print <- "hello world"
+
+"hello world" -> print
+
+a <- print <- print <- "hello world"
+

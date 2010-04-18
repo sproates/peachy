@@ -1,0 +1,26 @@
+# left assignment
+
+a <- 5
+
+b <- a
+
+# a is 5, b is 5
+
+# right assignment
+
+12 -> c
+
+c -> d
+
+# c is 12, d is 12
+
+# chained assignments
+
+e <- f <- 52
+
+# e is 52, f is 52
+
+g <- 3 -> h
+
+# g is 3, h is 3
+

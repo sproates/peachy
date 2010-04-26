@@ -167,12 +167,30 @@ namespace peachy {
             Expression * rVal = evaluate(rValue, scope);
             switch(rVal->getExpressionType()) {
               case EXPRESSION_VALUE:
+                logger->debug("rvalue is a value");
                 ValueExpression * rValue =
                   static_cast<ValueExpression*>(rVal);
                 Object * rObj = rValue->getValue();
-                var->setValue(rObj);
+                if(scope->hasNativeFunction(var->getVariableName())) {
+                  logger->debug("this is a function call");
+                  NativeFunction * f =
+                    scope->getNativeFunction(var->getVariableName());
+                  logger->debug("got function from scope");
+                  logger->debug(rValue->toString());
+                  std::list<Object*> params;
+                  params.push_front(rValue->getValue());
+                  logger->debug("calling function");
+                  Object * result = f->call(params);
+                  logger->debug("Returning result of function call:");
+                  logger->debug(result->toString());
+                  return new ValueExpression(logger, result);
+                } else {
+                  logger->debug("straightforward assignment");
+                  var->setValue(rObj);
+                }
                 return var;
               case EXPRESSION_VARIABLE:
+                logger->debug("rvalue is a variable");
                 VariableExpression * rVar =
                   static_cast<VariableExpression*>(rVal);
                 if(rVar == NULL) {

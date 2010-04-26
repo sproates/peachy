@@ -152,19 +152,23 @@ namespace peachy {
       case EXPRESSION_ASSIGNMENT:
         AssignmentExpression * ae =
           static_cast<AssignmentExpression*>(expression);
+        logger->debug("assignment!");
+        logger->debug(ae->toString());
         lValue = ae->getLValue();
         rValue = ae->getRValue();
         switch(lValue->getExpressionType()) {
           case EXPRESSION_VALUE:
             throw InterpreterException("lvalue of assignment is a value");
           case EXPRESSION_VARIABLE:
-            logger->debug("lvalue of assignment is a variable");
+            logger->debug("lvalue of assignment is a variable or function");
             VariableExpression * var =
               static_cast<VariableExpression*>(lValue);
             if(var == NULL) {
               throw InterpreterException("Invalid lValue");
             }
+            logger->debug("evaluating rvalue");
             Expression * rVal = evaluate(rValue, scope);
+            logger->debug("evaluated rvalue");
             switch(rVal->getExpressionType()) {
               case EXPRESSION_VALUE:
                 logger->debug("rvalue is a value");
@@ -175,8 +179,6 @@ namespace peachy {
                   logger->debug("this is a function call");
                   NativeFunction * f =
                     scope->getNativeFunction(var->getVariableName());
-                  logger->debug("got function from scope");
-                  logger->debug(rValue->toString());
                   std::list<Object*> params;
                   params.push_front(rValue->getValue());
                   logger->debug("calling function");
@@ -196,24 +198,39 @@ namespace peachy {
                 if(rVar == NULL) {
                   throw InterpreterException("Invalid variable");
                 }
-                if(scope->hasNativeFunction(var->getVariableName())) {
-                  logger->debug("rvalue is a native function");
+                if(scope->hasNativeFunction(rVar->getVariableName())) {
+                  logger->debug("rvalue is a native function:");
+                  logger->debug(var->getVariableName());
                   NativeFunction * f =
                     scope->getNativeFunction(var->getVariableName());
                   logger->debug("got function from scope");
-                  logger->debug(rVal->toString());
+                  //logger->debug(rVal->toString());
                   std::list<Object*> params;
                   params.push_front(rVar->getValue());
-                  logger->debug("calling function");
+                  logger->debug("calling function!");
                   Object * result = f->call(params);
                   logger->debug("Returning result of function call:");
                   logger->debug(result->toString());
                   return new ValueExpression(logger, result);
                 } else {
                   logger->debug("rvalue is a variable");
-                  Object * rObj = rValue->getValue();
-                  var->setValue(rObj);
-                  return var;
+                  if(scope->hasNativeFunction(var->getVariableName())) {
+                    logger->debug("this is a function call");
+                    NativeFunction * f =
+                      scope->getNativeFunction(var->getVariableName());
+                    std::list<Object*> params;
+                    params.push_front(rValue->getValue());
+                    logger->debug("calling function");
+                    Object * result = f->call(params);
+                    logger->debug("Returning result of function call:");
+                    logger->debug(result->toString());
+                    return new ValueExpression(logger, result);
+                  } else {
+                    logger->debug("straightforward assignment");
+                    Object * rObj = rVar->getValue();
+                    var->setValue(rObj);
+                    return var;
+                  }
                 }
                 break;
               default:

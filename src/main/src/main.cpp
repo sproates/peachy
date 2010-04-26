@@ -1,4 +1,5 @@
 #include <csignal>
+#include <cstdlib>
 #include <cstring>
 #include <exception>
 #include <iostream>

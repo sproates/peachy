@@ -1,4 +1,4 @@
-.PHONY: all clean rebuild test
+.PHONY: all clean loc rebuild test
 .SUFFIXES: .cpp .o
 
 # definitions
@@ -55,21 +55,17 @@ TESTS = ./src/test
 all: $(FINAL_EXE) $(TEST_EXE) test
 
 $(FINAL_EXE): main.o $(OBJECTS)
-	@echo Linking $(FINAL_EXE)
 	$(COMPILER) -o $(FINAL_EXE) main.o $(OBJECTS)
 
 $(TEST_EXE): $(TESTS)/testmain.o $(TEST_OBJECTS)
-	@echo Linking $(TEST_EXE)
 	$(COMPILER) -o $(TEST_EXE) $(TESTS)/testmain.o $(TEST_OBJECTS) $(OBJECTS)
 
 clean:
-	@echo "Cleaning"
 	$(DELETE) *.exe *.o $(TESTS)/*.o
 
 rebuild: clean all
 
 test: $(TEST_EXE)
-	@echo "Testing"
 	$(TEST_EXE)
 
 # objects with entry points
@@ -314,3 +310,6 @@ variableexpression.o: $(SOURCE)/variableexpression.cpp \
 $(HEADERS)/expression.h $(HEADERS)/expressiontype.h $(HEADERS)/log.h \
 $(HEADERS)/variableexpression.h
 	$(COMPILER) $(COMPILER_FLAGS) $(SOURCE)/variableexpression.cpp
+
+loc:
+	find . -name "*.cpp" -o -name "*.h" | xargs wc -l

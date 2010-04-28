@@ -203,36 +203,41 @@ namespace peachy {
 
   Expression * Interpreter::evaluateVariableAddition(Expression * lValue,
     Expression * rValue, Scope * scope) {
+    Expression * rightEx = evaluate(rValue, scope);
+    switch(rightEx->getExpressionType()) {
+      case EXPRESSION_VALUE:
+        return addValueToVariable(lValue, rightEx, scope);
+      default:
+        throw InterpreterException("Invalid expression");
+    }
+  }
+
+  Expression * Interpreter::addValueToVariable(Expression * lValue,
+    Expression * rValue, Scope * scope) {
     VariableExpression * varEx =
       static_cast<VariableExpression*>(lValue);
     if(!scope->hasVariable(varEx->getVariableName())) {
       throw InterpreterException("variable is not in this scope");
     }
     Object * leftObj = scope->getVariable(varEx->getVariableName());
-    Expression * rightEx = evaluate(rValue, scope);
-    switch(rightEx->getExpressionType()) {
-      case EXPRESSION_VALUE:
-        ValueExpression * valEx =
-          static_cast<ValueExpression*>(rightEx);
-        if(valEx == NULL) {
-          throw InterpreterException("Invalid expression");
-        }
-        Object * rightObj = valEx->getValue();
-        Object * newValue;
-        if(leftObj->getClassName().compare("Int") == 0) {
-          Int * leftObjInt = static_cast<Int*>(leftObj);
-          newValue = leftObjInt->add(rightObj);   
-        } else if(leftObj->getClassName().compare("String") == 0) {
-          String * leftObjString = static_cast<String*>(leftObj);
-          newValue = leftObjString->add(rightObj);
-        } else {
-          throw InterpreterException("Unsupported operation");
-        }
-        valEx->setValue(newValue);
-        return valEx;
-      default:
-        throw InterpreterException("Invalid expression");
+    ValueExpression * valEx =
+      static_cast<ValueExpression*>(rValue);
+    if(valEx == NULL) {
+      throw InterpreterException("Invalid expression");
     }
+    Object * rightObj = valEx->getValue();
+    Object * newValue;
+    if(leftObj->getClassName().compare("Int") == 0) {
+      Int * leftObjInt = static_cast<Int*>(leftObj);
+      newValue = leftObjInt->add(rightObj);   
+    } else if(leftObj->getClassName().compare("String") == 0) {
+      String * leftObjString = static_cast<String*>(leftObj);
+      newValue = leftObjString->add(rightObj);
+    } else {
+      throw InterpreterException("Unsupported operation");
+    }
+    valEx->setValue(newValue);
+    return valEx;
   }
 
   Expression * Interpreter::evaluateAddition(Expression * expression,

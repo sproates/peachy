@@ -38,7 +38,7 @@ STRICT_TEST_COMPILER_FLAGS = -c -Wall -Wextra -Werror -Wunreachable-code \
 -Wredundant-decls -Wwrite-strings -Wundef -Wendif-labels -Wcast-qual -pedantic \
 -I$(HEADERS) -I$(TEST_HEADERS) $(DEFINES)
 
-TEST_EXE = testpeachy.exe
+TEST_EXE = ./testpeachy.exe
 
 TEST_HEADERS = ./src/test/includes
 

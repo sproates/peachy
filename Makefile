@@ -19,12 +19,13 @@ HEADERS = ./src/main/includes
 
 OBJECTS = additionexpression.o assignmentexpression.o \
 booleanliteralexpression.o class.o classfactory.o environment.o expression.o \
-expressionfactory.o expressionsource.o filescriptsource.o function.o int.o \
-intliteralexpression.o interpreter.o istreamscriptsource.o lexer.o log.o \
-nativefunction.o nullostream.o object.o peachy.o parser.o print.o \
-quitexpression.o replscriptsource.o runtime.o scope.o script.o scriptsource.o \
-string.o stringliteralexpression.o stringscriptsource.o token.o tokenfactory.o \
-tokensource.o valueexpression.o variableexpression.o
+expressionconsumer.o  expressionfactory.o expressionsource.o \
+filescriptsource.o function.o int.o intliteralexpression.o interpreter.o \
+istreamscriptsource.o lexer.o log.o nativefunction.o nullostream.o object.o \
+peachy.o parser.o print.o quitexpression.o replscriptsource.o runtime.o \
+scope.o script.o scriptsource.o string.o stringliteralexpression.o \
+stringscriptsource.o token.o tokenfactory.o tokensource.o valueexpression.o \
+variableexpression.o
 
 SOURCE = ./src/main/src
 
@@ -162,6 +163,10 @@ $(HEADERS)/log.h
 expression.o: $(SOURCE)/expression.cpp $(HEADERS)/expression.h \
 $(HEADERS)/expressiontype.h $(HEADERS)/log.h
 	$(COMPILER) $(COMPILER_FLAGS) $(SOURCE)/expression.cpp
+
+expressionconsumer.o: $(SOURCE)/expressionconsumer.cpp \
+$(HEADERS)/expressionconsumer.h $(HEADERS)/log.h
+	$(COMPILER) $(COMPILER_FLAGS) $(SOURCE)/expressionconsumer.cpp
 
 expressionfactory.o: $(SOURCE)/expressionfactory.cpp \
 $(HEADERS)/additionexpression.h $(HEADERS)/assignmentexpression.h \

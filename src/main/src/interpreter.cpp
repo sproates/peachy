@@ -42,34 +42,11 @@ namespace peachy {
   }
 
   Expression * Interpreter::evaluate(Expression * expression, Scope * scope) {
-    Expression * lValue, * rValue;
     switch(expression->getExpressionType()) {
       case EXPRESSION_ADDITION:
         return evaluateAddition(expression, scope);
       case EXPRESSION_ASSIGNMENT:
-        AssignmentExpression * ae =
-          static_cast<AssignmentExpression*>(expression);
-        lValue = ae->getLValue();
-        rValue = ae->getRValue();
-        switch(lValue->getExpressionType()) {
-          case EXPRESSION_VALUE:
-            throw InterpreterException("lvalue of assignment is a value");
-          case EXPRESSION_VARIABLE:
-            Expression * rVal = evaluate(rValue, scope);
-            switch(rVal->getExpressionType()) {
-              case EXPRESSION_VALUE:
-                return assignValueToVariable(lValue, rVal, scope);
-              case EXPRESSION_VARIABLE:
-                return assignVariableToVariable(lValue, rVal, scope);
-              default:
-                throw InterpreterException("Unexpected rvalue");
-            }
-          case EXPRESSION_ASSIGNMENT:
-            return assignAssignment(lValue, rValue, scope);
-          default:
-            throw InterpreterException("Invalid assignment");
-        }
-        break;
+        return evaluateAssignment(expression, scope);
       case EXPRESSION_INT_LITERAL:
         return evaluateIntLiteral(expression);
       case EXPRESSION_QUIT:
@@ -305,6 +282,32 @@ namespace peachy {
     }
     lVal->setValue(rVal->getValue());
     return lVal;
+  }
+
+  Expression * Interpreter::evaluateAssignment(Expression * expression,
+    Scope * scope) {
+    AssignmentExpression * ae =
+      static_cast<AssignmentExpression*>(expression);
+    Expression * lValue = ae->getLValue();
+    Expression * rValue = ae->getRValue();
+    switch(lValue->getExpressionType()) {
+      case EXPRESSION_VALUE:
+        throw InterpreterException("lvalue of assignment is a value");
+      case EXPRESSION_VARIABLE:
+        Expression * rVal = evaluate(rValue, scope);
+        switch(rVal->getExpressionType()) {
+          case EXPRESSION_VALUE:
+            return assignValueToVariable(lValue, rVal, scope);
+          case EXPRESSION_VARIABLE:
+            return assignVariableToVariable(lValue, rVal, scope);
+          default:
+            throw InterpreterException("Unexpected rvalue");
+        }
+      case EXPRESSION_ASSIGNMENT:
+        return assignAssignment(lValue, rValue, scope);
+      default:
+        throw InterpreterException("Invalid assignment");
+    }
   }
 
   void Interpreter::dumpVar(VariableExpression * v) {

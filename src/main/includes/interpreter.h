@@ -36,6 +36,16 @@ namespace peachy {
     private:
 
       Expression * evaluate(Expression * expression, Scope * scope);
+      Expression * evaluateIntLiteral(Expression * expression);
+      Expression * evaluateStringLiteral(Expression * expression);
+      Expression * evaluateVariable(Expression * expression, Scope * scope);
+      Expression * evaluateAddition(Expression * expression, Scope * scope);
+      Expression * evaluateIntLiteralAddition(Expression * lValue,
+        Expression * rValue, Scope * scope);
+      Expression * evaluateStringLiteralAddition(Expression * lValue,
+        Expression * rValue, Scope * scope);
+      Expression * evaluateVariableAddition(Expression * lValue,
+        Expression * rValue, Scope * scope);
       void dumpVar(VariableExpression * v);
       void dumpObj(Object * o);
       Interpreter();

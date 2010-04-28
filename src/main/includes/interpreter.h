@@ -59,6 +59,8 @@ namespace peachy {
         Expression * rValue, Scope * scope);
       Expression * addVariableToStringLiteral(Expression * lValue,
         Expression * rValue, Scope * scope);
+      Expression * evaluateVariableAssignment(Expression * lValue,
+        Expression * rValue, Scope * scope);
       void dumpVar(VariableExpression * v);
       void dumpObj(Object * o);
       Interpreter();

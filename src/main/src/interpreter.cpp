@@ -340,19 +340,24 @@ namespace peachy {
       case EXPRESSION_VALUE:
         throw InterpreterException("lvalue of assignment is a value");
       case EXPRESSION_VARIABLE:
-        Expression * rVal = evaluate(rValue, scope);
-        switch(rVal->getExpressionType()) {
-          case EXPRESSION_VALUE:
-            return assignValueToVariable(lValue, rVal, scope);
-          case EXPRESSION_VARIABLE:
-            return assignVariableToVariable(lValue, rVal, scope);
-          default:
-            throw InterpreterException("Unexpected rvalue");
-        }
+        return evaluateVariableAssignment(lValue, rValue, scope);
       case EXPRESSION_ASSIGNMENT:
         return assignAssignment(lValue, rValue, scope);
       default:
         throw InterpreterException("Invalid assignment");
+    }
+  }
+
+  Expression * Interpreter::evaluateVariableAssignment(Expression * lValue,
+    Expression * rValue, Scope * scope) {
+    Expression * rVal = evaluate(rValue, scope);
+    switch(rVal->getExpressionType()) {
+      case EXPRESSION_VALUE:
+        return assignValueToVariable(lValue, rVal, scope);
+      case EXPRESSION_VARIABLE:
+        return assignVariableToVariable(lValue, rVal, scope);
+      default:
+        throw InterpreterException("Unexpected rvalue");
     }
   }
 

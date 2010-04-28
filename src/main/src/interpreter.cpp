@@ -65,18 +65,7 @@ namespace peachy {
                 throw InterpreterException("Unexpected rvalue");
             }
           case EXPRESSION_ASSIGNMENT:
-            ValueExpression * lVal =
-              static_cast<ValueExpression*>(evaluate(lValue, scope));
-            if(lVal == NULL) {
-              throw InterpreterException("Invalid expression");
-            }
-            ValueExpression * rValue =
-              static_cast<ValueExpression*>(evaluate(rValue, scope));
-            if(rVal == NULL) {
-              throw InterpreterException("Invalid expression");
-            }
-            lVal->setValue(rValue->getValue());
-            return lVal;
+            return assignAssignment(lValue, rValue, scope);
           default:
             throw InterpreterException("Invalid assignment");
         }
@@ -300,6 +289,22 @@ namespace peachy {
         return var;
       }
     }
+  }
+
+  Expression * Interpreter::assignAssignment(Expression * lValue,
+    Expression * rValue, Scope * scope) {
+    ValueExpression * lVal =
+      static_cast<ValueExpression*>(evaluate(lValue, scope));
+    if(lVal == NULL) {
+      throw InterpreterException("Invalid expression");
+    }
+    ValueExpression * rValue =
+      static_cast<ValueExpression*>(evaluate(rValue, scope));
+    if(rVal == NULL) {
+      throw InterpreterException("Invalid expression");
+    }
+    lVal->setValue(rValue->getValue());
+    return lVal;
   }
 
   void Interpreter::dumpVar(VariableExpression * v) {

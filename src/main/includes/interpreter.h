@@ -1,28 +1,35 @@
 #ifndef PEACHY_INTERPRETER_H
 #define PEACHY_INTERPRETER_H
 
+#include "expressionconsumer.h"
+#include "log.h"
+
 namespace peachy {
 
   class ClassFactory;
   class Expression;
   class ExpressionSource;
-  class Log;
   class Object;
   class Scope;
   class VariableExpression;
 
-  class Interpreter {
+  class Interpreter : public ExpressionConsumer {
 
     public:
 
       Interpreter(Log * logger, ExpressionSource * expressionSource,
-        ClassFactory * classFactory);
+        ClassFactory * classFactory) : ExpressionConsumer(logger) {
+        logger->debug("Interpreter constructor");
+        this->expressionSource = expressionSource;
+        this->classFactory = classFactory;
+        logger->debug("constructed");
+      }
+
       virtual ~Interpreter();
-      void run();
+      void consume();
 
     protected:
 
-      Log * logger;
       ExpressionSource * expressionSource;
       ClassFactory * classFactory;
 

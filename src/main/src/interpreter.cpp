@@ -25,17 +25,10 @@
 #include "variableexpression.h"
 
 namespace peachy {
-  
-  Interpreter::Interpreter(Log * logger, ExpressionSource * expressionSource,
-    ClassFactory * classFactory) {
-    this->logger = logger;
-    this->expressionSource = expressionSource;
-    this->classFactory = classFactory;
-  }
 
   Interpreter::~Interpreter() {}
 
-  void Interpreter::run() {
+  void Interpreter::consume() {
     Scope * globalScope = new Scope(logger);
     Class * stringClass = classFactory->getClass(std::string("String"));
     globalScope->addClass(stringClass);

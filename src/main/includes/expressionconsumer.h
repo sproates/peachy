@@ -11,6 +11,7 @@ namespace peachy {
 
       ExpressionConsumer(Log * logger);
       virtual ~ExpressionConsumer();
+      virtual void consume() = 0;
 
     protected:
 

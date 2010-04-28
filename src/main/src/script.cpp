@@ -5,7 +5,7 @@
 #include <stdexcept>
 
 #include "environment.h"
-#include "interpreter.h"
+#include "expressionconsumer.h"
 #include "interpreterexception.h"
 #include "lexerexception.h"
 #include "log.h"
@@ -15,18 +15,18 @@
 namespace peachy {
 
   Script::Script(Log * logger, Environment * environment, Runtime * runtime,
-		 Interpreter * interpreter) {
+		 ExpressionConsumer * expressionConsumer) {
     this->logger = logger;
     this->environment = environment;
     this->runtime = runtime;
-    this->interpreter = interpreter;
+    this->expressionConsumer = expressionConsumer;
   }
 
   Script::~Script() {}
 
   void Script::run() {
     try {
-      interpreter->run();
+      expressionConsumer->consume();
     } catch(LexerException & le) {
       logger->info("LexerException thrown:");
       logger->info(le.what());

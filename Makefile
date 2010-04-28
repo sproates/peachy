@@ -70,12 +70,13 @@ test: $(TEST_EXE)
 # objects with entry points
 
 main.o: $(SOURCE)/main.cpp $(HEADERS)/classfactory.h $(HEADERS)/environment.h \
-$(HEADERS)/expression.h $(HEADERS)/expressionfactory.h \
-$(HEADERS)/expressionsource.h $(HEADERS)/filescriptsource.h \
-$(HEADERS)/interpreter.h $(HEADERS)/lexer.h $(HEADERS)/log.h \
-$(HEADERS)/nullostream.h $(HEADERS)/peachy.h $(HEADERS)/parser.h \
-$(HEADERS)/replscriptsource.h $(HEADERS)/runtime.h $(HEADERS)/script.h \
-$(HEADERS)/scriptsource.h $(HEADERS)/tokenfactory.h $(HEADERS)/tokensource.h
+$(HEADERS)/expression.h $(HEADERS)/expressionconsumer.h \
+$(HEADERS)/expressionfactory.h $(HEADERS)/expressionsource.h \
+$(HEADERS)/filescriptsource.h $(HEADERS)/interpreter.h $(HEADERS)/lexer.h \
+$(HEADERS)/log.h $(HEADERS)/nullostream.h $(HEADERS)/peachy.h \
+$(HEADERS)/parser.h $(HEADERS)/replscriptsource.h $(HEADERS)/runtime.h \
+$(HEADERS)/script.h $(HEADERS)/scriptsource.h $(HEADERS)/tokenfactory.h \
+$(HEADERS)/tokensource.h
 	$(COMPILER) $(COMPILER_FLAGS) $(SOURCE)/main.cpp
 
 $(TESTS)/testmain.o: $(TEST_SOURCE)/expressionfactorysuite.cpp \
@@ -194,12 +195,12 @@ $(HEADERS)/object.h $(HEADERS)/types/int.h
 
 interpreter.o: $(SOURCE)/interpreter.cpp $(HEADERS)/additionexpression.h \
 $(HEADERS)/assignmentexpression.h $(HEADERS)/booleanliteralexpression.h \
-$(HEADERS)/class.h $(HEADERS)/classfactory.h $(HEADERS)/expressionsource.h \
-$(HEADERS)/expressiontype.h $(HEADERS)/interpreter.h \
-$(HEADERS)/interpreterexception.h $(HEADERS)/log.h $(HEADERS)/nativefunction.h \
-$(HEADERS)/object.h $(HEADERS)/scope.h $(HEADERS)/stringliteralexpression.h \
-$(HEADERS)/valueexpression.h $(HEADERS)/variableexpression.h \
-$(HEADERS)/types/int.h $(HEADERS)/types/string.h
+$(HEADERS)/class.h $(HEADERS)/classfactory.h $(HEADERS)/expressionconsumer.h \
+$(HEADERS)/expressionsource.h $(HEADERS)/expressiontype.h \
+$(HEADERS)/interpreter.h $(HEADERS)/interpreterexception.h $(HEADERS)/log.h \
+$(HEADERS)/nativefunction.h $(HEADERS)/object.h $(HEADERS)/scope.h \
+$(HEADERS)/stringliteralexpression.h $(HEADERS)/valueexpression.h \
+$(HEADERS)/variableexpression.h $(HEADERS)/types/int.h $(HEADERS)/types/string.h
 	$(COMPILER) $(COMPILER_FLAGS) $(SOURCE)/interpreter.cpp
 
 intliteralexpression.o: $(SOURCE)/intliteralexpression.cpp \
@@ -264,7 +265,7 @@ $(HEADERS)/scope.h
 	$(COMPILER) $(COMPILER_FLAGS) $(SOURCE)/scope.cpp
 
 script.o: $(SOURCE)/script.cpp $(HEADERS)/environment.h \
-$(HEADERS)/interpreter.h $(HEADERS)/interpreterexception.h \
+$(HEADERS)/expressionconsumer.h $(HEADERS)/interpreterexception.h \
 $(HEADERS)/lexerexception.h $(HEADERS)/log.h $(HEADERS)/parserexception.h \
 $(HEADERS)/runtime.h
 	$(COMPILER) $(COMPILER_FLAGS) $(SOURCE)/script.cpp

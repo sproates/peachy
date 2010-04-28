@@ -7,6 +7,7 @@
 
 #include "classfactory.h"
 #include "environment.h"
+#include "expressionconsumer.h"
 #include "expressionfactory.h"
 #include "expressionsource.h"
 #include "filescriptsource.h"
@@ -42,20 +43,22 @@ int main(const int argc, const char ** argv) {
     Environment * environment = new Environment(nullLogger);
     Runtime * runtime = new Runtime(nullLogger);
     TokenFactory * tokenFactory = new TokenFactory(nullLogger, nullLogger);
-    TokenSource * tokenSource = new Lexer(nullLogger, tokenFactory, scriptSource);
+    TokenSource * tokenSource = new Lexer(nullLogger, tokenFactory,
+      scriptSource);
     ExpressionFactory * expressionFactory = new ExpressionFactory(nullLogger,
       nullLogger);
     ExpressionSource * expressionSource = new Parser(nullLogger,
       expressionFactory, tokenSource);
     ClassFactory * classFactory = new ClassFactory(nullLogger, nullLogger);
-    Interpreter * interpreter = new Interpreter(logger, expressionSource,
-      classFactory);
-    Script * script = new Script(logger, environment, runtime, interpreter);
+    ExpressionConsumer * expressionConsumer =
+      new Interpreter(logger, expressionSource, classFactory);
+    Script * script = new Script(logger, environment, runtime,
+      expressionConsumer);
 
     script->run();
 
     delete script;
-    delete interpreter;
+    delete expressionConsumer;
     delete expressionSource;
     delete expressionFactory;
     delete tokenSource;

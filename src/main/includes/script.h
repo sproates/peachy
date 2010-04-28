@@ -4,7 +4,7 @@
 namespace peachy {
 
   class Environment;
-  class Interpreter;
+  class ExpressionConsumer;
   class Log;
   class Runtime;
 
@@ -13,7 +13,7 @@ namespace peachy {
     public:
 
       Script(Log * logger, Environment * environment, Runtime * runtime,
-	     Interpreter * interpreter);
+	      ExpressionConsumer * expressionConsumer);
       ~Script();
 
       void run();
@@ -21,7 +21,7 @@ namespace peachy {
     protected:
 
       Environment * environment;
-      Interpreter * interpreter;
+      ExpressionConsumer * expressionConsumer;
       Log * logger;
       Runtime * runtime;
 

@@ -100,29 +100,52 @@ namespace peachy {
       static_cast<IntLiteralExpression*>(lValue);
     switch(rValue->getExpressionType()) {
       case EXPRESSION_INT_LITERAL:
-        IntLiteralExpression * rIntEx =
-          static_cast<IntLiteralExpression*>(rValue);
-        if(rIntEx == NULL) {
-          throw InterpreterException("Invalid int literal expression");
-        }
-        intEx->setValue(intEx->getValue() + rIntEx->getValue());
-        return evaluate(intEx, scope);
+        return addIntLiteralToIntLiteral(lValue, rValue, scope);
       case EXPRESSION_VARIABLE:
-        VariableExpression * varEx =
-          static_cast<VariableExpression*>(rValue);
-        if(!scope->hasVariable(varEx->getVariableName())) {
-          throw InterpreterException("Assigning a variable that isn't in scope");
-        } else {
-          if(scope->getVariable(varEx->getVariableName())->getClassName().compare(std::string("Int")) != 0) {
-            throw InterpreterException("Adding a non-int variable to an int literal");
-          } else {
-            Int * i = static_cast<Int*>(varEx->getValue());
-            intEx->setValue(intEx->getValue() + i->getValue());
-            return evaluate(intEx, scope);
-          }
-        }
-        default:
-          throw InterpreterException("I don't know how to add one of those to an int literal");
+        return addVariableToIntLiteral(lValue, rValue, scope);
+      default:
+        throw InterpreterException("I don't know how to add one of those to an int literal");
+    }
+  }
+
+  Expression * Interpreter::addIntLiteralToIntLiteral(Expression * lValue,
+    Expression * rValue, Scope * scope) {
+    IntLiteralExpression * intEx =
+      static_cast<IntLiteralExpression*>(lValue);
+    if(intEx == NULL) {
+      throw InterpreterException("Invalid int literal expression");
+    }
+    IntLiteralExpression * rIntEx =
+      static_cast<IntLiteralExpression*>(rValue);
+    if(rIntEx == NULL) {
+      throw InterpreterException("Invalid int literal expression");
+    }
+    intEx->setValue(intEx->getValue() + rIntEx->getValue());
+    return evaluate(intEx, scope);
+  }
+
+  Expression * Interpreter::addVariableToIntLiteral(Expression * lValue,
+    Expression * rValue, Scope * scope) {
+    IntLiteralExpression * intEx =
+      static_cast<IntLiteralExpression*>(lValue);
+    if(intEx == NULL) {
+      throw InterpreterException("Invalid int literal expression");
+    }
+    VariableExpression * varEx =
+      static_cast<VariableExpression*>(rValue);
+    if(varEx == NULL) {
+      throw InterpreterException("Invalid variable expression");
+    }
+    if(!scope->hasVariable(varEx->getVariableName())) {
+      throw InterpreterException("Assigning a variable that isn't in scope");
+    } else {
+      if(scope->getVariable(varEx->getVariableName())->getClassName().compare(std::string("Int")) != 0) {
+        throw InterpreterException("Adding a non-int variable to an int literal");
+      } else {
+        Int * i = static_cast<Int*>(varEx->getValue());
+        intEx->setValue(intEx->getValue() + i->getValue());
+        return evaluate(intEx, scope);
+      }
     }
   }
 
@@ -132,27 +155,50 @@ namespace peachy {
         static_cast<StringLiteralExpression*>(lValue);
       switch(rValue->getExpressionType()) {
         case EXPRESSION_STRING_LITERAL:
-          StringLiteralExpression * rStringEx =
-            static_cast<StringLiteralExpression*>(rValue);
-          stringEx->setStringValue(stringEx->getStringValue().append(rStringEx->getStringValue()));
-          return evaluate(stringEx, scope);
+          addStringLiteralToStringLiteral(lValue, rValue, scope);
         case EXPRESSION_VARIABLE:
-          VariableExpression * varEx =
-            static_cast<VariableExpression*>(rValue);
-          if(!scope->hasVariable(varEx->getVariableName())) {
-            throw InterpreterException(varEx->getVariableName().append(" is not defined"));
-          } else {
-            if(scope->getVariable(varEx->getVariableName())->getClassName().compare(std::string("String")) != 0) {
-              throw InterpreterException("Adding a non-string variable to a string literal");
-            } else {
-              String * s = static_cast<String*>(varEx->getValue());
-              stringEx->setStringValue(stringEx->getStringValue().append(s->getValue()));
-              return evaluate(stringEx, scope);
-            }
-          }
+          addVariableToStringLiteral(lValue, rValue, scope);
         default:
           throw InterpreterException("I don't know how to add one of those to a string literal");
       }
+  }
+
+  Expression * Interpreter::addStringLiteralToStringLiteral(Expression * lValue,
+    Expression * rValue, Scope * scope) {
+    StringLiteralExpression * stringEx =
+        static_cast<StringLiteralExpression*>(lValue);
+    if(stringEx == NULL) {
+      throw InterpreterException("Invalid string literal expression");
+    }
+    StringLiteralExpression * rStringEx =
+      static_cast<StringLiteralExpression*>(rValue);
+    if(rStringEx == NULL) {
+      throw InterpreterException("Invalid string literal expression");
+    }
+    stringEx->setStringValue(stringEx->getStringValue().append(rStringEx->getStringValue()));
+    return evaluate(stringEx, scope);
+  }
+
+  Expression * Interpreter::addVariableToStringLiteral(Expression * lValue,
+    Expression * rValue, Scope * scope) {
+    StringLiteralExpression * stringEx =
+        static_cast<StringLiteralExpression*>(lValue);
+    if(stringEx == NULL) {
+      throw InterpreterException("Invalid string literal expression");
+    }
+    VariableExpression * varEx =
+      static_cast<VariableExpression*>(rValue);
+    if(!scope->hasVariable(varEx->getVariableName())) {
+      throw InterpreterException(varEx->getVariableName().append(" is not defined"));
+    } else {
+      if(scope->getVariable(varEx->getVariableName())->getClassName().compare(std::string("String")) != 0) {
+        throw InterpreterException("Adding a non-string variable to a string literal");
+      } else {
+        String * s = static_cast<String*>(varEx->getValue());
+        stringEx->setStringValue(stringEx->getStringValue().append(s->getValue()));
+        return evaluate(stringEx, scope);
+      }
+    }
   }
 
   Expression * Interpreter::evaluateVariableAddition(Expression * lValue,

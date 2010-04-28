@@ -49,92 +49,22 @@ namespace peachy {
       case EXPRESSION_ASSIGNMENT:
         AssignmentExpression * ae =
           static_cast<AssignmentExpression*>(expression);
-        logger->debug("assignment!");
-        logger->debug(ae->toString());
         lValue = ae->getLValue();
         rValue = ae->getRValue();
         switch(lValue->getExpressionType()) {
           case EXPRESSION_VALUE:
             throw InterpreterException("lvalue of assignment is a value");
           case EXPRESSION_VARIABLE:
-            logger->debug("lvalue of assignment is a variable or function");
-            VariableExpression * var =
-              static_cast<VariableExpression*>(lValue);
-            if(var == NULL) {
-              throw InterpreterException("Invalid lValue");
-            }
-            logger->debug("evaluating rvalue");
             Expression * rVal = evaluate(rValue, scope);
-            logger->debug("evaluated rvalue");
             switch(rVal->getExpressionType()) {
               case EXPRESSION_VALUE:
-                logger->debug("rvalue is a value");
-                ValueExpression * rValue =
-                  static_cast<ValueExpression*>(rVal);
-                Object * rObj = rValue->getValue();
-                if(scope->hasNativeFunction(var->getVariableName())) {
-                  logger->debug("this is a function call");
-                  NativeFunction * f =
-                    scope->getNativeFunction(var->getVariableName());
-                  std::list<Object*> params;
-                  params.push_front(rValue->getValue());
-                  logger->debug("calling function");
-                  Object * result = f->call(params);
-                  logger->debug("Returning result of function call:");
-                  logger->debug(result->toString());
-                  return new ValueExpression(logger, result);
-                } else {
-                  logger->debug("straightforward assignment");
-                  var->setValue(rObj);
-                }
-                return var;
+                return assignValueToVariable(lValue, rVal, scope);
               case EXPRESSION_VARIABLE:
-                logger->debug("rvalue is a variable");
-                VariableExpression * rVar =
-                  static_cast<VariableExpression*>(rVal);
-                if(rVar == NULL) {
-                  throw InterpreterException("Invalid variable");
-                }
-                if(scope->hasNativeFunction(rVar->getVariableName())) {
-                  logger->debug("rvalue is a native function:");
-                  logger->debug(var->getVariableName());
-                  NativeFunction * f =
-                    scope->getNativeFunction(var->getVariableName());
-                  logger->debug("got function from scope");
-                  //logger->debug(rVal->toString());
-                  std::list<Object*> params;
-                  params.push_front(rVar->getValue());
-                  logger->debug("calling function!");
-                  Object * result = f->call(params);
-                  logger->debug("Returning result of function call:");
-                  logger->debug(result->toString());
-                  return new ValueExpression(logger, result);
-                } else {
-                  logger->debug("rvalue is a variable");
-                  if(scope->hasNativeFunction(var->getVariableName())) {
-                    logger->debug("this is a function call");
-                    NativeFunction * f =
-                      scope->getNativeFunction(var->getVariableName());
-                    std::list<Object*> params;
-                    params.push_front(rValue->getValue());
-                    logger->debug("calling function");
-                    Object * result = f->call(params);
-                    logger->debug("Returning result of function call:");
-                    logger->debug(result->toString());
-                    return new ValueExpression(logger, result);
-                  } else {
-                    logger->debug("straightforward assignment");
-                    Object * rObj = rVar->getValue();
-                    var->setValue(rObj);
-                    return var;
-                  }
-                }
-                break;
+                return assignVariableToVariable(lValue, rVal, scope);
               default:
                 throw InterpreterException("Unexpected rvalue");
             }
           case EXPRESSION_ASSIGNMENT:
-            logger->debug("lvalue of assignment is assignment");
             ValueExpression * lVal =
               static_cast<ValueExpression*>(evaluate(lValue, scope));
             if(lVal == NULL) {
@@ -148,7 +78,6 @@ namespace peachy {
             lVal->setValue(rValue->getValue());
             return lVal;
           default:
-            logger->debug("something else");
             throw InterpreterException("Invalid assignment");
         }
         break;
@@ -312,6 +241,64 @@ namespace peachy {
         return evaluateStringLiteralAddition(lValue, rValue, scope);
       default:
         throw InterpreterException("Invalid addition");
+    }
+  }
+
+  Expression * Interpreter::assignValueToVariable(Expression * lValue,
+    Expression * rValue, Scope * scope) {
+    VariableExpression * var =
+      static_cast<VariableExpression*>(lValue);
+    if(var == NULL) {
+      throw InterpreterException("Invalid lValue");
+    }
+    ValueExpression * rVal =
+      static_cast<ValueExpression*>(rValue);
+    Object * rObj = rVal->getValue();
+    if(scope->hasNativeFunction(var->getVariableName())) {
+      NativeFunction * f =
+        scope->getNativeFunction(var->getVariableName());
+      std::list<Object*> params;
+      params.push_front(rObj);
+      Object * result = f->call(params);
+      return new ValueExpression(logger, result);
+    } else {
+      var->setValue(rObj);
+    }
+    return var;
+  }
+
+  Expression * Interpreter::assignVariableToVariable(Expression * lValue,
+    Expression * rValue, Scope * scope) {
+    VariableExpression * var =
+      static_cast<VariableExpression*>(lValue);
+    if(var == NULL) {
+      throw InterpreterException("Invalid lValue");
+    }
+    VariableExpression * rVar =
+      static_cast<VariableExpression*>(rValue);
+    if(rVar == NULL) {
+      throw InterpreterException("Invalid variable");
+    }
+    if(scope->hasNativeFunction(rVar->getVariableName())) {
+      NativeFunction * f =
+        scope->getNativeFunction(var->getVariableName());
+      std::list<Object*> params;
+      params.push_front(rVar->getValue());
+      Object * result = f->call(params);
+      return new ValueExpression(logger, result);
+    } else {
+      if(scope->hasNativeFunction(var->getVariableName())) {
+        NativeFunction * f =
+          scope->getNativeFunction(var->getVariableName());
+        std::list<Object*> params;
+        params.push_front(rVar->getValue());
+        Object * result = f->call(params);
+        return new ValueExpression(logger, result);
+      } else {
+        Object * rObj = rVar->getValue();
+        var->setValue(rObj);
+        return var;
+      }
     }
   }
 

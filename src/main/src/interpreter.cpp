@@ -96,8 +96,6 @@ namespace peachy {
 
   Expression * Interpreter::evaluateIntLiteralAddition(Expression * lValue,
     Expression * rValue, Scope * scope) {
-    IntLiteralExpression * intEx =
-      static_cast<IntLiteralExpression*>(lValue);
     switch(rValue->getExpressionType()) {
       case EXPRESSION_INT_LITERAL:
         return addIntLiteralToIntLiteral(lValue, rValue, scope);
@@ -151,8 +149,6 @@ namespace peachy {
 
   Expression * Interpreter::evaluateStringLiteralAddition(Expression * lValue,
     Expression * rValue, Scope * scope) {
-      StringLiteralExpression * stringEx =
-        static_cast<StringLiteralExpression*>(lValue);
       switch(rValue->getExpressionType()) {
         case EXPRESSION_STRING_LITERAL:
           addStringLiteralToStringLiteral(lValue, rValue, scope);

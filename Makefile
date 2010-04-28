@@ -5,7 +5,7 @@
 
 COMPILER = g++
 
-COMPILER_FLAGS = -c -I$(HEADERS) \
+COMPILER_FLAGS = -c -Wall -Wextra -Werror -I$(HEADERS) \
 $(DEFINES)
 
 STRICT_COMPILER_FLAGS = -c -Wall -Wextra -Werror -Wunreachable-code \
@@ -32,7 +32,7 @@ variableexpression.o
 
 SOURCE = ./src/main/src
 
-TEST_COMPILER_FLAGS = -c -I$(HEADERS) -I$(TEST_HEADERS) $(DEFINES)
+TEST_COMPILER_FLAGS = -c -Wall -Wextra -Werror -I$(HEADERS) -I$(TEST_HEADERS) $(DEFINES)
 
 STRICT_TEST_COMPILER_FLAGS = -c -Wall -Wextra -Werror -Wunreachable-code \
 -Wredundant-decls -Wwrite-strings -Wundef -Wendif-labels -Wcast-qual -pedantic \

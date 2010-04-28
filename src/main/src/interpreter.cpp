@@ -298,12 +298,12 @@ namespace peachy {
     if(lVal == NULL) {
       throw InterpreterException("Invalid expression");
     }
-    ValueExpression * rValue =
+    ValueExpression * rVal =
       static_cast<ValueExpression*>(evaluate(rValue, scope));
     if(rVal == NULL) {
       throw InterpreterException("Invalid expression");
     }
-    lVal->setValue(rValue->getValue());
+    lVal->setValue(rVal->getValue());
     return lVal;
   }
 

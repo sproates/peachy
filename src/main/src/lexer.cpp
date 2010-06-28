@@ -105,13 +105,13 @@ namespace peachy {
         case LEXER_IN_STRING:
           logger->debug("In state LEXER_IN_STRING");
           switch(currentChar) {
-            case '"':
+            case '"': {
               logger->debug("End quote");
               Token * token = tokenFactory->createToken(TOKEN_STRING, currentSequence);
               consume(false);
               resetToken();
               return token;
-            case 0:
+            } case 0: {
               logger->debug("Newline found");
               currentSequence.append(1, '\n');
               logger->debug(currentSequence);
@@ -124,11 +124,12 @@ namespace peachy {
                 currentPos = 0;
               }
               break;
-            default:
+            } default: {
               logger->debug("Ordinary character");
               consume(true);
               logger->debug(currentSequence);
               break;
+            }
           }
           break;
         case LEXER_IN_NUMBER:

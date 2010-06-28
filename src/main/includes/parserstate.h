@@ -7,6 +7,7 @@ namespace peachy {
     PARSER_ASSIGNMENT,
     PARSER_DEFAULT,
     PARSER_ERROR,
+    PARSER_IN_CONDITION,
     PARSER_NEED_TOKEN
   };
 }

@@ -40,30 +40,37 @@ namespace peachy {
             case ':':
               logger->debug("Colon");
               resetToken();
+              consume(false);
               return tokenFactory->createToken(TOKEN_COLON);
             case '{':
               logger->debug("Left brace");
               resetToken();
+              consume(false);
               return tokenFactory->createToken(TOKEN_LEFT_BRACE);
             case '[':
               logger->debug("Left bracket");
               resetToken();
+              consume(false);
               return tokenFactory->createToken(TOKEN_LEFT_BRACKET);
             case '(':
               logger->debug("Left paren");
               resetToken();
+              consume(false);
               return tokenFactory->createToken(TOKEN_LEFT_PARENTHESIS);
             case '}':
               logger->debug("Right brace");
               resetToken();
+              consume(false);
               return tokenFactory->createToken(TOKEN_RIGHT_BRACE);
             case ']':
               logger->debug("Right bracket");
               resetToken();
+              consume(false);
               return tokenFactory->createToken(TOKEN_RIGHT_BRACKET);
             case ')':
               logger->debug("Right paren");
               resetToken();
+              consume(false);
               return tokenFactory->createToken(TOKEN_RIGHT_PARENTHESIS);
             case '#':
               logger->debug("Comment line");
@@ -145,8 +152,11 @@ namespace peachy {
             logger->debug("End of identifier");
             Token * token;
             if(isKeyword(currentSequence)) {
+              logger->debug("Actually it is a keyword");
               token = tokenFactory->createToken(TOKEN_KEYWORD, currentSequence);
             } else {
+              logger->debug("ok it is a proper identifier");
+              logger->debug(currentSequence);
               token = tokenFactory->createToken(TOKEN_IDENTIFIER,
                 currentSequence);
             }

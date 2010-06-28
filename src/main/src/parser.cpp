@@ -35,11 +35,12 @@ namespace peachy {
             break;
           }
           return expressionFactory->createQuitExpression();
-        case PARSER_DEFAULT:
+        case PARSER_DEFAULT: {
           switch(tokenBuffer.front()->getTokenType()) {
             case TOKEN_EOF:
               return expressionFactory->createQuitExpression();
             case TOKEN_IDENTIFIER:
+              logger->debug("in token identifier");
               VariableExpression * ve =
                 expressionFactory->createVariableExpression();
               ve->setVariableName(tokenBuffer[0]->getData());
@@ -171,11 +172,50 @@ namespace peachy {
                   state = PARSER_ERROR;
               }
               break;
+            case TOKEN_KEYWORD: {
+              if(tokenBuffer[0]->getData().compare("while") == 0) {
+                logger->debug("while keyword encountered");
+                tokenBuffer.pop_front();
+                switch(tokenBuffer[0]->getTokenType()) {
+                  case TOKEN_LEFT_PARENTHESIS: {
+                    logger->debug("Next token after while is left paren");
+                    tokenBuffer.pop_front();
+                    logger->debug("recursing");
+                    Expression * condition = nextExpression(PARSER_DEFAULT);
+                    logger->debug("finished recursing");
+                    if(tokenBuffer[0]->getTokenType() != TOKEN_RIGHT_PARENTHESIS) {
+                      errorMessage = std::string("Mismatched parentheses");
+                      state = PARSER_ERROR;
+                    } else {
+                      return condition;
+                    }
+                  }
+                  default: {
+                    logger->debug("next token after while should be left paren but isnt");
+                    errorMessage = std::string("Expected TOKEN_LEFT_PARENTHESIS following while");
+                    state = PARSER_ERROR;
+                  }
+                }
+                break;
+              } else if(tokenBuffer[0]->getData().compare("true") == 0) {
+                logger->debug("true keyword encountered");
+                tokenBuffer.pop_front();
+                errorMessage = std::string("Need to create a boolean literal expression here");
+                state = PARSER_ERROR;
+                break;
+              } else {
+                errorMessage = std::string("Unable to handle that keyword");
+                state = PARSER_ERROR;
+                break;
+              }
+            }
             default:
               errorMessage = std::string("Unknown token");
+              logger->debug("Unknown token follows:");
+              logger->debug(tokenBuffer.front()->toString());
               state = PARSER_ERROR;
           }
-          break;
+        }
         case PARSER_ERROR:
           throw ParserException(errorMessage);
         default:

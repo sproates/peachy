@@ -4,6 +4,7 @@
 
 #include "additionexpression.h"
 #include "assignmentexpression.h"
+#include "booleanliteralexpression.h"
 #include "expression.h"
 #include "expressionfactory.h"
 #include "intliteralexpression.h"
@@ -200,9 +201,17 @@ namespace peachy {
               } else if(tokenBuffer[0]->getData().compare("true") == 0) {
                 logger->debug("true keyword encountered");
                 tokenBuffer.pop_front();
-                errorMessage = std::string("Need to create a boolean literal expression here");
-                state = PARSER_ERROR;
-                break;
+                BooleanLiteralExpression * trueExp =
+                  expressionFactory->createBooleanLiteralExpression();
+                trueExp->setValue(true);
+                return trueExp;
+              } else if(tokenBuffer[0]->getData().compare("false") == 0) {
+                logger->debug("false keyword encountered");
+                tokenBuffer.pop_front();
+                BooleanLiteralExpression * falseExp =
+                  expressionFactory->createBooleanLiteralExpression();
+                falseExp->setValue(false);
+                return falseExp;
               } else {
                 errorMessage = std::string("Unable to handle that keyword");
                 state = PARSER_ERROR;

@@ -2,6 +2,7 @@
 
 #include "additionexpression.h"
 #include "assignmentexpression.h"
+#include "booleanliteralexpression.h"
 #include "expression.h"
 #include "intliteralexpression.h"
 #include "log.h"
@@ -39,6 +40,17 @@ namespace peachy {
   AssignmentExpression * ExpressionFactory::createAssignmentExpression(Log * logger) {
     this->logger->debug("ExpressionFactory::createAssignmentExpression()");
     return new AssignmentExpression(logger);
+  }
+
+  BooleanLiteralExpression * ExpressionFactory::createBooleanLiteralExpression() {
+    logger->debug("ExpressionFactory::createBooleanLiteralExpression()");
+    return new BooleanLiteralExpression(expressionLogger);
+  }
+
+  BooleanLiteralExpression * ExpressionFactory::createBooleanLiteralExpression(
+    Log * logger) {
+    this->logger->debug("ExpressionFactory::createBooleanLiteralExpression()");
+    return new BooleanLiteralExpression(logger);
   }
 
   IntLiteralExpression * ExpressionFactory::createIntLiteralExpression() {

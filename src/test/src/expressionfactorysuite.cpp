@@ -4,6 +4,7 @@
 
 #include "additionexpression.h"
 #include "assignmentexpression.h"
+#include "booleanliteralexpression.h"
 #include "expression.h"
 #include "expressionfactory.h"
 #include "expressiontype.h"
@@ -25,6 +26,7 @@ namespace peachy {
       expressionFactory = new ExpressionFactory(logger, logger);
       addition = new AdditionExpression(logger);
       assignment = new AssignmentExpression(logger);
+      booleanLiteral = new BooleanLiteralExpression(logger);
       intLiteral = new IntLiteralExpression(logger);
       quit = new QuitExpression(logger);
       stringLiteral = new StringLiteralExpression(logger);
@@ -46,6 +48,10 @@ namespace peachy {
       expression = expressionFactory->createAssignmentExpression();
       ASSERT_EQUALS(expression->getExpressionType() == EXPRESSION_ASSIGNMENT, "Expression type correct");
       ASSERT_INSTANCE(expression, assignment, "Expression type correct");
+
+      expression = expressionFactory->createBooleanLiteralExpression();
+      ASSERT_EQUALS(expression->getExpressionType() == EXPRESSION_BOOLEAN_LITERAL, "Expression type correct");
+      ASSERT_INSTANCE(expression, booleanLiteral, "Expression type correct");
 
       expression = expressionFactory->createIntLiteralExpression();
       ASSERT_EQUALS(expression->getExpressionType() == EXPRESSION_INT_LITERAL, "Expression type correct");

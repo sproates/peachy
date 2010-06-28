@@ -98,11 +98,12 @@ $(TEST_SOURCE)/testmain.cpp
 $(TESTS)/expressionfactorysuite.o: $(TEST_SOURCE)/expressionfactorysuite.cpp \
 $(TEST_SOURCE)/testsuite.cpp $(TEST_HEADERS)/testsuite.h \
 $(TEST_HEADERS)/expressionfactorysuite.h $(HEADERS)/additionexpression.h \
-$(HEADERS)/assignmentexpression.h $(HEADERS)/expressionfactory.h \
-$(HEADERS)/expressiontype.h $(HEADERS)/intliteralexpression.h $(HEADERS)/log.h \
-$(HEADERS)/nullostream.h $(HEADERS)/quitexpression.h \
-$(HEADERS)/stringliteralexpression.h $(HEADERS)/variableexpression.h \
-$(SOURCE)/additionexpression.cpp $(SOURCE)/assignmentexpression.cpp \
+$(HEADERS)/assignmentexpression.h $(HEADERS)/booleanliteralexpression.h \
+$(HEADERS)/expressionfactory.h $(HEADERS)/expressiontype.h \
+$(HEADERS)/intliteralexpression.h $(HEADERS)/log.h $(HEADERS)/nullostream.h \
+$(HEADERS)/quitexpression.h $(HEADERS)/stringliteralexpression.h \
+$(HEADERS)/variableexpression.h $(SOURCE)/additionexpression.cpp \
+$(SOURCE)/assignmentexpression.cpp $(SOURCE)/booleanliteralexpression.cpp \
 $(SOURCE)/expressionfactory.cpp $(SOURCE)/intliteralexpression.cpp \
 $(SOURCE)/log.cpp $(SOURCE)/nullostream.cpp $(SOURCE)/quitexpression.cpp \
 $(SOURCE)/stringliteralexpression.cpp $(SOURCE)/variableexpression.cpp
@@ -176,9 +177,9 @@ $(HEADERS)/expressionconsumer.h $(HEADERS)/log.h
 
 expressionfactory.o: $(SOURCE)/expressionfactory.cpp \
 $(HEADERS)/additionexpression.h $(HEADERS)/assignmentexpression.h \
-$(HEADERS)/expression.h $(HEADERS)/expressionfactory.h \
-$(HEADERS)/intliteralexpression.h $(HEADERS)/log.h $(HEADERS)/quitexpression.h \
-$(HEADERS)/variableexpression.h
+$(HEADERS)/booleanliteralexpression.h $(HEADERS)/expression.h \
+$(HEADERS)/expressionfactory.h $(HEADERS)/intliteralexpression.h \
+$(HEADERS)/log.h $(HEADERS)/quitexpression.h $(HEADERS)/variableexpression.h
 	$(COMPILER) $(COMPILER_FLAGS) $(SOURCE)/expressionfactory.cpp
 
 expressionsource.o: $(SOURCE)/expressionsource.cpp $(HEADERS)/expression.h \

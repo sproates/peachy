@@ -20,7 +20,7 @@ FINAL_EXE = peachy.exe
 
 HEADERS = ./src/main/includes
 
-OBJECTS = additionexpression.o assignmentexpression.o \
+OBJECTS = additionexpression.o assignmentexpression.o booleanexpression.o \
 booleanliteralexpression.o class.o classfactory.o environment.o expression.o \
 expressionconsumer.o  expressionfactory.o expressionsource.o \
 filescriptsource.o function.o int.o intliteralexpression.o interpreter.o \
@@ -146,6 +146,11 @@ assignmentexpression.o: $(SOURCE)/assignmentexpression.cpp \
 $(HEADERS)/assignmentexpression.h $(HEADERS)/expression.h \
 $(HEADERS)/expressiontype.h $(HEADERS)/log.h
 	$(COMPILER) $(COMPILER_FLAGS) $(SOURCE)/assignmentexpression.cpp
+
+booleanexpression.o: $(SOURCE)/booleanexpression.cpp \
+$(HEADERS)/booleanexpression.h $(HEADERS)/expression.h \
+$(HEADERS)/expressiontype.h $(HEADERS)/log.h 
+	$(COMPILER) $(COMPILER_FLAGS) $(SOURCE)/booleanexpression.cpp
 
 booleanliteralexpression.o: $(SOURCE)/booleanliteralexpression.cpp \
 $(HEADERS)/booleanliteralexpression.h $(HEADERS)/expression.h \

@@ -30,17 +30,17 @@ namespace peachy {
     while(true) {
       fillTokenBuffer();
       switch(state) {
-        case PARSER_NEED_TOKEN:
+        case PARSER_NEED_TOKEN: {
           if(tokenBuffer.size() > 0) {
             state = PARSER_DEFAULT;
             break;
           }
           return expressionFactory->createQuitExpression();
-        case PARSER_DEFAULT: {
+        } case PARSER_DEFAULT: {
           switch(tokenBuffer.front()->getTokenType()) {
-            case TOKEN_EOF:
+            case TOKEN_EOF: {
               return expressionFactory->createQuitExpression();
-            case TOKEN_IDENTIFIER:
+            } case TOKEN_IDENTIFIER: {
               logger->debug("in token identifier");
               VariableExpression * ve =
                 expressionFactory->createVariableExpression();
@@ -50,9 +50,9 @@ namespace peachy {
                 case TOKEN_EOF:
                 case TOKEN_IDENTIFIER:
                 case TOKEN_INTEGER:
-                case TOKEN_STRING:
+                case TOKEN_STRING: {
                   return ve;
-                case TOKEN_OPERATOR:
+                } case TOKEN_OPERATOR: {
                   if(tokenBuffer[0]->getData().compare("<-") == 0) {
                     AssignmentExpression * ae =
                       expressionFactory->createAssignmentExpression();
@@ -83,12 +83,13 @@ namespace peachy {
                     break;
                   }
                   break;
-                default:
+                } default: {
                   errorMessage = std::string("Unexpected token type");
                   state = PARSER_ERROR;
+                }
               }
               break;
-            case TOKEN_INTEGER:
+            } case TOKEN_INTEGER: {
               IntLiteralExpression * ile =
                 expressionFactory->createIntLiteralExpression();
               ile->setValue(atoi(tokenBuffer.front()->getData().c_str()));
@@ -97,9 +98,9 @@ namespace peachy {
                 case TOKEN_EOF:
                 case TOKEN_IDENTIFIER:
                 case TOKEN_INTEGER:
-                case TOKEN_KEYWORD:
+                case TOKEN_KEYWORD: {
                   return ile;
-                case TOKEN_OPERATOR:
+                } case TOKEN_OPERATOR: {
                   if(tokenBuffer[0]->getData().compare("+") == 0) {
                     AdditionExpression * addEx =
                       expressionFactory->createAdditionExpression();
@@ -126,16 +127,17 @@ namespace peachy {
                     state = PARSER_ERROR;
                     break;
                   }
-                default:
+                } default: {
                   errorMessage = std::string("Unexpected token: ").append(tokenBuffer[0]->toString());
                   state = PARSER_ERROR;
+                }
               }
               break;
-            case TOKEN_OPERATOR:
+            } case TOKEN_OPERATOR: {
               errorMessage = std::string("Unexpected operator");
               state = PARSER_ERROR;
               break;
-            case TOKEN_STRING:
+            } case TOKEN_STRING: {
               StringLiteralExpression * sle =
                 expressionFactory->createStringLiteralExpression();
               sle->setStringValue(tokenBuffer.front()->getData());
@@ -145,9 +147,9 @@ namespace peachy {
                 case TOKEN_IDENTIFIER:
                 case TOKEN_INTEGER:
                 case TOKEN_KEYWORD:
-                case TOKEN_STRING:
+                case TOKEN_STRING: {
                   return sle;
-                case TOKEN_OPERATOR:
+                } case TOKEN_OPERATOR: {
                   if(tokenBuffer[0]->getData().compare("+") == 0) {
                     AdditionExpression * addEx =
                       expressionFactory->createAdditionExpression();
@@ -168,12 +170,13 @@ namespace peachy {
                     state = PARSER_ERROR;
                     break;
                   }
-                default:
+                } default: {
                   errorMessage = std::string("Unexpected token: ").append(tokenBuffer[0]->toString());
                   state = PARSER_ERROR;
+                }
               }
               break;
-            case TOKEN_KEYWORD: {
+            } case TOKEN_KEYWORD: {
               if(tokenBuffer[0]->getData().compare("while") == 0) {
                 logger->debug("while keyword encountered");
                 tokenBuffer.pop_front();
@@ -190,8 +193,7 @@ namespace peachy {
                     } else {
                       return condition;
                     }
-                  }
-                  default: {
+                  } default: {
                     logger->debug("next token after while should be left paren but isnt");
                     errorMessage = std::string("Expected TOKEN_LEFT_PARENTHESIS following while");
                     state = PARSER_ERROR;
@@ -217,19 +219,19 @@ namespace peachy {
                 state = PARSER_ERROR;
                 break;
               }
-            }
-            default:
+            } default: {
               errorMessage = std::string("Unknown token");
               logger->debug("Unknown token follows:");
               logger->debug(tokenBuffer.front()->toString());
               state = PARSER_ERROR;
+            }
           }
-        }
-        case PARSER_ERROR:
+        } case PARSER_ERROR: {
           throw ParserException(errorMessage);
-        default:
+        } default: {
           errorMessage = std::string("Parser in unknown state");
           state = PARSER_ERROR;
+        }
       }
     }
   }

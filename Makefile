@@ -55,10 +55,10 @@ TESTS = ./src/test
 all: $(FINAL_EXE) $(TEST_EXE) test
 
 $(FINAL_EXE): main.o $(OBJECTS)
-	$(COMPILER) -static -o $(FINAL_EXE) main.o $(OBJECTS)
+	$(COMPILER) -o $(FINAL_EXE) main.o $(OBJECTS)
 
 $(TEST_EXE): $(TESTS)/testmain.o $(TEST_OBJECTS)
-	$(COMPILER) -static -o $(TEST_EXE) $(TESTS)/testmain.o $(TEST_OBJECTS) $(OBJECTS)
+	$(COMPILER) -o $(TEST_EXE) $(TESTS)/testmain.o $(TEST_OBJECTS) $(OBJECTS)
 
 clean:
 	$(DELETE) *.exe *.o $(TESTS)/*.o

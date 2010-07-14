@@ -4,7 +4,9 @@
 
 #include "additionexpression.h"
 #include "assignmentexpression.h"
+#include "booleanexpression.h"
 #include "booleanliteralexpression.h"
+#include "comparisontype.h"
 #include "expression.h"
 #include "expressionfactory.h"
 #include "intliteralexpression.h"
@@ -50,9 +52,12 @@ namespace peachy {
                 case TOKEN_EOF:
                 case TOKEN_IDENTIFIER:
                 case TOKEN_INTEGER:
+                case TOKEN_KEYWORD:
                 case TOKEN_STRING: {
+                  logger->debug("Nothing more to do for current identifier");
                   return ve;
                 } case TOKEN_OPERATOR: {
+                  logger->debug("Operator follows identifier");
                   if(tokenBuffer[0]->getData().compare("<-") == 0) {
                     AssignmentExpression * ae =
                       expressionFactory->createAssignmentExpression();
@@ -77,6 +82,17 @@ namespace peachy {
                     addEx->setRValue(nextExpression(PARSER_DEFAULT));
                     logger->debug(addEx->toString());
                     return addEx;
+                  } else if(tokenBuffer[0]->getData().compare("<") == 0) {
+                    logger->debug("less than following identifier");
+                    BooleanExpression * boolEx =
+                      expressionFactory->createBooleanExpression();
+                    boolEx->setLValue(ve);
+                    boolEx->setComparisonType(COMPARISON_LESS_THAN);
+                    tokenBuffer.pop_front();
+                    boolEx->setRValue(nextExpression(PARSER_DEFAULT));
+                    logger->debug("boolean expression complete");
+                    return boolEx;
+                    break;
                   } else {
                     errorMessage = std::string("Unexpected operator following variable ").append(ve->getVariableName());
                     state = PARSER_ERROR;
@@ -84,12 +100,13 @@ namespace peachy {
                   }
                   break;
                 } default: {
-                  errorMessage = std::string("Unexpected token type");
+                  errorMessage = std::string("Unexpected token type: ").append(tokenBuffer[0]->toString());;
                   state = PARSER_ERROR;
                 }
               }
               break;
             } case TOKEN_INTEGER: {
+              logger->debug("in token integer");
               IntLiteralExpression * ile =
                 expressionFactory->createIntLiteralExpression();
               ile->setValue(atoi(tokenBuffer.front()->getData().c_str()));
@@ -98,9 +115,13 @@ namespace peachy {
                 case TOKEN_EOF:
                 case TOKEN_IDENTIFIER:
                 case TOKEN_INTEGER:
-                case TOKEN_KEYWORD: {
+                case TOKEN_KEYWORD:
+                case TOKEN_LEFT_PARENTHESIS:
+                case TOKEN_RIGHT_PARENTHESIS: {
+                  logger->debug("Nothing more to do with current integer");
                   return ile;
                 } case TOKEN_OPERATOR: {
+                  logger->debug("Operator follows integer");
                   if(tokenBuffer[0]->getData().compare("+") == 0) {
                     AdditionExpression * addEx =
                       expressionFactory->createAdditionExpression();
@@ -123,7 +144,7 @@ namespace peachy {
                     logger->debug(ae->toString());
                     return ae;
                   } else {
-                    errorMessage = std::string("Unexpected operator");
+                    errorMessage = std::string("Unexpected operator: ").append(tokenBuffer[0]->toString());
                     state = PARSER_ERROR;
                     break;
                   }
@@ -134,10 +155,12 @@ namespace peachy {
               }
               break;
             } case TOKEN_OPERATOR: {
-              errorMessage = std::string("Unexpected operator");
+              logger->debug("In token operator");
+              errorMessage = std::string("Unexpected operator: ").append(tokenBuffer.front()->toString());
               state = PARSER_ERROR;
               break;
             } case TOKEN_STRING: {
+              logger->debug("in token string");
               StringLiteralExpression * sle =
                 expressionFactory->createStringLiteralExpression();
               sle->setStringValue(tokenBuffer.front()->getData());
@@ -148,8 +171,10 @@ namespace peachy {
                 case TOKEN_INTEGER:
                 case TOKEN_KEYWORD:
                 case TOKEN_STRING: {
+                  logger->debug("Nothing more to do with current string");
                   return sle;
                 } case TOKEN_OPERATOR: {
+                  logger->debug("Operator follows string");
                   if(tokenBuffer[0]->getData().compare("+") == 0) {
                     AdditionExpression * addEx =
                       expressionFactory->createAdditionExpression();
@@ -177,6 +202,7 @@ namespace peachy {
               }
               break;
             } case TOKEN_KEYWORD: {
+              logger->debug("in token keyword");
               if(tokenBuffer[0]->getData().compare("while") == 0) {
                 logger->debug("while keyword encountered");
                 tokenBuffer.pop_front();
@@ -184,18 +210,19 @@ namespace peachy {
                   case TOKEN_LEFT_PARENTHESIS: {
                     logger->debug("Next token after while is left paren");
                     tokenBuffer.pop_front();
-                    logger->debug("recursing");
+                    logger->debug("recursing for while loop condition");
                     Expression * condition = nextExpression(PARSER_DEFAULT);
-                    logger->debug("finished recursing");
+                    logger->debug("finished recursing for while loop condition");
                     if(tokenBuffer[0]->getTokenType() != TOKEN_RIGHT_PARENTHESIS) {
                       errorMessage = std::string("Mismatched parentheses");
                       state = PARSER_ERROR;
+                      break;
                     } else {
                       return condition;
                     }
                   } default: {
                     logger->debug("next token after while should be left paren but isnt");
-                    errorMessage = std::string("Expected TOKEN_LEFT_PARENTHESIS following while");
+                    errorMessage = std::string("Expected TOKEN_LEFT_PARENTHESIS following while, got: ").append(tokenBuffer[0]->toString());
                     state = PARSER_ERROR;
                   }
                 }

@@ -34,6 +34,7 @@ namespace peachy {
     private:
 
       Expression * evaluate(Expression * expression, Scope * scope);
+      Expression * evaluateBoolean(Expression * expression);
       Expression * evaluateIntLiteral(Expression * expression);
       Expression * evaluateStringLiteral(Expression * expression);
       Expression * evaluateVariable(Expression * expression, Scope * scope);

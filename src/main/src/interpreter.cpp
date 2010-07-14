@@ -5,6 +5,7 @@
 
 #include "additionexpression.h"
 #include "assignmentexpression.h"
+#include "booleanexpression.h"
 #include "class.h"
 #include "classfactory.h"
 #include "expression.h"
@@ -43,24 +44,37 @@ namespace peachy {
 
   Expression * Interpreter::evaluate(Expression * expression, Scope * scope) {
     switch(expression->getExpressionType()) {
-      case EXPRESSION_ADDITION:
+      case EXPRESSION_ADDITION: {
         return evaluateAddition(expression, scope);
-      case EXPRESSION_ASSIGNMENT:
+      } case EXPRESSION_ASSIGNMENT: {
         return evaluateAssignment(expression, scope);
-      case EXPRESSION_INT_LITERAL:
+      } case EXPRESSION_BOOLEAN: {
+        return evaluateBoolean(expression);
+      } case EXPRESSION_INT_LITERAL: {
         return evaluateIntLiteral(expression);
-      case EXPRESSION_QUIT:
+      } case EXPRESSION_QUIT: {
         return NULL;
-      case EXPRESSION_STRING_LITERAL:
+      } case EXPRESSION_STRING_LITERAL: {
         return evaluateStringLiteral(expression);
-      case EXPRESSION_VARIABLE:
+      } case EXPRESSION_VARIABLE: {
         return evaluateVariable(expression, scope);
-      case EXPRESSION_VALUE:
+      } case EXPRESSION_VALUE: {
         return expression;
-      case EXPRESSION_UNKNOWN:
-      default:
-        throw InterpreterException("Unknown expression");
+      } case EXPRESSION_UNKNOWN:
+        default: {
+          throw InterpreterException(std::string("Unknown expression: ").append(expression->toString()));
+      }
     }
+  }
+
+  Expression * Interpreter::evaluateBoolean(Expression * expression) {
+    BooleanExpression * e =
+      static_cast<BooleanExpression*>(expression);
+    if(e == NULL) {
+      throw InterpreterException("Invalid boolean expression");
+    }
+    logger->debug(expression->toString());
+    throw InterpreterException("Not implemented");
   }
 
   Expression * Interpreter::evaluateIntLiteral(Expression * expression) {

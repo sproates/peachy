@@ -94,12 +94,13 @@ $(TEST_SOURCE)/testmain.cpp
 $(TESTS)/expressionfactorysuite.o: $(TEST_SOURCE)/expressionfactorysuite.cpp \
 $(TEST_SOURCE)/testsuite.cpp $(TEST_HEADERS)/testsuite.h \
 $(TEST_HEADERS)/expressionfactorysuite.h $(HEADERS)/additionexpression.h \
-$(HEADERS)/assignmentexpression.h $(HEADERS)/booleanliteralexpression.h \
-$(HEADERS)/expressionfactory.h $(HEADERS)/expressiontype.h \
-$(HEADERS)/intliteralexpression.h $(HEADERS)/log.h $(HEADERS)/nullostream.h \
-$(HEADERS)/quitexpression.h $(HEADERS)/stringliteralexpression.h \
-$(HEADERS)/variableexpression.h $(SOURCE)/additionexpression.cpp \
-$(SOURCE)/assignmentexpression.cpp $(SOURCE)/booleanliteralexpression.cpp \
+$(HEADERS)/assignmentexpression.h $(HEADERS)/booleanexpression.h \
+$(HEADERS)/booleanliteralexpression.h $(HEADERS)/expressionfactory.h \
+$(HEADERS)/expressiontype.h $(HEADERS)/intliteralexpression.h $(HEADERS)/log.h \
+$(HEADERS)/nullostream.h $(HEADERS)/quitexpression.h \
+$(HEADERS)/stringliteralexpression.h $(HEADERS)/variableexpression.h \
+$(SOURCE)/additionexpression.cpp $(SOURCE)/assignmentexpression.cpp \
+$(SOURCE)/booleanexpression.cpp $(SOURCE)/booleanliteralexpression.cpp \
 $(SOURCE)/expressionfactory.cpp $(SOURCE)/intliteralexpression.cpp \
 $(SOURCE)/log.cpp $(SOURCE)/nullostream.cpp $(SOURCE)/quitexpression.cpp \
 $(SOURCE)/stringliteralexpression.cpp $(SOURCE)/variableexpression.cpp
@@ -148,8 +149,8 @@ $(HEADERS)/expressiontype.h $(HEADERS)/log.h
 	$(COMPILER) $(COMPILER_FLAGS) $(SOURCE)/assignmentexpression.cpp
 
 booleanexpression.o: $(SOURCE)/booleanexpression.cpp \
-$(HEADERS)/booleanexpression.h $(HEADERS)/expression.h \
-$(HEADERS)/expressiontype.h $(HEADERS)/log.h 
+$(HEADERS)/booleanexpression.h $(HEADERS)/comparisontype.h \
+$(HEADERS)/expression.h $(HEADERS)/expressiontype.h $(HEADERS)/log.h 
 	$(COMPILER) $(COMPILER_FLAGS) $(SOURCE)/booleanexpression.cpp
 
 booleanliteralexpression.o: $(SOURCE)/booleanliteralexpression.cpp \
@@ -178,9 +179,10 @@ $(HEADERS)/expressionconsumer.h $(HEADERS)/log.h
 
 expressionfactory.o: $(SOURCE)/expressionfactory.cpp \
 $(HEADERS)/additionexpression.h $(HEADERS)/assignmentexpression.h \
-$(HEADERS)/booleanliteralexpression.h $(HEADERS)/expression.h \
-$(HEADERS)/expressionfactory.h $(HEADERS)/intliteralexpression.h \
-$(HEADERS)/log.h $(HEADERS)/quitexpression.h $(HEADERS)/variableexpression.h
+$(HEADERS)/booleanexpression.h $(HEADERS)/booleanliteralexpression.h \
+$(HEADERS)/expression.h $(HEADERS)/expressionfactory.h \
+$(HEADERS)/intliteralexpression.h $(HEADERS)/log.h $(HEADERS)/quitexpression.h \
+$(HEADERS)/variableexpression.h
 	$(COMPILER) $(COMPILER_FLAGS) $(SOURCE)/expressionfactory.cpp
 
 expressionsource.o: $(SOURCE)/expressionsource.cpp $(HEADERS)/expression.h \
@@ -201,8 +203,9 @@ $(HEADERS)/object.h $(HEADERS)/types/int.h
 	$(COMPILER) $(COMPILER_FLAGS) $(SOURCE)/types/int.cpp
 
 interpreter.o: $(SOURCE)/interpreter.cpp $(HEADERS)/additionexpression.h \
-$(HEADERS)/assignmentexpression.h $(HEADERS)/booleanliteralexpression.h \
-$(HEADERS)/class.h $(HEADERS)/classfactory.h $(HEADERS)/expressionconsumer.h \
+$(HEADERS)/assignmentexpression.h $(HEADERS)/booleanexpression.h \
+$(HEADERS)/booleanliteralexpression.h $(HEADERS)/class.h \
+$(HEADERS)/classfactory.h $(HEADERS)/expressionconsumer.h \
 $(HEADERS)/expressionsource.h $(HEADERS)/expressiontype.h \
 $(HEADERS)/interpreter.h $(HEADERS)/interpreterexception.h $(HEADERS)/log.h \
 $(HEADERS)/nativefunction.h $(HEADERS)/object.h $(HEADERS)/scope.h \
@@ -239,7 +242,8 @@ $(HEADERS)/log.h $(HEADERS)/object.h
 	$(COMPILER) $(COMPILER_FLAGS) $(SOURCE)/object.cpp
 
 parser.o: $(SOURCE)/parser.cpp $(HEADERS)/additionexpression.h \
-$(HEADERS)/assignmentexpression.h $(HEADERS)/booleanliteralexpression.h \
+$(HEADERS)/assignmentexpression.h $(HEADERS)/booleanexpression.h \
+$(HEADERS)/booleanliteralexpression.h $(HEADERS)/comparisontype.h \
 $(HEADERS)/expressionfactory.h $(HEADERS)/expressionsource.h \
 $(HEADERS)/intliteralexpression.h $(HEADERS)/lexerexception.h $(HEADERS)/log.h \
 $(HEADERS)/parserexception.h $(HEADERS)/parserstate.h $(HEADERS)/parser.h \

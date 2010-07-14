@@ -1,5 +1,7 @@
 #include "booleanexpression.h"
 
+#include "comparisontype.h"
+
 #include <string>
 
 namespace peachy {
@@ -14,6 +16,14 @@ namespace peachy {
     rValue = e;
   }
 
+  ComparisonType BooleanExpression::getComparisonType() {
+    return comparisonType;
+  }
+
+  void BooleanExpression::setComparisonType(ComparisonType c) {
+    comparisonType = c;
+  }
+
   Expression * BooleanExpression::getLValue() {
     return lValue;
   }
@@ -23,6 +33,23 @@ namespace peachy {
   }
 
   std::string BooleanExpression::toString() {
-    return std::string("");
+    std::string s = std::string("Boolean expression [ ").append(lValue->toString());
+    switch(comparisonType) {
+      case(COMPARISON_NONE): {
+        break;
+      } case(COMPARISON_LESS_THAN): {
+        s.append(" <");
+        break;
+      } default: {
+        s.append(" Unknown comparison!");
+        break;
+      }
+    }
+    if(comparisonType != COMPARISON_NONE) {
+      s.append(" ");
+      s.append(rValue->toString());
+    }
+    s.append(" ]");
+    return s;
   }
 }

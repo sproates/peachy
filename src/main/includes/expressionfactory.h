@@ -5,6 +5,7 @@ namespace peachy {
 
   class AdditionExpression;
   class AssignmentExpression;
+  class BooleanExpression;
   class BooleanLiteralExpression;
   class Expression;
   class IntLiteralExpression;
@@ -24,6 +25,8 @@ namespace peachy {
       AdditionExpression * createAdditionExpression(Log * logger);
       AssignmentExpression * createAssignmentExpression();
       AssignmentExpression * createAssignmentExpression(Log * logger);
+      BooleanExpression * createBooleanExpression();
+      BooleanExpression * createBooleanExpression(Log * logger);
       BooleanLiteralExpression * createBooleanLiteralExpression();
       BooleanLiteralExpression * createBooleanLiteralExpression(Log * logger);
       IntLiteralExpression * createIntLiteralExpression();

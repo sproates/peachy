@@ -3,6 +3,7 @@
 
 #include "additionexpression.h"
 #include "assignmentexpression.h"
+#include "booleanexpression.h"
 #include "booleanliteralexpression.h"
 #include "expression.h"
 #include "expressionfactory.h"
@@ -36,6 +37,7 @@ namespace peachy {
 
         AdditionExpression * addition;
         AssignmentExpression * assignment;
+        BooleanExpression * boolean;
         BooleanLiteralExpression * booleanLiteral;
         QuitExpression * quit;
         IntLiteralExpression * intLiteral;
